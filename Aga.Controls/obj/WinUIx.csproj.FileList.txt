@@ -1,0 +1,7 @@
+obj\Debug\ResolveAssemblyReference.cache
+obj\Debug\WinUIx.csproj.GenerateResource.Cache
+obj\Debug\Quimron.WinUI.Controls.TreeListView.Resources.resources
+bin\Debug\WinUIx.dll
+bin\Debug\WinUIx.pdb
+obj\Debug\WinUIx.dll
+obj\Debug\WinUIx.pdb

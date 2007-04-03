@@ -1,0 +1,191 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{E73BB233-D88B-44A7-A98F-D71EE158381D}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Quimron.WinUI</RootNamespace>
+    <AssemblyName>WinUIx</AssemblyName>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+    <SignAssembly>false</SignAssembly>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;PERF_TEST</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRules>-Microsoft.Design#CA1020;-Microsoft.Design#CA1060;-Microsoft.Design#CA1062;-Microsoft.Globalization#CA1301;-Microsoft.Globalization#CA1302;-Microsoft.Globalization#CA1303;-Microsoft.Globalization#CA1306;-Microsoft.Globalization#CA1304;-Microsoft.Globalization#CA1305;-Microsoft.Globalization#CA1300;-Microsoft.Maintainability#CA1501;-Microsoft.Mobility#CA1601;-Microsoft.Performance#CA1805;-Microsoft.Performance#CA1815;-Microsoft.Performance#CA1819;-Microsoft.Usage#CA2208</CodeAnalysisRules>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Design" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Controls\TreeListView\Helpers\CursorHelper.cs" />
+    <Compile Include="Controls\TreeListView\Helpers\StringCollectionEditor.cs" />
+    <Compile Include="Controls\TreeListView\Helpers\BitmapHelper.cs" />
+    <Compile Include="Controls\TreeListView\Helpers\TimeCounter.cs" />
+    <Compile Include="Controls\TreeListView\Input\ReorderColumnState.cs" />
+    <Compile Include="Controls\TreeListView\NodeControls\InteractiveControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\TreeListView\NodeControls\DrawEventArgs.cs" />
+    <Compile Include="Controls\TreeListView\NodeControls\NodeEventArgs.cs" />
+    <Compile Include="Controls\TreeListView\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\TreeListView\SortedTreeModel.cs" />
+    <Compile Include="Controls\TreeListView\TreeModelBase.cs" />
+    <Compile Include="Controls\TreeListView\AutoRowHeightLayout.cs" />
+    <Compile Include="Controls\TreeListView\Input\ClickColumnState.cs" />
+    <Compile Include="Controls\TreeListView\Input\ColumnState.cs" />
+    <Compile Include="Controls\TreeListView\TreeListView.Draw.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\TreeListView\TreeListView.Input.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\TreeListView\IRowLayout.cs" />
+    <Compile Include="Controls\TreeListView\FixedRowHeightLayout.cs" />
+    <Compile Include="Controls\TreeListView\NodeControlInfo.cs" />
+    <Compile Include="Controls\TreeListView\NodeControls\NodeControlValueEventArgs.cs" />
+    <Compile Include="Controls\TreeListView\NodeControls\NodeNumericUpDown.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\TreeListView\IncrementalSearch.cs" />
+    <Compile Include="Controls\TreeListView\Helpers\TextHelper.cs" />
+    <Compile Include="Controls\TreeListView\TreeListView.Properties.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\TreeListView\TreeListAdapter.cs" />
+    <Compile Include="Controls\TreeListView\TreeListNodeMouseEventArgs.cs" />
+    <Compile Include="Controls\TreeListView\Node.cs" />
+    <Compile Include="Controls\TreeListView\NodeControls\BaseTextControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\TreeListView\NodeControls\EditableControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\TreeListView\NodeControls\NodeComboBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\TreeListView\NodeControls\NodeControlsCollection.cs" />
+    <Compile Include="Controls\TreeListView\Input\InputState.cs" />
+    <Compile Include="Controls\TreeListView\IToolTipProvider.cs" />
+    <Compile Include="Controls\TreeListView\Input\ResizeColumnState.cs" />
+    <Compile Include="Controls\TreeListView\TreeColumn.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\TreeListView\TreeColumnCollection.cs" />
+    <Compile Include="Controls\TreeListView\TreeColumnEventArgs.cs" />
+    <Compile Include="Controls\TreeListView\TreeModel.cs" />
+    <Compile Include="Controls\TreeListView\TreeListViewCancelEventArgs.cs" />
+    <Compile Include="Controls\TreeListView\TreeListViewEventArgs.cs" />
+    <Compile Include="Controls\TreeListView\TreePathEventArgs.cs" />
+    <Compile Include="Controls\TreeListView\EditorContext.cs" />
+    <Compile Include="Controls\TreeListView\Input\InputWithShift.cs" />
+    <Compile Include="Controls\TreeListView\Enums.cs" />
+    <Compile Include="Controls\TreeListView\Input\NormalInputState.cs" />
+    <Compile Include="Controls\TreeListView\Input\InputWithControl.cs" />
+    <Compile Include="Controls\TreeListView\NodeControls\NodeControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\TreeListView\DropPosition.cs" />
+    <Compile Include="Controls\TreeListView\NodeControls\BindableControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\TreeListView\NodeControls\NodeCheckBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\TreeListView\NodeControls\NodeIcon.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\TreeListView\DrawContext.cs" />
+    <Compile Include="Controls\TreeListView\ITreeModel.cs" />
+    <Compile Include="Controls\TreeListView\NodeControls\NodePlusMinus.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\TreeListView\NodeControls\NodeTextBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Controls\TreeListView\NodeControls\NodeStateIcon.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\TreeListView\TreeModelEventArgs.cs" />
+    <Compile Include="Controls\TreeListView\TreeListNode.cs" />
+    <Compile Include="Controls\TreeListView\TreePath.cs" />
+    <Compile Include="Controls\TreeListView\TreeListView.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\TreeListView\TreeListView.Designer.cs">
+      <DependentUpon>TreeListView.cs</DependentUpon>
+    </Compile>
+    <Service Include="{94E38DFF-614B-4cbd-B67C-F211BB35CE8B}" />
+    <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Controls\TreeListView\Resources\minus.bmp" />
+    <None Include="Controls\TreeListView\Resources\plus.bmp" />
+    <None Include="Controls\TreeListView\Resources\check.bmp" />
+    <None Include="Controls\TreeListView\Resources\uncheck.bmp" />
+    <None Include="Controls\TreeListView\Resources\Leaf.bmp" />
+    <None Include="Controls\TreeListView\Resources\Folder.bmp" />
+    <None Include="Controls\TreeListView\Resources\FolderClosed.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Controls\TreeListView\ClassDiagram.cd" />
+    <None Include="Controls\TreeListView\NodeControls\ClassDiagram.cd" />
+    <None Include="Controls\TreeListView\Resources\unknown.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Controls\TreeListView\Resources.resx">
+      <SubType>Designer</SubType>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Controls\TreeListView\Resources\DVSplit.cur" />
+    <Content Include="Controls\TreeListView\Version 1.4.4.txt" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

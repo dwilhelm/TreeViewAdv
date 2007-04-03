@@ -1,0 +1,129 @@
+Changes by Jan
+===============
+
+in TreeColum
+
+Line 70:
+
+		// *******
+        // von jan
+
+        private int _left;
+        [Browsable(false)]
+        public int Left
+        {
+            get { return _left; }
+            set { _left = value; }
+        }
+
+        // von jan
+        // *******
+
+
+Line 74:
+
+			get
+            {
+                // ******
+                // Changed by Jan
+                _width = Math.Max(_width, _MinColumnWidth);
+                // **************
+                
+                return _width;
+            }
+
+
+
+Line 124:
+
+		// *******
+        // von jan
+        private bool _sortable = false;
+        [DefaultValue(false)]
+        public bool Sortable
+        {
+            get { return _sortable; }
+            set { _sortable = value; }
+        }
+
+        private int _MinColumnWidth = 10;
+        [DefaultValue(10)]
+        public int MinColumnWidth
+        {
+            get { return _MinColumnWidth; }
+            set
+            {
+                _MinColumnWidth = Math.Max(0, value);
+                Width = Math.Max(_MinColumnWidth, _width);
+            }
+        }
+        // von jan
+        // *******
+
+in ResizeColumnState.cs
+
+Line 12:
+
+		//private const int MinColumnWidth = 10;
+		
+		
+Line 47:
+
+
+		public override bool MouseMove(MouseEventArgs args)
+		{
+			int w = _initWidth + args.Location.X - _initLocation.X;
+			Column.Width = Math.Max(Column.MinColumnWidth, w);
+			Tree.UpdateView();
+			return true;
+		}
+		
+
+in TreeListView.Draw
+
+Line 152
+
+		// *******
+        // von Jan
+           c.Left = x;
+        // von Jan
+        // *******
+                    
+in TreeListView.Input
+
+		private void SetCursor(MouseEventArgs e)
+        {
+            TreeColumn col = GetColumnAt(e.Location, true);
+
+            //if (GetColumnAt(e.Location, true) == null)
+            if (col == null)
+                _innerCursor = null;
+            else
+                if (e.X < col.Left + col.Width)
+                {
+                    _innerCursor = Cursors.VSplit;
+                }
+                else
+                {
+                    _innerCursor = CursorHelper.DVSplit;
+                }
+
+            col = GetColumnAt(e.Location, false);
+            //TreeColumn col = GetColumnAt(e.Location, false);
+            if (col != _hotColumn)
+            {
+                _hotColumn = col;
+                UpdateHeaders();
+            }
+        }
+        
+in TreeListView.Properties
+
+Line 618:
+
+		[Browsable(false)]
+        public int ItemCount
+        {
+            get { return RowMap.Count; }
+        }
+

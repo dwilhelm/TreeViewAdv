@@ -1,0 +1,14 @@
+obj\Debug\ResolveAssemblyReference.cache
+obj\Debug\SampleApp.AdvancedExample.resources
+obj\Debug\SampleApp.FolderBrowser.resources
+obj\Debug\SampleApp.MainForm.resources
+obj\Debug\SampleApp.PerformanceTest.resources
+obj\Debug\SampleApp.Properties.Resources.resources
+obj\Debug\SampleApp.SimpleExample.resources
+obj\Debug\SampleApp.csproj.GenerateResource.Cache
+bin\Debug\SampleApp.exe
+bin\Debug\SampleApp.pdb
+bin\Debug\WinUIx.dll
+bin\Debug\WinUIx.pdb
+obj\Debug\SampleApp.exe
+obj\Debug\SampleApp.pdb
