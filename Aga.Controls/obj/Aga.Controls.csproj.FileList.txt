@@ -1,0 +1,7 @@
+bin\Debug\Aga.Controls.dll
+bin\Debug\Aga.Controls.pdb
+obj\Debug\ResolveAssemblyReference.cache
+obj\Debug\Aga.Controls.Properties.Resources.resources
+obj\Debug\Aga.Controls.csproj.GenerateResource.Cache
+obj\Debug\Aga.Controls.dll
+obj\Debug\Aga.Controls.pdb
