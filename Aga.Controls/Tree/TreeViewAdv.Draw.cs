@@ -147,8 +147,10 @@ namespace Aga.Controls.Tree
 
 					if (reorder != null && reorder.DropColumn == c)
 						TreeColumn.DrawDropMark(gr, rect);
-
-					x += c.Width;
+                    
+                    c.Left = x;
+					
+                    x += c.Width;
 				}
 			}
 

@@ -245,20 +245,31 @@ namespace Aga.Controls.Tree
 			base.OnMouseLeave(e);
 		}
 
-		private void SetCursor(MouseEventArgs e)
-		{
-			if (GetColumnAt(e.Location, true) == null)
-				_innerCursor = null;
-			else
-				_innerCursor = Cursors.VSplit;
+        private void SetCursor(MouseEventArgs e)
+        {
+            TreeColumn col = GetColumnAt(e.Location, true);
 
-			TreeColumn col = GetColumnAt(e.Location, false);
-			if (col != _hotColumn)
-			{
-				_hotColumn = col;
-				UpdateHeaders();
-			}
-		}
+            //if (GetColumnAt(e.Location, true) == null)
+            if (col == null)
+                _innerCursor = null;
+            else
+                if (e.X < col.Left + col.Width)
+                {
+                    _innerCursor = Cursors.VSplit;
+                }
+                else
+                {
+                    _innerCursor = CursorHelper.DVSplit;
+                }
+
+            col = GetColumnAt(e.Location, false);
+            //TreeColumn col = GetColumnAt(e.Location, false);
+            if (col != _hotColumn)
+            {
+                _hotColumn = col;
+                UpdateHeaders();
+            }
+        }
 
 		internal TreeColumn GetColumnAt(Point p, bool divider)
 		{

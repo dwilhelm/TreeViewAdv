@@ -613,6 +613,11 @@ namespace Aga.Controls.Tree
 			internal set { _currentNode = value; }
 		}
 
+        [Browsable(false)]
+        public int ItemCount
+        {
+            get { return _rowMap.Count; }
+        } 
 
 		#endregion
 

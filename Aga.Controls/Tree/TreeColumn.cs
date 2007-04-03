@@ -65,11 +65,23 @@ namespace Aga.Controls.Tree
 			}
 		}
 
+        private int _left;
+        [Browsable(false)]
+        public int Left
+        {
+            get { return _left; }
+            set { _left = value; }
+        }
+
 		private int _width;
 		[DefaultValue(50), Localizable(true)]
 		public int Width
 		{
-			get { return _width; }
+			get
+            {
+                _width = Math.Max(_width, _MinColumnWidth);
+                return _width;
+            }
 			set 
 			{
 				if (_width != value)
@@ -111,6 +123,25 @@ namespace Aga.Controls.Tree
 			}
 		}
 
+        private bool _sortable = false;
+        [DefaultValue(false)]
+        public bool Sortable
+        {
+            get { return _sortable; }
+            set { _sortable = value; }
+        }
+
+        private int _MinColumnWidth = 10;
+        [DefaultValue(10)]
+        public int MinColumnWidth
+        {
+            get { return _MinColumnWidth; }
+            set
+            {
+                _MinColumnWidth = Math.Max(0, value);
+                Width = Math.Max(_MinColumnWidth, _width);
+            }
+        }
 
 		private SortOrder _sort_order = SortOrder.None;
 		public SortOrder SortOrder
