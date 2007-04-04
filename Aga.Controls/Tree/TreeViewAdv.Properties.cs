@@ -324,7 +324,39 @@ namespace Aga.Controls.Tree
 			}
 		}
 
-		private BorderStyle _borderStyle;
+        // Font proprety for Tahoma as default font
+        private static Font _font = new Font("Tahoma", 8.25F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(0)), false);
+        [Category("Appearance")]
+        public override Font Font
+        {
+            get
+            {
+                return (base.Font);
+            }
+            set
+            {
+                if (value == null)
+                    base.Font = _font;
+                else
+                {
+                    if (value == System.Windows.Forms.Control.DefaultFont)
+                        base.Font = _font;
+                    else
+                        base.Font = value;
+                }
+            }
+        }
+        public override void ResetFont()
+        {
+            Font = null;
+        }
+        private bool ShouldSerializeFont()
+        {
+            return (!Font.Equals(_font));
+        }
+        // End font property
+
+		private BorderStyle _borderStyle = BorderStyle.Fixed3D;
 		[DefaultValue(BorderStyle.Fixed3D), Category("Appearance")]
 		public BorderStyle BorderStyle
 		{

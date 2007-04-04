@@ -245,25 +245,62 @@ namespace Aga.Controls.Tree
 			base.OnMouseLeave(e);
 		}
 
+        internal bool IsHiddenColum;
         private void SetCursor(MouseEventArgs e)
         {
+            IsHiddenColum = false;
+            
             TreeColumn col = GetColumnAt(e.Location, true);
-
-            //if (GetColumnAt(e.Location, true) == null)
+            
             if (col == null)
                 _innerCursor = null;
             else
-                if (e.X < col.Left + col.Width)
+            {
+                if (col.HiddenColumn == null)
                 {
-                    _innerCursor = Cursors.VSplit;
+                    if (col.Index == 0 && col.Width == 0)
+                    {
+                        _innerCursor = CursorHelper.DVSplit;
+                    }
+                    else
+                    {
+                        if (col.MaxColumnWidth + col.MinColumnWidth == 0 ||
+                            col.MaxColumnWidth - col.MinColumnWidth != 0)
+                        {
+                            _innerCursor = Cursors.VSplit;
+                        }
+                        else
+                        {
+                            _innerCursor = null;
+                        }
+                    }
                 }
                 else
                 {
-                    _innerCursor = CursorHelper.DVSplit;
+                    if (e.X < col.Left + col.Width)
+                    {
+                        if (col.MaxColumnWidth + col.MinColumnWidth == 0 ||
+                            col.MaxColumnWidth - col.MinColumnWidth != 0)
+                        {
+                            _innerCursor = Cursors.VSplit;
+                        }
+                        else
+                        {
+                            _innerCursor = null;
+                        }
+                    }
+                    else
+                    {
+                        _innerCursor = CursorHelper.DVSplit;
+                        _hotColumn = col.HiddenColumn;
+                        IsHiddenColum = true;
+                        UpdateHeaders();
+                        return;
+                    }
                 }
-
+            }
             col = GetColumnAt(e.Location, false);
-            //TreeColumn col = GetColumnAt(e.Location, false);
+            
             if (col != _hotColumn)
             {
                 _hotColumn = col;
@@ -287,12 +324,30 @@ namespace Aga.Controls.Tree
 					else
 						rect = new Rectangle(x, 0, c.Width, ColumnHeaderHeight);
 					x += c.Width;
-					if (rect.Contains(p))
-						return c;
+                    if (rect.Contains(p))
+                    {
+                        if (IsHiddenColum)
+                        {
+                            return GetTopHiddenColumn(c);
+                        }
+                        else
+                        {
+                            return c;
+                        }
+                    }
 				}
 			}
 			return null;
 		}
+
+        private TreeColumn GetTopHiddenColumn(TreeColumn c)
+        {
+            while (c.HiddenColumn != null)
+            {
+                c = c.HiddenColumn;
+            }
+            return c;
+        }
 
 		TreeNodeAdv _hoverNode;
 		NodeControl _hoverControl;

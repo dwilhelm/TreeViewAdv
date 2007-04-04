@@ -33,7 +33,14 @@ namespace SampleApp
 			_name.EditorShowing += new CancelEventHandler(_name_EditorShowing);
 
 			_treeView.Model = new SortedTreeModel(new FolderBrowserModel());
+
+            _treeView.ColumnWidthChanged += new EventHandler<TreeColumnEventArgs>(_treeView_ColumnWidthChanged);
 		}
+
+        void _treeView_ColumnWidthChanged(object sender, TreeColumnEventArgs e)
+        {
+            //textBox1.Text = (sender as TreeViewAdv).Columns[1].Width.ToString();
+        }
 
 		void _name_EditorShowing(object sender, CancelEventArgs e)
 		{
@@ -55,13 +62,13 @@ namespace SampleApp
 
 		private void _treeView_ColumnClicked(object sender, TreeColumnEventArgs e)
 		{
-			TreeColumn clicked = e.Column;
-			if (clicked.SortOrder == SortOrder.Ascending)
-				clicked.SortOrder = SortOrder.Descending;
-			else
-				clicked.SortOrder = SortOrder.Ascending;
+            TreeColumn clicked = e.Column;
+            if (clicked.SortOrder == SortOrder.Ascending)
+                clicked.SortOrder = SortOrder.Descending;
+            else
+                clicked.SortOrder = SortOrder.Ascending;
 
-			(_treeView.Model as SortedTreeModel).Comparer = new FolderItemSorter(clicked.Header, clicked.SortOrder);
+            (_treeView.Model as SortedTreeModel).Comparer = new FolderItemSorter(clicked.Header, clicked.SortOrder);
 		}
 	}
 }

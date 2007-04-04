@@ -142,7 +142,7 @@ namespace Aga.Controls.Tree
 			else
 				_columnHeaderHeight = 17;
 
-			BorderStyle = BorderStyle.Fixed3D;
+			//BorderStyle = BorderStyle.Fixed3D;
 			_hScrollBar.Height = SystemInformation.HorizontalScrollBarHeight;
 			_vScrollBar.Width = SystemInformation.VerticalScrollBarWidth;
 			_rowLayout = new FixedRowHeightLayout(this, RowHeight);
@@ -168,6 +168,8 @@ namespace Aga.Controls.Tree
 
 			_plusMinus = new NodePlusMinus();
 			_controls = new NodeControlsCollection(this);
+
+            Font = _font;
 		}
 
 		#region Public Methods

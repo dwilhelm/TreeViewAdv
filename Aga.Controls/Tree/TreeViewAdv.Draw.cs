@@ -37,51 +37,51 @@ namespace Aga.Controls.Tree
 			_linePen.DashStyle = DashStyle.Dot;
 		}
 
-		protected override void OnPaint(PaintEventArgs e)
-		{
-			BeginPerformanceCount();
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            BeginPerformanceCount();
 
-			DrawContext context = new DrawContext();
-			context.Graphics = e.Graphics;
-			context.Font = this.Font;
-			context.Enabled = Enabled;
+            DrawContext context = new DrawContext();
+            context.Graphics = e.Graphics;
+            context.Font = this.Font;
+            context.Enabled = Enabled;
 
-			int y = 0;
-			if (UseColumns)
-			{
-				DrawColumnHeaders(e.Graphics);
-				y += ColumnHeaderHeight;
-				if (Columns.Count == 0 || e.ClipRectangle.Height <= y)
-					return;
-			}
-			y -= _rowLayout.GetRowBounds(FirstVisibleRow).Y;
+            int y = 0;
+            if (UseColumns)
+            {
+                DrawColumnHeaders(e.Graphics);
+                y += ColumnHeaderHeight;
+                if (Columns.Count == 0 || e.ClipRectangle.Height <= y)
+                    return;
+            }
+            y -= _rowLayout.GetRowBounds(FirstVisibleRow).Y;
 
-			e.Graphics.ResetTransform();
-			e.Graphics.TranslateTransform(-OffsetX, y);
-			Rectangle displayRect = DisplayRectangle;
-			for (int row = FirstVisibleRow; row < RowCount; row++)
-			{
-				Rectangle rowRect = _rowLayout.GetRowBounds(row);
-				if (rowRect.Y + y > displayRect.Bottom)
-					break;
-				else
-					DrawRow(e, ref context, row, rowRect);
-			}
+            e.Graphics.ResetTransform();
+            e.Graphics.TranslateTransform(-OffsetX, y);
+            Rectangle displayRect = DisplayRectangle;
+            for (int row = FirstVisibleRow; row < RowCount; row++)
+            {
+                Rectangle rowRect = _rowLayout.GetRowBounds(row);
+                if (rowRect.Y + y > displayRect.Bottom)
+                    break;
+                else
+                    DrawRow(e, ref context, row, rowRect);
+            }
 
-			if (Search.IsActive)
-				Search.Draw(context);
+            if (Search.IsActive)
+                Search.Draw(context);
 
-			if (_dropPosition.Node != null && DragMode)
-				DrawDropMark(e.Graphics);
+            if (_dropPosition.Node != null && DragMode)
+                DrawDropMark(e.Graphics);
 
-			e.Graphics.ResetTransform();
-			DrawScrollBarsBox(e.Graphics);
+            e.Graphics.ResetTransform();
+            DrawScrollBarsBox(e.Graphics);
 
-			if (DragMode && _dragBitmap != null)
-				e.Graphics.DrawImage(_dragBitmap, PointToClient(MousePosition));
+            if (DragMode && _dragBitmap != null)
+                e.Graphics.DrawImage(_dragBitmap, PointToClient(MousePosition));
 
-			EndPerformanceCount(e);
-		}
+            EndPerformanceCount(e);
+        }
 
 		private void DrawRow(PaintEventArgs e, ref DrawContext context, int row, Rectangle rowRect)
 		{

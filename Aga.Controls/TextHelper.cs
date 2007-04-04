@@ -17,5 +17,15 @@ namespace Aga.Controls
 			else
 				return StringAlignment.Center;
 		}
+
+        public static TextFormatFlags TranslateAligmentToFlag(HorizontalAlignment aligment)
+        {
+            if (aligment == HorizontalAlignment.Left)
+                return TextFormatFlags.Left;
+            else if (aligment == HorizontalAlignment.Right)
+                return TextFormatFlags.Right;
+            else
+                return TextFormatFlags.HorizontalCenter;
+        }
 	}
 }

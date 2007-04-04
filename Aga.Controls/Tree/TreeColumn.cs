@@ -23,18 +23,32 @@ namespace Aga.Controls.Tree
 			{
 				return false;
 			}
-
 		}
 
-		private const int HeaderMargin = 5;
-		private const int SortOrderMarkMargin = 5;
+		private const int HeaderLeftMargin = 5;
+        private const int HeaderRightMargin = 4;   
+		private const int SortOrderMarkMargin = 4;
 		//private const int SortOrderMarkWidth = 7;
 
-		private StringFormat _headerFormat;
+        private TextFormatFlags _headerFlags;
+        private TextFormatFlags _baseHeaderFlags = TextFormatFlags.NoPadding | 
+                                                   TextFormatFlags.EndEllipsis | 
+                                                   TextFormatFlags.VerticalCenter;
 
 		#region Properties
 
-		private TreeColumnCollection _owner;
+        #region internal Properties
+
+        private TreeColumn _hiddenColumn;
+        internal TreeColumn HiddenColumn
+        {
+            get { return _hiddenColumn; }
+            set { _hiddenColumn = value; }
+        }
+
+        #endregion
+
+        private TreeColumnCollection _owner;
 		internal TreeColumnCollection Owner
 		{
 			get { return _owner; }
@@ -79,7 +93,11 @@ namespace Aga.Controls.Tree
 		{
 			get
             {
-                _width = Math.Max(_width, _MinColumnWidth);
+                _width = Math.Max(_width, _minColumnWidth);
+                if (_maxColumnWidth > 0)
+                {
+                    _width = Math.Min(_width, _maxColumnWidth);
+                }
                 return _width;
             }
 			set 
@@ -89,11 +107,52 @@ namespace Aga.Controls.Tree
 					if (value < 0)
 						throw new ArgumentOutOfRangeException("value");
 
-					_width = value;
+                    _width = Math.Max(MinColumnWidth, value);
+                    if (_maxColumnWidth > 0)
+                    {
+                        _width = Math.Min(_width, _maxColumnWidth);
+                    }
 					OnWidthChanged();
 				}
 			}
 		}
+
+        private int _minColumnWidth;
+        [DefaultValue(10)]
+        public int MinColumnWidth
+        {
+            get { return _minColumnWidth; }
+            set
+            {
+                _minColumnWidth = Math.Max(0, value);
+
+                if (_minColumnWidth > MaxColumnWidth)
+                {
+                    MaxColumnWidth = _minColumnWidth + (_minColumnWidth - MaxColumnWidth);
+                }
+
+                Width = Math.Max(_minColumnWidth, _width);
+            }
+        }
+
+        private int _maxColumnWidth;
+        [DefaultValue(0)]
+        public int MaxColumnWidth
+        {
+            get { return _maxColumnWidth; }
+            set
+            {
+                _maxColumnWidth = Math.Max(0, value);
+                if (_maxColumnWidth > 0)
+                {
+                    if (_maxColumnWidth < MinColumnWidth)
+                    {
+                        MinColumnWidth = _maxColumnWidth - (MinColumnWidth - _maxColumnWidth);
+                    }
+                    Width = Math.Min(_maxColumnWidth, _width);
+                }
+            }
+        }
 
 		private bool _visible = true;
 		[DefaultValue(true)]
@@ -117,7 +176,7 @@ namespace Aga.Controls.Tree
 				if (value != _textAlign)
 				{
 					_textAlign = value;
-					_headerFormat.Alignment = TextHelper.TranslateAligment(value);
+                    _headerFlags = _baseHeaderFlags | TextHelper.TranslateAligmentToFlag(value);
 					OnHeaderChanged();
 				}
 			}
@@ -129,18 +188,6 @@ namespace Aga.Controls.Tree
         {
             get { return _sortable; }
             set { _sortable = value; }
-        }
-
-        private int _MinColumnWidth = 10;
-        [DefaultValue(10)]
-        public int MinColumnWidth
-        {
-            get { return _MinColumnWidth; }
-            set
-            {
-                _MinColumnWidth = Math.Max(0, value);
-                Width = Math.Max(_MinColumnWidth, _width);
-            }
         }
 
 		private SortOrder _sort_order = SortOrder.None;
@@ -169,19 +216,20 @@ namespace Aga.Controls.Tree
 		#endregion
 
 		public TreeColumn(): 
-			this(string.Empty, 50)
+			this(string.Empty, 50, 10, 0)
 		{
 		}
 
-		public TreeColumn(string header, int width)
+        public TreeColumn(string header, int width, int minColumnWidth, int maxColumnWidth)
 		{
 			_header = header;
 			_width = width;
+            _minColumnWidth = minColumnWidth;
+            _maxColumnWidth = maxColumnWidth;
 
-			_headerFormat = new StringFormat(StringFormatFlags.NoWrap | StringFormatFlags.MeasureTrailingSpaces);
-			_headerFormat.LineAlignment = StringAlignment.Center;
-			_headerFormat.Alignment = StringAlignment.Near;
-			_headerFormat.Trimming = StringTrimming.EllipsisCharacter;
+            _headerFlags = new TextFormatFlags();
+            _headerFlags = _baseHeaderFlags | TextFormatFlags.Left;
+
 		}
 
 		public override string ToString()
@@ -195,8 +243,6 @@ namespace Aga.Controls.Tree
 		protected override void Dispose(bool disposing)
 		{
 			base.Dispose(disposing);
-			if (disposing)
-				_headerFormat.Dispose();
 		}
 
 		#region Draw
@@ -231,46 +277,85 @@ namespace Aga.Controls.Tree
 			DrawContent(gr, bounds, font);
 		}
 
-		private void DrawContent(Graphics gr, Rectangle bounds, Font font)
-		{
-			bounds = new Rectangle(bounds.X + HeaderMargin, bounds.Y, bounds.Width - HeaderMargin * 2, bounds.Height);
+        private void DrawContent(Graphics gr, Rectangle bounds, Font font)
+        {
+            Size textSize = new Size();
+            Size maxTextSize = new Size();
 
-			if (SortOrder != SortOrder.None)
-				bounds.Width -= (SortMarkSize.Width + SortOrderMarkMargin);
+            Size oldBoundSize = new Size(bounds.Width + 7 - (HeaderLeftMargin + HeaderRightMargin), bounds.Height);
 
-			SizeF textSize = gr.MeasureString(Header, font, bounds.Size, _headerFormat);
-			gr.DrawString(Header, font, SystemBrushes.WindowText, bounds, _headerFormat);
+            bounds = new Rectangle(bounds.X + HeaderLeftMargin, bounds.Y,
+                                   bounds.Width - HeaderLeftMargin - HeaderRightMargin,
+                                   bounds.Height);
 
-			if (SortOrder != SortOrder.None)
-			{
-				int tw = (int)textSize.Width;
-				int x = 0;
-				if (TextAlign == HorizontalAlignment.Left)
-					x = bounds.X + tw + SortOrderMarkMargin;
-				else if (TextAlign == HorizontalAlignment.Right)
-					x = bounds.Right + SortOrderMarkMargin;
-				else
-					x = bounds.X + tw + (bounds.Width - tw) / 2 + SortOrderMarkMargin;
-				DrawSortMark(gr, new Rectangle(x, bounds.Y, 0, bounds.Height));
-			}
-		}
+            if (SortOrder != SortOrder.None)
+            {
+                if (TextAlign == HorizontalAlignment.Right)
+                {
+                    bounds.Width -= (SortMarkSize.Width + SortOrderMarkMargin + 5);
+                    oldBoundSize.Width -= (SortMarkSize.Width + SortOrderMarkMargin + 5);
+                }
+                else
+                {
+                    bounds.Width -= (SortMarkSize.Width + SortOrderMarkMargin);
+                    oldBoundSize.Width -= (SortMarkSize.Width + SortOrderMarkMargin);
+                }
+            }
 
-		private void DrawSortMark(Graphics gr, Rectangle bounds)
+            maxTextSize = TextRenderer.MeasureText(Header, font);
+            textSize = TextRenderer.MeasureText(Header, font, oldBoundSize, _baseHeaderFlags);
+
+            if (SortOrder != SortOrder.None)
+            {
+                int tw = Math.Min(textSize.Width, bounds.Size.Width);
+
+                int x = 0;
+                if (TextAlign == HorizontalAlignment.Left)
+                    x = bounds.X + tw + SortOrderMarkMargin;
+                else if (TextAlign == HorizontalAlignment.Right)
+                    x = 5 + bounds.Right + SortOrderMarkMargin;
+                else
+                    x = bounds.X + tw + (bounds.Width - tw) / 2 + SortOrderMarkMargin;
+                DrawSortMark(gr, new Rectangle(x, bounds.Y, 0, bounds.Height), bounds.Width, bounds.X);
+            }
+
+            if (textSize.Width < maxTextSize.Width)
+            {
+                TextRenderer.DrawText(gr, Header, font, bounds, SystemColors.ControlText, _baseHeaderFlags | TextFormatFlags.Left);
+            }
+            else
+            {
+                TextRenderer.DrawText(gr, Header, font, bounds, SystemColors.ControlText, _headerFlags);
+            }
+        }
+
+		private void DrawSortMark(Graphics gr, Rectangle bounds, int width, int left)
 		{
 			int x = bounds.X;
 			int y = bounds.Y + bounds.Height / 2 - 2;
 
-			int w2 = SortMarkSize.Width / 2;
-			if (SortOrder == SortOrder.Ascending)
-			{
-				Point[] points = new Point[] { new Point(x, y), new Point(x + SortMarkSize.Width, y), new Point(x + w2, y + SortMarkSize.Height) };
-				gr.FillPolygon(SystemBrushes.ControlDark, points);
-			}
-			else if (SortOrder == SortOrder.Descending)
-			{
-				Point[] points = new Point[] { new Point(x - 1, y + SortMarkSize.Height), new Point(x + SortMarkSize.Width, y + SortMarkSize.Height), new Point(x + w2, y - 1) };
-				gr.FillPolygon(SystemBrushes.ControlDark, points);
-			}
+            if (x < left + 5)
+            {
+                x = left + 5;
+            }
+
+            Region r = gr.Clip;
+            int w = Math.Max(Math.Min(SortMarkSize.Width, width + SortMarkSize.Width + SortOrderMarkMargin), 0);
+            gr.Clip = new Region(new RectangleF(x, y, w, SortMarkSize.Height));
+
+            int w2 = SortMarkSize.Width / 2;
+            if (SortOrder == SortOrder.Ascending)
+            {
+                Point[] points = new Point[] { new Point(x, y), new Point(x + SortMarkSize.Width, y), new Point(x + w2, y + SortMarkSize.Height) };
+                gr.FillPolygon(SystemBrushes.ControlDark, points);
+            }
+            else if (SortOrder == SortOrder.Descending)
+            {
+                Point[] points = new Point[] { new Point(x - 1, y + SortMarkSize.Height), new Point(x + SortMarkSize.Width, y + SortMarkSize.Height), new Point(x + w2, y - 1) };
+                gr.FillPolygon(SystemBrushes.ControlDark, points);
+            }
+
+            gr.Clip = r;
 		}
 
 		internal static void DrawDropMark(Graphics gr, Rectangle rect)
