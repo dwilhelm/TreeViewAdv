@@ -12,4 +12,4 @@ obj\Debug\SampleApp.SimpleExample.resources
 obj\Debug\SampleApp.csproj.GenerateResource.Cache
 obj\Debug\SampleApp.exe
 obj\Debug\SampleApp.pdb
-obj\Debug\SampleApp.HiddenColumn.resources
+obj\Debug\SampleApp.ColumnHandling.resources

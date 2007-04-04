@@ -65,7 +65,6 @@ namespace Aga.Controls.Tree
 		}
 		#endregion
 
-
 		#region Properties
 
 		private TreeViewAdv _tree;

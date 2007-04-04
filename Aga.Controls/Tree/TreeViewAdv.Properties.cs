@@ -19,9 +19,9 @@ namespace Aga.Controls.Tree
 		{
 			get
 			{
-				if (_innerCursor != null)
-					return _innerCursor;
-				else
+                if (_innerCursor != null)
+                    return _innerCursor;
+                else
 					return base.Cursor;
 			}
 			set

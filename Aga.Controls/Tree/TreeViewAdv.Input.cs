@@ -271,7 +271,7 @@ namespace Aga.Controls.Tree
                         }
                         else
                         {
-                            _innerCursor = null;
+                            _innerCursor = Cursors.Default;
                         }
                     }
                 }
@@ -286,7 +286,7 @@ namespace Aga.Controls.Tree
                         }
                         else
                         {
-                            _innerCursor = null;
+                            _innerCursor = Cursors.Default;
                         }
                     }
                     else
@@ -299,6 +299,7 @@ namespace Aga.Controls.Tree
                     }
                 }
             }
+
             col = GetColumnAt(e.Location, false);
             
             if (col != _hotColumn)

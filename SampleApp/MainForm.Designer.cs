@@ -38,7 +38,7 @@ namespace SampleApp
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.performanceTest1 = new SampleApp.PerformanceTest();
             this.tabPage5 = new System.Windows.Forms.TabPage();
-            this.hiddenColumn1 = new SampleApp.HiddenColumn();
+            this.hiddenColumn1 = new SampleApp.ColumnHandling();
             this.tabControl1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.tabPage3.SuspendLayout();
@@ -185,7 +185,7 @@ namespace SampleApp
 		private System.Windows.Forms.TabPage tabPage4;
 		private PerformanceTest performanceTest1;
         private System.Windows.Forms.TabPage tabPage5;
-        private HiddenColumn hiddenColumn1;
+        private ColumnHandling hiddenColumn1;
 	}
 }
 

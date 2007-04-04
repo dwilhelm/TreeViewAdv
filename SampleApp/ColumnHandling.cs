@@ -8,9 +8,9 @@ using System.Windows.Forms;
 
 namespace SampleApp
 {
-    public partial class HiddenColumn : UserControl
+    public partial class ColumnHandling : UserControl
     {
-        public HiddenColumn()
+        public ColumnHandling()
         {
             InitializeComponent();
         }

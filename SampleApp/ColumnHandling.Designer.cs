@@ -1,6 +1,6 @@
 ﻿namespace SampleApp
 {
-    partial class HiddenColumn
+    partial class ColumnHandling
     {
         /// <summary> 
         /// Erforderliche Designervariable.
@@ -101,12 +101,12 @@
             this.treeColumn5.SortOrder = System.Windows.Forms.SortOrder.None;
             this.treeColumn5.Width = 75;
             // 
-            // HiddenColumn
+            // ColumnHandling
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.treeViewAdv1);
-            this.Name = "HiddenColumn";
+            this.Name = "ColumnHandling";
             this.Size = new System.Drawing.Size(626, 406);
             this.ResumeLayout(false);
 

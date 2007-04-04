@@ -42,11 +42,11 @@
     <Compile Include="AdvancedExample.Designer.cs">
       <DependentUpon>AdvancedExample.cs</DependentUpon>
     </Compile>
-    <Compile Include="HiddenColumn.cs">
+    <Compile Include="ColumnHandling.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="HiddenColumn.Designer.cs">
-      <DependentUpon>HiddenColumn.cs</DependentUpon>
+    <Compile Include="ColumnHandling.Designer.cs">
+      <DependentUpon>ColumnHandling.cs</DependentUpon>
     </Compile>
     <Compile Include="PerformaceTestModel.cs" />
     <Compile Include="FolderItemSorter.cs" />
@@ -81,9 +81,9 @@
       <SubType>Designer</SubType>
       <DependentUpon>FolderBrowser.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="HiddenColumn.resx">
+    <EmbeddedResource Include="ColumnHandling.resx">
       <SubType>Designer</SubType>
-      <DependentUpon>HiddenColumn.cs</DependentUpon>
+      <DependentUpon>ColumnHandling.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <SubType>Designer</SubType>

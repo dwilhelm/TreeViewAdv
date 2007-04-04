@@ -9,8 +9,6 @@ namespace Aga.Controls.Tree
 {
 	internal class ResizeColumnState: ColumnState
 	{
-		//private const int MinColumnWidth = 10;
-
 		private Point _initLocation;
 		private int _initWidth;
 
@@ -48,10 +46,12 @@ namespace Aga.Controls.Tree
         {
             int w = _initWidth + args.Location.X - _initLocation.X;
             Column.Width = Math.Max(Column.MinColumnWidth, w);
+
             if (Column.MaxColumnWidth > 0)
             {
                 Column.Width = Math.Min(Column.MaxColumnWidth, Column.Width);
             }
+
             if (Column.Width < 4)
             {
                 int i = Column.Index;
