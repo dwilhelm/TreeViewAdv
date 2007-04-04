@@ -52,7 +52,7 @@ namespace Aga.Controls.Tree
             {
                 Column.Width = Math.Min(Column.MaxColumnWidth, Column.Width);
             }
-            if (Column.Width < 1)
+            if (Column.Width < 4)
             {
                 int i = Column.Index;
                 if (i > 0)
