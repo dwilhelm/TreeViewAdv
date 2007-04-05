@@ -28,4 +28,19 @@ namespace Aga.Controls.Tree
 	{
 		None, Standard, Continuous
 	}
+
+    public enum GridLineStyle
+    {
+        NoHorNoVer=0,
+        NoHorClientVert,
+        NoHorRowVert,
+
+        ClientHorNoVer,
+        ClientHorClientVert,
+        ClientHorRowVert,
+
+        ColumnHorNoVer,
+        ColumnHorClientVert,
+        ColumnHorRowVert
+    }
 }

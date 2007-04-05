@@ -134,12 +134,12 @@ namespace Aga.Controls.Tree.NodeControls
 			if (context.DrawSelection == DrawSelectionMode.Active)
 			{
 				textBrush = SystemBrushes.HighlightText;
-				backgroundBrush = SystemBrushes.Highlight;
+                backgroundBrush = SystemBrushes.Highlight;
 			}
 			else if (context.DrawSelection == DrawSelectionMode.Inactive)
 			{
 				textBrush = SystemBrushes.ControlText;
-				backgroundBrush = SystemBrushes.InactiveBorder;
+                backgroundBrush = SystemBrushes.InactiveBorder;
 			}
 			else if (context.DrawSelection == DrawSelectionMode.FullRowSelect)
 				textBrush = SystemBrushes.HighlightText;

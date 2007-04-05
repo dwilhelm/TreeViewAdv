@@ -213,7 +213,7 @@ namespace SampleApp
             // btnCollNodeO
             // 
             this.btnCollNodeO.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnCollNodeO.Location = new System.Drawing.Point(6, 19);
+            this.btnCollNodeO.Location = new System.Drawing.Point(7, 19);
             this.btnCollNodeO.Name = "btnCollNodeO";
             this.btnCollNodeO.Size = new System.Drawing.Size(85, 23);
             this.btnCollNodeO.TabIndex = 16;
@@ -227,7 +227,7 @@ namespace SampleApp
             this.cbIgnoreCildren.AutoSize = true;
             this.cbIgnoreCildren.Checked = true;
             this.cbIgnoreCildren.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbIgnoreCildren.Location = new System.Drawing.Point(98, 24);
+            this.cbIgnoreCildren.Location = new System.Drawing.Point(99, 24);
             this.cbIgnoreCildren.Name = "cbIgnoreCildren";
             this.cbIgnoreCildren.Size = new System.Drawing.Size(83, 17);
             this.cbIgnoreCildren.TabIndex = 17;
@@ -263,7 +263,7 @@ namespace SampleApp
             this.groupBox1.Controls.Add(this.btnCollNodeO);
             this.groupBox1.Location = new System.Drawing.Point(381, 177);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(187, 56);
+            this.groupBox1.Size = new System.Drawing.Size(188, 56);
             this.groupBox1.TabIndex = 20;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Overloaded Collapsing";

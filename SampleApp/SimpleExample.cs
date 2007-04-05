@@ -31,7 +31,7 @@ namespace SampleApp
 			_nodeTextBox.ToolTipProvider = new ToolTipProvider();
             _nodeTextBox.DrawText += new EventHandler<DrawEventArgs>(_nodeTextBox_DrawText);
 			_model = new TreeModel();
-			_childFont = new Font(_tree.Font.FontFamily, 12, FontStyle.Bold);
+			_childFont = new Font(_tree.Font.FontFamily, 18, FontStyle.Bold);
 			_tree.Model = _model;
 			ChangeButtons();
 
@@ -73,7 +73,7 @@ namespace SampleApp
 		private Node AddChild(Node parent)
 		{
 			Node node = new MyNode("Child Node " + parent.Nodes.Count.ToString());
-			parent.Nodes.Add(node);
+            parent.Nodes.Add(node);
 			return node;
 		}
 

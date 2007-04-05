@@ -23,7 +23,7 @@ namespace Aga.Controls.Tree.NodeControls
 		private Brush _backgroundBrush;
 		public Brush BackgroundBrush
 		{
-			get { return _backgroundBrush; }
+            get { return _backgroundBrush; }
 			set { _backgroundBrush = value; }
 		}
 

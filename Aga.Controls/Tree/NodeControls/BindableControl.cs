@@ -6,7 +6,7 @@ using System.ComponentModel;
 
 namespace Aga.Controls.Tree.NodeControls
 {
-	public abstract class BindableControl: NodeControl
+	public abstract class BindableControl : NodeControl
 	{
 		private struct MemberAdapter
 		{

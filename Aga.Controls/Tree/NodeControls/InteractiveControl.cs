@@ -5,7 +5,7 @@ using System.ComponentModel;
 
 namespace Aga.Controls.Tree.NodeControls
 {
-	public abstract class InteractiveControl: BindableControl
+	public abstract class InteractiveControl : BindableControl
 	{
 		private bool _editEnabled = true;
 		[DefaultValue(true)]

@@ -28,19 +28,18 @@ namespace SampleApp
 		public FolderBrowser()
 		{
 			InitializeComponent();
-			
+
+            cboxGrid.DataSource = System.Enum.GetValues(typeof(GridLineStyle));
+
+            cbLines.Checked = _treeView.ShowLines;
+            cbGrid.Checked = _treeView.GridLineVisible;
+
 			_name.ToolTipProvider = new ToolTipProvider();
 			_name.EditorShowing += new CancelEventHandler(_name_EditorShowing);
 
 			_treeView.Model = new SortedTreeModel(new FolderBrowserModel());
 
-            _treeView.ColumnWidthChanged += new EventHandler<TreeColumnEventArgs>(_treeView_ColumnWidthChanged);
 		}
-
-        void _treeView_ColumnWidthChanged(object sender, TreeColumnEventArgs e)
-        {
-            //textBox1.Text = (sender as TreeViewAdv).Columns[1].Width.ToString();
-        }
 
 		void _name_EditorShowing(object sender, CancelEventArgs e)
 		{
@@ -70,5 +69,20 @@ namespace SampleApp
 
             (_treeView.Model as SortedTreeModel).Comparer = new FolderItemSorter(clicked.Header, clicked.SortOrder);
 		}
+
+        private void cboxGrid_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            _treeView.GridLine = (GridLineStyle)cboxGrid.SelectedItem;
+        }
+
+        private void cbGrid_CheckedChanged(object sender, EventArgs e)
+        {
+            _treeView.GridLineVisible = cbGrid.Checked;
+        }
+
+        private void cbLines_CheckedChanged(object sender, EventArgs e)
+        {
+            _treeView.ShowLines = cbLines.Checked;
+        }
 	}
 }

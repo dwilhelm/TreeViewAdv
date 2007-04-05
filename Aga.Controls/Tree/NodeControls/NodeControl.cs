@@ -8,7 +8,7 @@ using System.ComponentModel;
 namespace Aga.Controls.Tree.NodeControls
 {
 	[DesignTimeVisible(false), ToolboxItem(false)]
-	public abstract class NodeControl: Component
+	public abstract class NodeControl : Component
 	{
 		#region Properties
 

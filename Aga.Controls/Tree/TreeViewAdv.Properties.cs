@@ -34,6 +34,8 @@ namespace Aga.Controls.Tree
 
 		private IRowLayout _rowLayout;
 
+        private bool _rowOverFlow;
+
 		private bool _dragMode;
 		private bool DragMode
 		{
@@ -392,6 +394,33 @@ namespace Aga.Controls.Tree
 				FullUpdate();
 			}
 		}
+
+        private bool _gridLineVisible = false;
+        [DefaultValue(false), Category("Appearance")]
+        public bool GridLineVisible
+        {
+            get { return _gridLineVisible; }
+            set
+            {
+                _gridLineVisible = value;
+                FullUpdate();
+            }
+        }
+
+        private GridLineStyle _gridLine = GridLineStyle.ColumnHorClientVert;
+        [DefaultValue(GridLineStyle.ColumnHorClientVert), Category("Appearance")]
+        public GridLineStyle GridLine
+        {
+            get
+            {
+                return _gridLine;
+            }
+            set
+            {
+                _gridLine = value;
+                FullUpdate();
+            }
+        }
 
 		private int _rowHeight = 16;
 		[DefaultValue(16), Category("Appearance")]

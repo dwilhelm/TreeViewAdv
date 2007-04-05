@@ -47,6 +47,10 @@ namespace Aga.Controls.Tree
             context.Enabled = Enabled;
 
             int y = 0;
+            int gridHeight = 0;
+
+            _rowOverFlow = false;
+
             if (UseColumns)
             {
                 DrawColumnHeaders(e.Graphics);
@@ -54,6 +58,7 @@ namespace Aga.Controls.Tree
                 if (Columns.Count == 0 || e.ClipRectangle.Height <= y)
                     return;
             }
+
             y -= _rowLayout.GetRowBounds(FirstVisibleRow).Y;
 
             e.Graphics.ResetTransform();
@@ -62,10 +67,22 @@ namespace Aga.Controls.Tree
             for (int row = FirstVisibleRow; row < RowCount; row++)
             {
                 Rectangle rowRect = _rowLayout.GetRowBounds(row);
+                gridHeight += rowRect.Height;
                 if (rowRect.Y + y > displayRect.Bottom)
+                {
+                    _rowOverFlow = true;
                     break;
+                }
                 else
+                {
                     DrawRow(e, ref context, row, rowRect);
+                }
+            }
+
+            if (GridLineVisible)
+            {
+                DrawGridLines(e.Graphics, displayRect, gridHeight);
+                DrawFinalHorizontalGridLines(e.Graphics, displayRect);
             }
 
             if (Search.IsActive)
@@ -121,8 +138,13 @@ namespace Aga.Controls.Tree
 				}
 			}
 
-            //if (GridLines)
-            //    e.Graphics.DrawLine(SystemPens.InactiveBorder, 0, rowRect.Bottom, e.ClipRectangle.Right, rowRect.Bottom);
+            if (GridLine != GridLineStyle.NoHorNoVer &&
+                GridLine != GridLineStyle.NoHorClientVert &&
+                GridLine != GridLineStyle.NoHorRowVert &&
+                UseColumns)
+            {
+                DrawHorizontalGridLine(e.Graphics, rowRect);
+            }
 
 			if (ShowLines)
 				DrawLines(e.Graphics, node, rowRect);
@@ -130,11 +152,14 @@ namespace Aga.Controls.Tree
 			DrawNode(node, context);
 		}
 
+        private int overAllCoumnWidth;
 		private void DrawColumnHeaders(Graphics gr)
 		{
 			ReorderColumnState reorder = Input as ReorderColumnState;
 
 			int x = 0;
+            overAllCoumnWidth = 0;
+
 			TreeColumn.DrawBackground(gr, new Rectangle(0, 0, ClientRectangle.Width + 10, ColumnHeaderHeight), false, false);
 			gr.TranslateTransform(-OffsetX, 0);
 			foreach (TreeColumn c in Columns)
@@ -153,6 +178,8 @@ namespace Aga.Controls.Tree
                     x += c.Width;
 				}
 			}
+
+            overAllCoumnWidth = x + dividerCorrectionGap;
 
 			if (reorder != null)
 			{
@@ -226,6 +253,63 @@ namespace Aga.Controls.Tree
 
 			gr.ResetClip();
 		}
+
+        private void DrawGridLines(Graphics gr, Rectangle displayRect, int gridHeight)
+        {
+            if( GridLine != GridLineStyle.NoHorNoVer &&
+                GridLine != GridLineStyle.ClientHorNoVer &&
+                GridLine != GridLineStyle.ColumnHorNoVer)
+            {
+                DrawVerticalGridLines(gr, displayRect, gridHeight);
+            }
+        }
+
+        private void DrawVerticalGridLines(Graphics gr, Rectangle displayRect, int gridHeight)
+        {
+            if (GridLine == GridLineStyle.NoHorClientVert ||
+                GridLine == GridLineStyle.ClientHorClientVert ||
+                GridLine == GridLineStyle.ColumnHorClientVert ||
+                _rowOverFlow)
+            {
+                gridHeight = displayRect.Height;
+            }
+
+            foreach (TreeColumn c in Columns)
+            {
+
+                int x = c.Left + c.Width + dividerCorrectionGap;
+                int y = 0;
+                if (UseColumns)
+                {
+                    y = (int)gr.VisibleClipBounds.Y + ColumnHeaderHeight;
+                }
+                else
+                {
+                    y = (int)gr.VisibleClipBounds.Y;
+                }
+                gr.DrawLine(SystemPens.InactiveBorder, x, y, x, y + gridHeight);
+
+            }
+        }
+
+        private int dividerCorrectionGap = -2;
+        private void DrawHorizontalGridLine(Graphics gr, Rectangle rowRect)
+        {
+            if (GridLine == GridLineStyle.ClientHorNoVer ||
+                GridLine == GridLineStyle.ClientHorClientVert ||
+                GridLine == GridLineStyle.ClientHorRowVert)
+            {
+                gr.DrawLine(SystemPens.InactiveBorder, 0, rowRect.Bottom, gr.ClipBounds.Right, rowRect.Bottom);
+            }
+            else
+            {
+                gr.DrawLine(SystemPens.InactiveBorder, 0, rowRect.Bottom, overAllCoumnWidth, rowRect.Bottom);
+            }
+        }
+
+        private void DrawFinalHorizontalGridLines(Graphics gr, Rectangle rowRect)
+        {
+        }
 
 		#region Performance
 
