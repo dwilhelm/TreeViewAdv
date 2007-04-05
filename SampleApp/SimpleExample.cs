@@ -260,7 +260,7 @@ namespace SampleApp
 
         private void btnCollNode_Click(object sender, EventArgs e)
         {
-            _tree.SelectedNode.Collaps(cbIgnoreCildren.Checked);
+            _tree.SelectedNode.Collapse(cbIgnoreCildren.Checked);
         }
 	}
 }

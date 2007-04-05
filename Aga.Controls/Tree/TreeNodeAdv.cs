@@ -263,12 +263,12 @@ namespace Aga.Controls.Tree
 				return base.ToString();
         }
 
-        public void Collaps()
+        public void Collapse()
         {
-            Collaps(true);
+            Collapse(true);
         }
 
-        public void Collaps(bool ignoreChildren)
+        public void Collapse(bool ignoreChildren)
         {
             if (Tree == null)
                 _isExpanded = false;
@@ -279,6 +279,11 @@ namespace Aga.Controls.Tree
             {
                 SetIsExpanded(this, false);
             }
+        }
+
+        public void CollapseAll()
+        {
+            Collapse(false);
         }
 
         public void Expand()
