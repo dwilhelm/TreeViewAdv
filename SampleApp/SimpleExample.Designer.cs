@@ -42,8 +42,11 @@ namespace SampleApp
             this.button2 = new System.Windows.Forms.Button();
             this.btnExpNode = new System.Windows.Forms.Button();
             this.btnExpNodes = new System.Windows.Forms.Button();
-            this.btnCollNode = new System.Windows.Forms.Button();
+            this.btnCollNodeO = new System.Windows.Forms.Button();
             this.cbIgnoreCildren = new System.Windows.Forms.CheckBox();
+            this.btnCollNode = new System.Windows.Forms.Button();
+            this.btnCollNodes = new System.Windows.Forms.Button();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
             this._tree2 = new Aga.Controls.Tree.TreeViewAdv();
             this.nodeTextBox1 = new Aga.Controls.Tree.NodeControls.NodeTextBox();
             this._tree = new Aga.Controls.Tree.TreeViewAdv();
@@ -51,6 +54,7 @@ namespace SampleApp
             this._nodeStateIcon = new Aga.Controls.Tree.NodeControls.NodeStateIcon();
             this._nodeTextBox = new Aga.Controls.Tree.NodeControls.NodeTextBox();
             ((System.ComponentModel.ISupportInitialize)(this._fontSize)).BeginInit();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // _addRoot
@@ -206,16 +210,16 @@ namespace SampleApp
             this.btnExpNodes.UseVisualStyleBackColor = true;
             this.btnExpNodes.Click += new System.EventHandler(this.btnExpNodes_Click);
             // 
-            // btnCollNode
+            // btnCollNodeO
             // 
-            this.btnCollNode.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnCollNode.Location = new System.Drawing.Point(478, 61);
-            this.btnCollNode.Name = "btnCollNode";
-            this.btnCollNode.Size = new System.Drawing.Size(91, 23);
-            this.btnCollNode.TabIndex = 16;
-            this.btnCollNode.Text = "Collaps Node";
-            this.btnCollNode.UseVisualStyleBackColor = true;
-            this.btnCollNode.Click += new System.EventHandler(this.btnCollNode_Click);
+            this.btnCollNodeO.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnCollNodeO.Location = new System.Drawing.Point(6, 19);
+            this.btnCollNodeO.Name = "btnCollNodeO";
+            this.btnCollNodeO.Size = new System.Drawing.Size(85, 23);
+            this.btnCollNodeO.TabIndex = 16;
+            this.btnCollNodeO.Text = "Collapse Node";
+            this.btnCollNodeO.UseVisualStyleBackColor = true;
+            this.btnCollNodeO.Click += new System.EventHandler(this.btnCollNodeO_Click);
             // 
             // cbIgnoreCildren
             // 
@@ -223,12 +227,46 @@ namespace SampleApp
             this.cbIgnoreCildren.AutoSize = true;
             this.cbIgnoreCildren.Checked = true;
             this.cbIgnoreCildren.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbIgnoreCildren.Location = new System.Drawing.Point(478, 90);
+            this.cbIgnoreCildren.Location = new System.Drawing.Point(98, 24);
             this.cbIgnoreCildren.Name = "cbIgnoreCildren";
             this.cbIgnoreCildren.Size = new System.Drawing.Size(83, 17);
             this.cbIgnoreCildren.TabIndex = 17;
             this.cbIgnoreCildren.Text = "ign. children";
             this.cbIgnoreCildren.UseVisualStyleBackColor = true;
+            // 
+            // btnCollNode
+            // 
+            this.btnCollNode.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnCollNode.Location = new System.Drawing.Point(478, 61);
+            this.btnCollNode.Name = "btnCollNode";
+            this.btnCollNode.Size = new System.Drawing.Size(91, 23);
+            this.btnCollNode.TabIndex = 18;
+            this.btnCollNode.Text = "Collapse Node";
+            this.btnCollNode.UseVisualStyleBackColor = true;
+            this.btnCollNode.Click += new System.EventHandler(this.btnCollNode_Click);
+            // 
+            // btnCollNodes
+            // 
+            this.btnCollNodes.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnCollNodes.Location = new System.Drawing.Point(478, 90);
+            this.btnCollNodes.Name = "btnCollNodes";
+            this.btnCollNodes.Size = new System.Drawing.Size(91, 23);
+            this.btnCollNodes.TabIndex = 19;
+            this.btnCollNodes.Text = "Collapse Nodes";
+            this.btnCollNodes.UseVisualStyleBackColor = true;
+            this.btnCollNodes.Click += new System.EventHandler(this.btnCollNodes_Click);
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox1.Controls.Add(this.cbIgnoreCildren);
+            this.groupBox1.Controls.Add(this.btnCollNodeO);
+            this.groupBox1.Location = new System.Drawing.Point(381, 177);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(187, 56);
+            this.groupBox1.TabIndex = 20;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Overloaded Collapsing";
             // 
             // _tree2
             // 
@@ -314,7 +352,8 @@ namespace SampleApp
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.cbIgnoreCildren);
+            this.Controls.Add(this.groupBox1);
+            this.Controls.Add(this.btnCollNodes);
             this.Controls.Add(this.btnCollNode);
             this.Controls.Add(this.btnExpNodes);
             this.Controls.Add(this.btnExpNode);
@@ -333,6 +372,8 @@ namespace SampleApp
             this.Name = "SimpleExample";
             this.Size = new System.Drawing.Size(572, 387);
             ((System.ComponentModel.ISupportInitialize)(this._fontSize)).EndInit();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -359,7 +400,10 @@ namespace SampleApp
 		private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button btnExpNode;
         private System.Windows.Forms.Button btnExpNodes;
-        private System.Windows.Forms.Button btnCollNode;
+        private System.Windows.Forms.Button btnCollNodeO;
         private System.Windows.Forms.CheckBox cbIgnoreCildren;
+        private System.Windows.Forms.Button btnCollNode;
+        private System.Windows.Forms.Button btnCollNodes;
+        private System.Windows.Forms.GroupBox groupBox1;
 	}
 }

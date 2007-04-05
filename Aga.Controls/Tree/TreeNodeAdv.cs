@@ -268,8 +268,15 @@ namespace Aga.Controls.Tree
             Collapse(true);
         }
 
+        public void CollapseAll()
+        {
+            Collapse(false);
+        }
+
         public void Collapse(bool ignoreChildren)
         {
+            this.Tree.BeginUpdate();
+
             if (Tree == null)
                 _isExpanded = false;
             else if (Tree.IsMyNode(this) && _isExpanded != false)
@@ -279,25 +286,30 @@ namespace Aga.Controls.Tree
             {
                 SetIsExpanded(this, false);
             }
-        }
 
-        public void CollapseAll()
-        {
-            Collapse(false);
+            this.Tree.EndUpdate();
         }
-
+      
         public void Expand()
         {
+            this.Tree.BeginUpdate();
+
             if (Tree == null)
                 _isExpanded = true;
             else if (Tree.IsMyNode(this) && _isExpanded != true)
                 AssignIsExpanded(true);
+
+            this.Tree.EndUpdate();
         }
 
         public void ExpandAll()
         {
+            this.Tree.BeginUpdate();
+
             this.Expand();
             SetIsExpanded(this, true);
+
+            this.Tree.EndUpdate();
         }
 
         #endregion
@@ -306,6 +318,7 @@ namespace Aga.Controls.Tree
         {
             foreach (TreeNodeAdv node in root.Nodes)
             {
+                Application.DoEvents();
                 node.IsExpanded = value;
                 SetIsExpanded(node, value);
             }

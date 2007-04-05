@@ -115,9 +115,14 @@ namespace SampleApp
             _addChild.Enabled = (_tree.SelectedNode != null);
             _deleteNode.Enabled = (_tree.SelectedNode != null);
 
-            btnCollNode.Enabled = (_tree.SelectedNode != null);
+            
             btnExpNode.Enabled = (_tree.SelectedNode != null);
             btnExpNodes.Enabled = (_tree.SelectedNode != null);
+
+            btnCollNode.Enabled = (_tree.SelectedNode != null);
+            btnCollNodes.Enabled = (_tree.SelectedNode != null);
+
+            btnCollNodeO.Enabled = (_tree.SelectedNode != null);
             cbIgnoreCildren.Enabled = (_tree.SelectedNode != null);
 
 		}
@@ -258,9 +263,19 @@ namespace SampleApp
             _tree.SelectedNode.ExpandAll();
         }
 
-        private void btnCollNode_Click(object sender, EventArgs e)
+        private void btnCollNodeO_Click(object sender, EventArgs e)
         {
             _tree.SelectedNode.Collapse(cbIgnoreCildren.Checked);
+        }
+
+        private void btnCollNode_Click(object sender, EventArgs e)
+        {
+            _tree.SelectedNode.Collapse();
+        }
+
+        private void btnCollNodes_Click(object sender, EventArgs e)
+        {
+            _tree.SelectedNode.CollapseAll();
         }
 	}
 }
