@@ -251,7 +251,6 @@ namespace Aga.Controls.Tree
 			EndUpdate();
 		}
 
-
 		/// <summary>
 		/// Expand all parent nodes, andd scroll to the specified node
 		/// </summary>

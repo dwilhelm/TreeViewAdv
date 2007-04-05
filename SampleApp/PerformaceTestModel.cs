@@ -22,7 +22,6 @@ namespace SampleApp
 
 		public bool IsLeaf(TreePath treePath)
 		{
-
 			return true;
 		}
 

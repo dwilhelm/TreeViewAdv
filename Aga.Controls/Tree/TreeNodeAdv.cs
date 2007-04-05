@@ -134,8 +134,8 @@ namespace Aga.Controls.Tree
 		private bool _isExpanded;
 		public bool IsExpanded
 		{
-			get { return _isExpanded; }
-			set 
+            get { return _isExpanded; }
+            set 
 			{
 				if (Tree == null)
 					_isExpanded = value;
@@ -251,17 +251,62 @@ namespace Aga.Controls.Tree
 			_nodes = new NodeCollection(this);
 			_children = new ReadOnlyCollection<TreeNodeAdv>(_nodes);
 			_tag = tag;
-		}
+        }
 
-		public override string ToString()
+        #region Public Methods
+
+        public override string ToString()
 		{
 			if (Tag != null)
 				return Tag.ToString();
 			else
 				return base.ToString();
-		}
+        }
 
-		private void AssignIsExpanded(bool value)
+        public void Collaps()
+        {
+            Collaps(true);
+        }
+
+        public void Collaps(bool ignoreChildren)
+        {
+            if (Tree == null)
+                _isExpanded = false;
+            else if (Tree.IsMyNode(this) && _isExpanded != false)
+                AssignIsExpanded(false);
+
+            if (!ignoreChildren)
+            {
+                SetIsExpanded(this, false);
+            }
+        }
+
+        public void Expand()
+        {
+            if (Tree == null)
+                _isExpanded = true;
+            else if (Tree.IsMyNode(this) && _isExpanded != true)
+                AssignIsExpanded(true);
+        }
+
+        public void ExpandAll()
+        {
+            this.Expand();
+            SetIsExpanded(this, true);
+        }
+
+        #endregion
+
+        private void SetIsExpanded(TreeNodeAdv root, bool value)
+        {
+            foreach (TreeNodeAdv node in root.Nodes)
+            {
+                node.IsExpanded = value;
+                SetIsExpanded(node, value);
+            }
+        }
+
+        private void AssignIsExpanded(bool value)
 		{
 			if (value)
 				Tree.OnExpanding(this);
