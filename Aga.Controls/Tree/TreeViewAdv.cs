@@ -21,7 +21,8 @@ namespace Aga.Controls.Tree
 		private const int LeftMargin = 7;
 		internal const int ItemDragSensivity = 4;
 		private readonly int _columnHeaderHeight;
-		private const int DividerWidth = 9; 
+		private const int DividerWidth = 9;
+        private const int DividerCorrectionGap = -2;
 
 		private Pen _linePen;
 		private Pen _markPen;
@@ -123,6 +124,14 @@ namespace Aga.Controls.Tree
 			if (Expanded != null)
 				Expanded(this, new TreeViewAdvEventArgs(node));
 		}
+
+        [Category("Behavior")]
+        public event EventHandler<TreeViewAdvEventArgs> GridChanged;
+        internal void OnGridChanged(TreeNodeAdv node)
+        {
+            if (GridChanged != null)
+                GridChanged(this, new TreeViewAdvEventArgs(node));
+        }
 
 		#endregion
 

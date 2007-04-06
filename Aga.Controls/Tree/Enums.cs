@@ -31,16 +31,17 @@ namespace Aga.Controls.Tree
 
     public enum GridLineStyle
     {
-        NoHorNoVer=0,
-        NoHorClientVert,
-        NoHorRowVert,
+        HorizontalNoneVerticalNone=0,
+        HorizontalNoneVerticalRow,
+        HorizontalNoneVerticalClient,
 
-        ClientHorNoVer,
-        ClientHorClientVert,
-        ClientHorRowVert,
+        
+        HorizontalColumnVerticalNone,
+        HorizontalColumnVerticalRow,
+        HorizontalColumnVerticalClient,
 
-        ColumnHorNoVer,
-        ColumnHorClientVert,
-        ColumnHorRowVert
+        HorizontalClientVerticalNone,
+        HorizontalClientVerticalRow,
+        HorizontalClientVerticalClient
     }
 }
