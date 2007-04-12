@@ -27,7 +27,7 @@ namespace Aga.Controls.Tree
 
 		private const int HeaderLeftMargin = 5;
         private const int HeaderRightMargin = 5;   
-		private const int SortOrderMarkMargin = 0;
+		private const int SortOrderMarkMargin = 8;
 
         private TextFormatFlags _headerFlags;
         private TextFormatFlags _baseHeaderFlags = TextFormatFlags.NoPadding | 
@@ -191,7 +191,7 @@ namespace Aga.Controls.Tree
 			_header = header;
 			_width = width;
 
-            _headerFlags = new TextFormatFlags();
+            //_headerFlags = new TextFormatFlags();
             _headerFlags = _baseHeaderFlags | TextFormatFlags.Left;
 
 		}
@@ -250,8 +250,8 @@ namespace Aga.Controls.Tree
             if (SortOrder != SortOrder.None)
 				innerBounds.Width -= (SortMarkSize.Width + SortOrderMarkMargin);
 
-            Size maxTextSize = TextRenderer.MeasureText(Header, font);
-			Size textSize = TextRenderer.MeasureText(Header, font, innerBounds.Size, _baseHeaderFlags);
+            Size maxTextSize = TextRenderer.MeasureText(gr, Header, font, innerBounds.Size, TextFormatFlags.NoPadding);
+			Size textSize = TextRenderer.MeasureText(gr, Header, font, innerBounds.Size, _baseHeaderFlags);
 
             if (SortOrder != SortOrder.None)
             {
@@ -266,7 +266,8 @@ namespace Aga.Controls.Tree
 					x = innerBounds.X + tw + (innerBounds.Width - tw) / 2 + SortOrderMarkMargin;
                 DrawSortMark(gr, bounds, x);
 			}
-			gr.DrawRectangle(Pens.Red, innerBounds.X, innerBounds.Y, textSize.Width, textSize.Height);
+
+			//gr.DrawRectangle(Pens.Red, innerBounds.X, innerBounds.Y, textSize.Width, textSize.Height);
 
 			if (textSize.Width < maxTextSize.Width)
 				TextRenderer.DrawText(gr, Header, font, innerBounds, SystemColors.ControlText, _baseHeaderFlags | TextFormatFlags.Left);
@@ -277,7 +278,7 @@ namespace Aga.Controls.Tree
 		private void DrawSortMark(Graphics gr, Rectangle bounds, int x)
 		{
 			int y = bounds.Y + bounds.Height / 2 - 2;
-			x = Math.Max(x, bounds.X + 1);
+			x = Math.Max(x, bounds.X + 8);
 
             int w2 = SortMarkSize.Width / 2;
             if (SortOrder == SortOrder.Ascending)

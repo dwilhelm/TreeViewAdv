@@ -8,7 +8,7 @@
 TODO: preformance of Expand/Collapse method: do not use FullUpdate
 TODO: DrawSortMark in TreeColumn
 TODO: no text flashing when column resize
-
+TODO: vertical grid does not match with divider (3px to the right)
 
 1.4.4:
 + Bug during drag&drop of nodes in SimpleExample fixed.
