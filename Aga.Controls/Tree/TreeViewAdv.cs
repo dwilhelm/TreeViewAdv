@@ -36,6 +36,7 @@ namespace Aga.Controls.Tree
 		private Timer _dragTimer;
 		private DrawContext _measureContext;
 		private TreeColumn _hotColumn = null;
+		private IncrementalSearch _search;
 
 		#region Public Events
 
@@ -169,7 +170,7 @@ namespace Aga.Controls.Tree
 			_measureContext.Graphics = Graphics.FromImage(new Bitmap(1, 1));
 
 			Input = new NormalInputState(this);
-			Search = new IncrementalSearch();
+			_search = new IncrementalSearch(this);
 			CreateNodes();
 			CreatePens();
 
@@ -212,7 +213,7 @@ namespace Aga.Controls.Tree
 
 			int row = _rowLayout.GetRowAt(point);
 			if (row < RowCount && row >= 0)
-				return GetNodeControlInfoAt(_rowMap[row], point);
+				return GetNodeControlInfoAt(RowMap[row], point);
 			else
 				return NodeControlInfo.Empty;
 		}
@@ -235,6 +236,7 @@ namespace Aga.Controls.Tree
 		public void BeginUpdate()
 		{
 			_suspendUpdate = true;
+			SuspendSelectionEvent = true;
 		}
 
 		public void EndUpdate()
@@ -244,20 +246,17 @@ namespace Aga.Controls.Tree
 				FullUpdate();
 			else
 				UpdateView();
+			SuspendSelectionEvent = false;
 		}
 
 		public void ExpandAll()
 		{
-			BeginUpdate();
-			SetIsExpanded(_root, true);
-			EndUpdate();
+			_root.ExpandAll();
 		}
 
 		public void CollapseAll()
 		{
-			BeginUpdate();
-			SetIsExpanded(_root, false);
-			EndUpdate();
+			_root.CollapseAll();
 		}
 
 		/// <summary>
@@ -312,6 +311,19 @@ namespace Aga.Controls.Tree
 		}
 
 		public void ClearSelection()
+		{
+			BeginUpdate();
+			try
+			{
+				ClearSelectionInternal();
+			}
+			finally
+			{
+				EndUpdate();
+			}
+		}
+
+		internal void ClearSelectionInternal()
 		{
 			while (Selection.Count > 0)
 				Selection[0].IsSelected = false;
@@ -455,7 +467,7 @@ namespace Aga.Controls.Tree
 				int right = 0;
 				foreach (TreeColumn col in Columns)
 				{
-					if (col.IsVisible)
+					if (col.IsVisible && col.Width > 0)
 					{
 						right += col.Width;
 						for (int i = 0; i < NodeControls.Count; i++)
@@ -592,13 +604,13 @@ namespace Aga.Controls.Tree
 
 		private void CreateRowMap()
 		{
-			_rowMap.Clear();
+			RowMap.Clear();
 			int row = 0;
 			_contentWidth = 0;
 			foreach (TreeNodeAdv node in VisibleNodes)
 			{
 				node.Row = row;
-				_rowMap.Add(node);
+				RowMap.Add(node);
 				if (!UseColumns)
 				{
 					Rectangle rect = GetNodeBounds(node);
@@ -636,15 +648,6 @@ namespace Aga.Controls.Tree
 		private void _hScrollBar_ValueChanged(object sender, EventArgs e)
 		{
 			OffsetX = _hScrollBar.Value;
-		}
-
-		private void SetIsExpanded(TreeNodeAdv root, bool value)
-		{
-			foreach (TreeNodeAdv node in root.Nodes)
-			{
-				node.IsExpanded = value;
-				SetIsExpanded(node, value);
-			}
 		}
 
 		internal void SmartFullUpdate()
@@ -915,16 +918,17 @@ namespace Aga.Controls.Tree
 		private void _model_NodesChanged(object sender, TreeModelEventArgs e)
 		{
 			TreeNodeAdv parent = FindNode(e.Path);
-			if (parent != null)
+			if (parent != null && parent.IsVisible  && parent.IsExpanded)
 			{
 				if (InvokeRequired)
 					Invoke(new UpdateContentWidthDelegate(UpdateContentWidth), e, parent);
 				else
 					UpdateContentWidth(e, parent);
+
+				_rowLayout.ClearCache();
+				SafeUpdateScrollBars();
+				UpdateView();
 			}
-			_rowLayout.ClearCache();
-			SafeUpdateScrollBars();
-			UpdateView();
 		}
 
 		private delegate void UpdateContentWidthDelegate(TreeModelEventArgs e, TreeNodeAdv parent);

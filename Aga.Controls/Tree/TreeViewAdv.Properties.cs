@@ -34,11 +34,6 @@ namespace Aga.Controls.Tree
 
 		private IRowLayout _rowLayout;
 
-        // Variables for Grid
-        private bool _rowOverFlow;
-        private int _lastRowHeight;
-        private int _overAllCoumnWidth;
-
 		private bool _dragMode;
 		private bool DragMode
 		{
@@ -90,9 +85,12 @@ namespace Aga.Controls.Tree
 			get { return _suspendSelectionEvent; }
 			set
 			{
-				_suspendSelectionEvent = value;
-				if (!_suspendSelectionEvent && _fireSelectionEvent)
-					OnSelectionChanged();
+				if (value != _suspendSelectionEvent)
+				{
+					_suspendSelectionEvent = value;
+					if (!_suspendSelectionEvent && _fireSelectionEvent)
+						OnSelectionChanged();
+				}
 			}
 		}
 
@@ -152,7 +150,7 @@ namespace Aga.Controls.Tree
 		{
 			get
 			{
-				return _rowMap.Count;
+				return RowMap.Count;
 			}
 		}
 
@@ -213,22 +211,6 @@ namespace Aga.Controls.Tree
 		#region Public Properties
 
 		#region DesignTime
-
-		private IncrementalSearch _search;
-		[Category("Behavior"), TypeConverter(typeof(ExpandableObjectConverter))]
-		[DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-		public IncrementalSearch Search
-		{
-			get { return _search; }
-			set 
-			{
-				if (value == null)
-					throw new ArgumentNullException("value");
-
-				_search = value;
-				_search.Tree = this;
-			}
-		}
 
 		private bool _displayDraggingNodes;
 		[DefaultValue(false), Category("Behavior")]
@@ -398,42 +380,18 @@ namespace Aga.Controls.Tree
 			}
 		}
 
-        private bool _gridLineVisible = false;
-        [DefaultValue(false), Category("Appearance")]
-        public bool GridLineVisible
+        private GridLineStyle _gridLineStyle = GridLineStyle.None;
+        [DefaultValue(GridLineStyle.None), Category("Appearance")]
+        public GridLineStyle GridLineStyle
         {
             get
             {
-                return _gridLineVisible;
+                return _gridLineStyle;
             }
             set
             {
-                _gridLineVisible = value;
-                FullUpdate();
-                OnGridChanged(this.SelectedNode);
-            }
-        }
-
-        private GridLineStyle _gridLine = GridLineStyle.HorizontalColumnVerticalClient;
-        [DefaultValue(GridLineStyle.HorizontalColumnVerticalClient), Category("Appearance")]
-        public GridLineStyle GridLine
-        {
-            get
-            {
-                return _gridLine;
-            }
-            set
-            {
-                _gridLine = value;
-                if (_gridLine == GridLineStyle.HorizontalNoneVerticalNone)
-                {
-                    GridLineVisible = false;
-                }
-                else
-                {
-                    GridLineVisible = true;
-                }
-                OnGridChanged(this.SelectedNode);
+                _gridLineStyle = value;
+				UpdateView();
             }
         }
 
@@ -661,14 +619,14 @@ namespace Aga.Controls.Tree
 				{
 					if (value == null)
 					{
-						ClearSelection();
+						ClearSelectionInternal();
 					}
 					else
 					{
 						if (!IsMyNode(value))
 							throw new ArgumentException();
 
-						ClearSelection();
+						ClearSelectionInternal();
 						value.IsSelected = true;
 						CurrentNode = value;
 						EnsureVisible(value);
@@ -692,7 +650,7 @@ namespace Aga.Controls.Tree
         [Browsable(false)]
         public int ItemCount
         {
-            get { return _rowMap.Count; }
+            get { return RowMap.Count; }
         } 
 
 		#endregion

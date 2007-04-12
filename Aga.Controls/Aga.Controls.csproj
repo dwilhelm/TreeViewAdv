@@ -49,7 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CursorHelper.cs" />
+    <Compile Include="ResourceHelper.cs" />
     <Compile Include="StringCollectionEditor.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>

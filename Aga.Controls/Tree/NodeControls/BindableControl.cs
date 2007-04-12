@@ -88,7 +88,7 @@ namespace Aga.Controls.Tree.NodeControls
 		}
 
 		private bool _incrementalSearchEnabled = false;
-		[DefaultValue(true)]
+		[DefaultValue(false)]
 		public bool IncrementalSearchEnabled
 		{
 			get { return _incrementalSearchEnabled; }

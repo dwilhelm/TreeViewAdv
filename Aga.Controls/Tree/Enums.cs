@@ -29,19 +29,12 @@ namespace Aga.Controls.Tree
 		None, Standard, Continuous
 	}
 
+	[Flags]
     public enum GridLineStyle
     {
-        HorizontalNoneVerticalNone=0,
-        HorizontalNoneVerticalRow,
-        HorizontalNoneVerticalClient,
-
-        
-        HorizontalColumnVerticalNone,
-        HorizontalColumnVerticalRow,
-        HorizontalColumnVerticalClient,
-
-        HorizontalClientVerticalNone,
-        HorizontalClientVerticalRow,
-        HorizontalClientVerticalClient
+		None = 0, 
+		Horizontal = 1, 
+		Vertical = 2, 
+		HorizontalAndVertical = 3
     }
 }

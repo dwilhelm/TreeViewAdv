@@ -7,18 +7,18 @@ using System.Text;
 
 namespace Aga.Controls
 {
-    public static class CursorHelper
+    public static class ResourceHelper
     {
         // VSpilt Cursor with Innerline (symbolisize hidden column)
-        private static Cursor _DVSplit = GetCursor(Properties.Resources.DVSplit);
-        public static Cursor DVSplit
+        private static Cursor _dVSplitCursor = GetCursor(Properties.Resources.DVSplit);
+        public static Cursor DVSplitCursor
         {
-            get { return _DVSplit; }
+            get { return _dVSplitCursor; }
         }
 
 
         /// <summary>
-        /// Helpfunction to convert byte[] from resource into Cursor Type 
+        /// Help function to convert byte[] from resource into Cursor Type 
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>

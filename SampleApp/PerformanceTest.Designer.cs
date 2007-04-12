@@ -35,6 +35,8 @@ namespace SampleApp
 			this.button1 = new System.Windows.Forms.Button();
 			this.treeView1 = new System.Windows.Forms.TreeView();
 			this.label2 = new System.Windows.Forms.Label();
+			this.button2 = new System.Windows.Forms.Button();
+			this.button3 = new System.Windows.Forms.Button();
 			this.SuspendLayout();
 			// 
 			// _load
@@ -68,8 +70,6 @@ namespace SampleApp
 			this._treeView.Model = null;
 			this._treeView.Name = "_treeView";
 			this._treeView.NodeControls.Add(this.nodeTextBox1);
-			this._treeView.Search.BackColor = System.Drawing.Color.Pink;
-			this._treeView.Search.FontColor = System.Drawing.Color.Black;
 			this._treeView.SelectedNode = null;
 			this._treeView.SelectionMode = Aga.Controls.Tree.TreeSelectionMode.Multi;
 			this._treeView.Size = new System.Drawing.Size(269, 294);
@@ -79,6 +79,7 @@ namespace SampleApp
 			// nodeTextBox1
 			// 
 			this.nodeTextBox1.DataPropertyName = "Text";
+			this.nodeTextBox1.IncrementalSearchEnabled = true;
 			this.nodeTextBox1.ParentColumn = null;
 			// 
 			// button1
@@ -107,10 +108,32 @@ namespace SampleApp
 			this.label2.TabIndex = 5;
 			this.label2.Text = "Windows.Forms.TreeView";
 			// 
+			// button2
+			// 
+			this.button2.Location = new System.Drawing.Point(421, 332);
+			this.button2.Name = "button2";
+			this.button2.Size = new System.Drawing.Size(75, 23);
+			this.button2.TabIndex = 6;
+			this.button2.Text = "button2";
+			this.button2.UseVisualStyleBackColor = true;
+			this.button2.Click += new System.EventHandler(this.button2_Click);
+			// 
+			// button3
+			// 
+			this.button3.Location = new System.Drawing.Point(502, 332);
+			this.button3.Name = "button3";
+			this.button3.Size = new System.Drawing.Size(75, 23);
+			this.button3.TabIndex = 7;
+			this.button3.Text = "button3";
+			this.button3.UseVisualStyleBackColor = true;
+			this.button3.Click += new System.EventHandler(this.button3_Click);
+			// 
 			// PerformanceTest
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+			this.Controls.Add(this.button3);
+			this.Controls.Add(this.button2);
 			this.Controls.Add(this.label2);
 			this.Controls.Add(this.treeView1);
 			this.Controls.Add(this.button1);
@@ -133,5 +156,7 @@ namespace SampleApp
 		private System.Windows.Forms.Button button1;
 		private System.Windows.Forms.TreeView treeView1;
 		private System.Windows.Forms.Label label2;
+		private System.Windows.Forms.Button button2;
+		private System.Windows.Forms.Button button3;
 	}
 }

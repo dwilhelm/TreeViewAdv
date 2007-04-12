@@ -66,22 +66,16 @@ namespace Aga.Controls.Tree
 			base.OnKeyDown(e);
 			if (!e.Handled)
 			{
-				if (Search.IsActive)
-					Search.KeyDown(e);
-
+				if (e.KeyCode == Keys.ShiftKey || e.KeyCode == Keys.ControlKey)
+					ChangeInput();
+				Input.KeyDown(e);
 				if (!e.Handled)
 				{
-					if (e.KeyCode == Keys.ShiftKey || e.KeyCode == Keys.ControlKey)
-						ChangeInput();
-					Input.KeyDown(e);
-					if (!e.Handled)
+					foreach (NodeControlInfo item in GetNodeControls(CurrentNode))
 					{
-						foreach (NodeControlInfo item in GetNodeControls(CurrentNode))
-						{
-							item.Control.KeyDown(e);
-							if (e.Handled)
-								break;
-						}
+						item.Control.KeyDown(e);
+						if (e.Handled)
+							break;
 					}
 				}
 			}
@@ -110,7 +104,7 @@ namespace Aga.Controls.Tree
 		{
 			base.OnKeyPress(e);
 			if (!e.Handled)
-				Search.Search(e.KeyChar);
+				_search.Search(e.KeyChar);
 		}
 
 		#endregion
@@ -132,7 +126,7 @@ namespace Aga.Controls.Tree
 
 		protected override void OnMouseWheel(MouseEventArgs e)
 		{
-			Search.EndSearch();
+			_search.EndSearch();
 			if (SystemInformation.MouseWheelScrollLines > 0)
 			{
 				int lines = e.Delta / 120 * SystemInformation.MouseWheelScrollLines;
@@ -148,17 +142,17 @@ namespace Aga.Controls.Tree
 			if (!Focused)
 				Focus();
 
-			Search.EndSearch();
+			_search.EndSearch();
 			if (e.Button == MouseButtons.Left)
 			{
 				TreeColumn c;
-				c = GetColumnAt(e.Location, true);
+				c = GetColumnDividerAt(e.Location);
 				if (c != null)
 				{
 					Input = new ResizeColumnState(this, c, e.Location);
 					return;
 				}
-				c = GetColumnAt(e.Location, false);
+				c = GetColumnAt(e.Location);
 				if (c != null)
 				{
 					Input = new ClickColumnState(this, c, e.Location);
@@ -245,110 +239,79 @@ namespace Aga.Controls.Tree
 			base.OnMouseLeave(e);
 		}
 
-        internal bool IsHiddenColum;
-        private void SetCursor(MouseEventArgs e)
-        {
-            IsHiddenColum = false;
-            
-            TreeColumn col = GetColumnAt(e.Location, true);
-            
-            if (col == null)
-                _innerCursor = null;
-            else
-            {
-                if (col.HiddenColumn == null)
-                {
-                    if (col.Index == 0 && col.Width == 0)
-                    {
-                        _innerCursor = CursorHelper.DVSplit;
-                    }
-                    else
-                    {
-                        if (col.MaxColumnWidth + col.MinColumnWidth == 0 ||
-                            col.MaxColumnWidth - col.MinColumnWidth != 0)
-                        {
-                            _innerCursor = Cursors.VSplit;
-                        }
-                        else
-                        {
-                            _innerCursor = Cursors.Default;
-                        }
-                    }
-                }
-                else
-                {
-                    if (e.X < col.Left + col.Width)
-                    {
-                        if (col.MaxColumnWidth + col.MinColumnWidth == 0 ||
-                            col.MaxColumnWidth - col.MinColumnWidth != 0)
-                        {
-                            _innerCursor = Cursors.VSplit;
-                        }
-                        else
-                        {
-                            _innerCursor = Cursors.Default;
-                        }
-                    }
-                    else
-                    {
-                        _innerCursor = CursorHelper.DVSplit;
-                        _hotColumn = col.HiddenColumn;
-                        IsHiddenColum = true;
-                        UpdateHeaders();
-                        return;
-                    }
-                }
-            }
+		private void SetCursor(MouseEventArgs e)
+		{
+			TreeColumn col;
+			col = GetColumnDividerAt(e.Location);
+			if (col == null)
+				_innerCursor = null;
+			else
+			{
+				if (col.Width == 0)
+					_innerCursor = ResourceHelper.DVSplitCursor;
+				else
+					_innerCursor = Cursors.VSplit;
+			}
 
-            col = GetColumnAt(e.Location, false);
-            
-            if (col != _hotColumn)
-            {
-                _hotColumn = col;
-                UpdateHeaders();
-            }
-        }
+			col = GetColumnAt(e.Location);
+			if (col != _hotColumn)
+			{
+				_hotColumn = col;
+				UpdateHeaders();
+			}
+		}
 
-		internal TreeColumn GetColumnAt(Point p, bool divider)
+		internal TreeColumn GetColumnAt(Point p)
 		{
 			if (p.Y > ColumnHeaderHeight)
 				return null;
 
 			int x = -OffsetX;
-			foreach (TreeColumn c in Columns)
+			foreach (TreeColumn col in Columns)
 			{
-				if (c.IsVisible)
+				if (col.IsVisible)
 				{
-					Rectangle rect;
-					if (divider)
-						rect = new Rectangle(x + c.Width - (DividerWidth / 2), 0, DividerWidth, ColumnHeaderHeight);
-					else
-						rect = new Rectangle(x, 0, c.Width, ColumnHeaderHeight);
-					x += c.Width;
-                    if (rect.Contains(p))
-                    {
-                        if (IsHiddenColum)
-                        {
-                            return GetTopHiddenColumn(c);
-                        }
-                        else
-                        {
-                            return c;
-                        }
-                    }
+					Rectangle rect = new Rectangle(x, 0, col.Width, ColumnHeaderHeight);
+					x += col.Width;
+					if (rect.Contains(p))
+						return col;
 				}
 			}
 			return null;
 		}
 
-        private TreeColumn GetTopHiddenColumn(TreeColumn c)
-        {
-            while (c.HiddenColumn != null)
-            {
-                c = c.HiddenColumn;
-            }
-            return c;
-        }
+		internal TreeColumn GetColumnDividerAt(Point p)
+		{
+			if (p.Y > ColumnHeaderHeight)
+				return null;
+
+			int x = -OffsetX;
+			TreeColumn prevCol = null;
+			Rectangle left, right;
+			foreach (TreeColumn col in Columns)
+			{
+				if (col.IsVisible)
+				{
+					if (col.Width > 0)
+					{
+						left = new Rectangle(x, 0, DividerWidth / 2, ColumnHeaderHeight);
+						right = new Rectangle(x + col.Width - (DividerWidth / 2), 0, DividerWidth / 2, ColumnHeaderHeight);
+						if (left.Contains(p) && prevCol != null)
+							return prevCol;
+						else if (right.Contains(p))
+							return col;
+					}
+					prevCol = col;
+					x += col.Width;
+				}
+			}
+
+			left = new Rectangle(x, 0, DividerWidth / 2, ColumnHeaderHeight);
+			if (left.Contains(p) && prevCol != null)
+				return prevCol;
+
+			return null;
+		}
 
 		TreeNodeAdv _hoverNode;
 		NodeControl _hoverControl;
@@ -496,7 +459,7 @@ namespace Aga.Controls.Tree
 
 		protected override void OnDragEnter(DragEventArgs drgevent)
 		{
-			Search.EndSearch();
+			_search.EndSearch();
 			DragMode = true;
 			CreateDragBitmap(drgevent.Data);
 			base.OnDragEnter(drgevent);

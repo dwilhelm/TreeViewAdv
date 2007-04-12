@@ -44,31 +44,7 @@ namespace Aga.Controls.Tree
 
         public override bool MouseMove(MouseEventArgs args)
         {
-            int w = _initWidth + args.Location.X - _initLocation.X;
-            Column.Width = Math.Max(Column.MinColumnWidth, w);
-
-            if (Column.MaxColumnWidth > 0)
-            {
-                Column.Width = Math.Min(Column.MaxColumnWidth, Column.Width);
-            }
-
-            if (Column.Width < 4)
-            {
-                int i = Column.Index;
-                if (i > 0)
-                {
-                    Column.Owner[i - 1].HiddenColumn = Column;
-                }
-            }
-            else
-            {
-                int i = Column.Index;
-                if (i > 0)
-                {
-                    Column.Owner[i - 1].HiddenColumn = null;
-                }
-            }
-
+			Column.Width = _initWidth + args.Location.X - _initLocation.X;
             Tree.UpdateView();
             return true;
         }

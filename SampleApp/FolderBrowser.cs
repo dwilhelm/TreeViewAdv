@@ -30,9 +30,9 @@ namespace SampleApp
 			InitializeComponent();
 
             cboxGrid.DataSource = System.Enum.GetValues(typeof(GridLineStyle));
+			cboxGrid.SelectedItem = GridLineStyle.HorizontalAndVertical;
 
             cbLines.Checked = _treeView.ShowLines;
-            cbGrid.Checked = _treeView.GridLineVisible;
 
 			_name.ToolTipProvider = new ToolTipProvider();
 			_name.EditorShowing += new CancelEventHandler(_name_EditorShowing);
@@ -81,12 +81,7 @@ namespace SampleApp
 
         private void cboxGrid_SelectedIndexChanged(object sender, EventArgs e)
         {
-            _treeView.GridLine = (GridLineStyle)cboxGrid.SelectedItem;
-        }
-
-        private void cbGrid_CheckedChanged(object sender, EventArgs e)
-        {
-            _treeView.GridLineVisible = cbGrid.Checked;
+            _treeView.GridLineStyle = (GridLineStyle)cboxGrid.SelectedItem;
         }
 
         private void cbLines_CheckedChanged(object sender, EventArgs e)

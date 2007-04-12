@@ -60,8 +60,6 @@ namespace SampleApp
 			this._treeView.Name = "_treeView";
 			this._treeView.NodeControls.Add(this._nodeCheckBox);
 			this._treeView.NodeControls.Add(this._nodeTextBox);
-			this._treeView.Search.BackColor = System.Drawing.Color.Pink;
-			this._treeView.Search.FontColor = System.Drawing.Color.Black;
 			this._treeView.SelectedNode = null;
 			this._treeView.Size = new System.Drawing.Size(418, 313);
 			this._treeView.TabIndex = 0;

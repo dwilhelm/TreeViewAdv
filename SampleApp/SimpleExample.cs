@@ -8,6 +8,7 @@ using System.Windows.Forms;
 using Aga.Controls.Tree;
 using Aga.Controls.Tree.NodeControls;
 using System.Threading;
+using Aga.Controls;
 
 namespace SampleApp
 {
@@ -36,13 +37,13 @@ namespace SampleApp
 			ChangeButtons();
 
 			_tree.BeginUpdate();
-			for (int i = 0; i < 5; i++)
+			for (int i = 0; i < 50; i++)
 			{
 				Node node = AddRoot();
-				for (int n = 0; n < 5; n++)
+				for (int n = 0; n < 50; n++)
 				{
 					Node child = AddChild(node);
-					for (int k = 0; k < 5; k++)
+					for (int k = 0; k < 10; k++)
 						AddChild(child);
 				}
 			}
@@ -114,17 +115,12 @@ namespace SampleApp
 		{
             _addChild.Enabled = (_tree.SelectedNode != null);
             _deleteNode.Enabled = (_tree.SelectedNode != null);
-
             
             btnExpNode.Enabled = (_tree.SelectedNode != null);
             btnExpNodes.Enabled = (_tree.SelectedNode != null);
 
             btnCollNode.Enabled = (_tree.SelectedNode != null);
             btnCollNodes.Enabled = (_tree.SelectedNode != null);
-
-            btnCollNodeO.Enabled = (_tree.SelectedNode != null);
-            cbIgnoreCildren.Enabled = (_tree.SelectedNode != null);
-
 		}
 
 		private void _tree_ItemDrag(object sender, ItemDragEventArgs e)
@@ -239,7 +235,9 @@ namespace SampleApp
 
 		private void button1_Click(object sender, EventArgs e)
 		{
-			_model.OnStructureChanged(new TreePathEventArgs());
+			TimeCounter.Start();
+			_tree.FullUpdate();
+			label2.Text = TimeCounter.Finish().ToString();
 		}
 
 		private void button2_Click(object sender, EventArgs e)
@@ -263,11 +261,6 @@ namespace SampleApp
             _tree.SelectedNode.ExpandAll();
         }
 
-        private void btnCollNodeO_Click(object sender, EventArgs e)
-        {
-            _tree.SelectedNode.Collapse(cbIgnoreCildren.Checked);
-        }
-
         private void btnCollNode_Click(object sender, EventArgs e)
         {
             _tree.SelectedNode.Collapse();
@@ -277,5 +270,10 @@ namespace SampleApp
         {
             _tree.SelectedNode.CollapseAll();
         }
+
+		private void button3_Click(object sender, EventArgs e)
+		{
+			_tree.ClearSelection();
+		}
 	}
 }
