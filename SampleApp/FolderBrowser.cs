@@ -39,16 +39,7 @@ namespace SampleApp
 
 			_treeView.Model = new SortedTreeModel(new FolderBrowserModel());
 
-            _treeView.GridChanged += new EventHandler<TreeViewAdvEventArgs>(_treeView_GridChanged);
-
 		}
-
-        void _treeView_GridChanged(object sender, TreeViewAdvEventArgs e)
-        {
-            cbGrid.Checked = _treeView.GridLineVisible;
-            cboxGrid.SelectedItem = _treeView.GridLine;
-            Console.WriteLine(DateTime.Now);
-        }
 
 		void _name_EditorShowing(object sender, CancelEventArgs e)
 		{

@@ -127,11 +127,11 @@ namespace Aga.Controls.Tree
 		}
 
         [Category("Behavior")]
-        public event EventHandler<TreeViewAdvEventArgs> GridChanged;
-        internal void OnGridChanged(TreeNodeAdv node)
+        public event EventHandler GridLineStyleChanged;
+		private void OnGridLineStyleChanged()
         {
-            if (GridChanged != null)
-                GridChanged(this, new TreeViewAdvEventArgs(node));
+			if (GridLineStyleChanged != null)
+				GridLineStyleChanged(this, EventArgs.Empty);
         }
 
 		#endregion

@@ -390,8 +390,12 @@ namespace Aga.Controls.Tree
             }
             set
             {
-                _gridLineStyle = value;
-				UpdateView();
+				if (value != _gridLineStyle)
+				{
+					_gridLineStyle = value;
+					UpdateView();
+					OnGridLineStyleChanged();
+				}
             }
         }
 
