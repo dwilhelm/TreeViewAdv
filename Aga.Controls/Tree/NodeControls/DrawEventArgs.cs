@@ -14,6 +14,7 @@ namespace Aga.Controls.Tree.NodeControls
 		}
 
 		private Brush _textBrush;
+		[Obsolete("Use TextColor")]
 		public Brush TextBrush
 		{
 			get { return _textBrush; }
@@ -32,6 +33,13 @@ namespace Aga.Controls.Tree.NodeControls
 		{
 			get { return _font; }
 			set { _font = value; }
+		}
+
+		private Color _textColor;
+		public Color TextColor
+		{
+			get { return _textColor; }
+			set { _textColor = value; }
 		}
 
 		public DrawEventArgs(TreeNodeAdv node, DrawContext context)

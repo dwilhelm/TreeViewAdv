@@ -27,5 +27,19 @@ namespace Aga.Controls
             else
                 return TextFormatFlags.HorizontalCenter;
         }
+
+		public static TextFormatFlags TranslateTrimmingToFlag(StringTrimming trimming)
+		{
+			if (trimming == StringTrimming.EllipsisCharacter)
+				return TextFormatFlags.EndEllipsis;
+			else if (trimming == StringTrimming.EllipsisPath)
+				return TextFormatFlags.PathEllipsis;
+			if (trimming == StringTrimming.EllipsisWord)
+				return TextFormatFlags.WordEllipsis;
+			if (trimming == StringTrimming.Word)
+				return TextFormatFlags.WordBreak;
+			else
+				return TextFormatFlags.Default;
+		}
 	}
 }

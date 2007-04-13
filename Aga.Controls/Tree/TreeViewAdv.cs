@@ -604,6 +604,7 @@ namespace Aga.Controls.Tree
 
 		private void CreateRowMap()
 		{
+			//
 			RowMap.Clear();
 			int row = 0;
 			_contentWidth = 0;

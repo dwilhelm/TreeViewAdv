@@ -190,10 +190,7 @@ namespace Aga.Controls.Tree
 		{
 			_header = header;
 			_width = width;
-
-            //_headerFlags = new TextFormatFlags();
             _headerFlags = _baseHeaderFlags | TextFormatFlags.Left;
-
 		}
 
 		public override string ToString()
@@ -267,8 +264,6 @@ namespace Aga.Controls.Tree
                 DrawSortMark(gr, bounds, x);
 			}
 
-			//gr.DrawRectangle(Pens.Red, innerBounds.X, innerBounds.Y, textSize.Width, textSize.Height);
-
 			if (textSize.Width < maxTextSize.Width)
 				TextRenderer.DrawText(gr, Header, font, innerBounds, SystemColors.ControlText, _baseHeaderFlags | TextFormatFlags.Left);
             else
@@ -278,7 +273,7 @@ namespace Aga.Controls.Tree
 		private void DrawSortMark(Graphics gr, Rectangle bounds, int x)
 		{
 			int y = bounds.Y + bounds.Height / 2 - 2;
-			x = Math.Max(x, bounds.X + 8);
+			x = Math.Max(x, bounds.X + SortOrderMarkMargin);
 
             int w2 = SortMarkSize.Width / 2;
             if (SortOrder == SortOrder.Ascending)

@@ -238,7 +238,7 @@ namespace Aga.Controls.Tree
 				foreach (TreeColumn c in Columns)
 				{
 					x += c.Width;
-					gr.DrawLine(SystemPens.InactiveBorder, x-2, 0, x-2, gr.ClipBounds.Bottom);
+					gr.DrawLine(SystemPens.InactiveBorder, x - 1, 0, x - 1, gr.ClipBounds.Bottom);
 				}
         }
 

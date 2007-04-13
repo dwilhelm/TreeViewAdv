@@ -59,7 +59,7 @@ namespace SampleApp
 		{
             if ((e.Node.Tag as MyNode).Text.StartsWith("Child"))
             {
-                e.TextBrush = Brushes.Red;
+                e.TextColor = Color.Red;
                 e.Font = _childFont;
             }
 		}
