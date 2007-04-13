@@ -604,7 +604,7 @@ namespace Aga.Controls.Tree
 
 		private void CreateRowMap()
 		{
-			//
+			//TODO: Move rowmap to IRowLayout and cache node bounds
 			RowMap.Clear();
 			int row = 0;
 			_contentWidth = 0;
