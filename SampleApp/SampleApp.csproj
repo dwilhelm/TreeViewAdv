@@ -48,7 +48,6 @@
     <Compile Include="ColumnHandling.Designer.cs">
       <DependentUpon>ColumnHandling.cs</DependentUpon>
     </Compile>
-    <Compile Include="PerformaceTestModel.cs" />
     <Compile Include="FolderItemSorter.cs" />
     <Compile Include="FolderItems.cs" />
     <Compile Include="FolderBrowser.cs">

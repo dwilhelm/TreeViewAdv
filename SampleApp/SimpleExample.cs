@@ -37,13 +37,13 @@ namespace SampleApp
 			ChangeButtons();
 
 			_tree.BeginUpdate();
-			for (int i = 0; i < 50; i++)
+			for (int i = 0; i < 10; i++)
 			{
 				Node node = AddRoot();
-				for (int n = 0; n < 50; n++)
+				for (int n = 0; n < 500; n++)
 				{
 					Node child = AddChild(node);
-					for (int k = 0; k < 10; k++)
+					for (int k = 0; k < 5; k++)
 						AddChild(child);
 				}
 			}
@@ -237,7 +237,8 @@ namespace SampleApp
 		{
 			TimeCounter.Start();
 			_tree.FullUpdate();
-			label2.Text = TimeCounter.Finish().ToString();
+			//_model.Root.Nodes[0].Text = "Child";
+			button1.Text = TimeCounter.Finish().ToString();
 		}
 
 		private void button2_Click(object sender, EventArgs e)

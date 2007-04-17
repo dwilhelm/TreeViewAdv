@@ -35,6 +35,9 @@ namespace Aga.Controls.Tree
 					if (item.Parent != null)
 						item.Parent.Nodes.Remove(item);
 					item._parent = _owner;
+					item._index = index;
+					for (int i = index; i < Count; i++)
+						this[i]._index++;
 					base.InsertItem(index, item);
 
 					TreeModel model = _owner.FindModel();
@@ -47,6 +50,9 @@ namespace Aga.Controls.Tree
 			{
 				Node item = this[index];
 				item._parent = null;
+				item._index = -1;
+				for (int i = index + 1; i < Count; i++)
+					this[i]._index--;
 				base.RemoveItem(index);
 
 				TreeModel model = _owner.FindModel();
@@ -98,14 +104,12 @@ namespace Aga.Controls.Tree
 			}
 		}
 
+		private int _index = -1;
 		public int Index
 		{
 			get
 			{
-				if (_parent != null)
-					return _parent.Nodes.IndexOf(this);
-				else
-					return -1;
+				return _index;
 			}
 		}
 

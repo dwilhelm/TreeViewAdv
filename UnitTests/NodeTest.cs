@@ -16,22 +16,27 @@ namespace Aga.Controls.UnitTests
 		{
 			Node r1 = new Node("");
 			Node node = new Node("");
+			Assert.AreEqual(-1, node.Index);
 
 			r1.Nodes.Add(node);
 			Assert.AreEqual(1, r1.Nodes.Count);
 			Assert.AreEqual(r1, node.Parent);
+			Assert.AreEqual(0, node.Index);
 
 			r1.Nodes.Remove(node);
 			Assert.AreEqual(0, r1.Nodes.Count);
 			Assert.AreEqual(null, node.Parent);
+			Assert.AreEqual(-1, node.Index);
 
 			node.Parent = r1;
 			Assert.AreEqual(1, r1.Nodes.Count);
 			Assert.AreEqual(r1, node.Parent);
+			Assert.AreEqual(0, node.Index);
 
 			node.Parent = null;
 			Assert.AreEqual(0, r1.Nodes.Count);
 			Assert.AreEqual(null, node.Parent);
+			Assert.AreEqual(-1, node.Index);
 
 
 			Node r2 = new Node("");
@@ -54,6 +59,50 @@ namespace Aga.Controls.UnitTests
 			Assert.AreEqual(null, node.Parent);
 			Assert.AreEqual(r1, node2.Parent);
 		}
+
+		[TestMethod]
+		public void IndexTest()
+		{
+			Node r1 = new Node("");
+			Node node0 = new Node("");
+			Node node1 = new Node("");
+			Node node2 = new Node("");
+			Assert.AreEqual(-1, node0.Index);
+
+			r1.Nodes.Add(node0);
+			r1.Nodes.Add(node1);
+			r1.Nodes.Add(node2);
+			CheckNodes(r1);
+
+			r1.Nodes.Insert(1, new Node());
+			CheckNodes(r1);
+
+			r1.Nodes.RemoveAt(2);
+			CheckNodes(r1);
+		}
+
+		private void CheckNodes(Node root)
+		{
+			for (int i = 0; i < root.Nodes.Count; i++ )
+				Assert.AreEqual(i, root.Nodes[i].Index);
+		}
+
+		[TestMethod]
+		public void ClearTest()
+		{
+			Node node = new Node("");
+			int num = 125000;
+			for (int i = 0; i < num; i++)
+				node.Nodes.Add(new Node());
+			Assert.AreEqual(num, node.Nodes.Count);
+
+			TimeCounter.Start();
+			node.Nodes.Clear();
+			Console.WriteLine("Clear: {0}", TimeCounter.Finish());
+
+			Assert.AreEqual(0, node.Nodes.Count);
+		}
+
 
 		private int remove, insert;
 		[TestMethod]

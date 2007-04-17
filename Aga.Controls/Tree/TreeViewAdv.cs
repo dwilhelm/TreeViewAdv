@@ -426,7 +426,6 @@ namespace Aga.Controls.Tree
 		{
 			base.OnFontChanged(e);
 			_measureContext.Font = Font;
-			_rowLayout.ClearCache();
 			FullUpdate();
 		}
 
@@ -434,8 +433,16 @@ namespace Aga.Controls.Tree
 		{
 			if (node == null)
 				yield break;
-
 			Rectangle rowRect = _rowLayout.GetRowBounds(node.Row);
+			foreach (NodeControlInfo n in GetNodeControls(node, rowRect))
+				yield return n;
+		}
+
+		internal IEnumerable<NodeControlInfo> GetNodeControls(TreeNodeAdv node, Rectangle rowRect)
+		{
+			if (node == null)
+				yield break;
+
 			int y = rowRect.Y;
 			int x = (node.Level - 1) * _indent + LeftMargin;
 			int width = 0;
@@ -604,7 +611,7 @@ namespace Aga.Controls.Tree
 
 		private void CreateRowMap()
 		{
-			//TODO: Move rowmap to IRowLayout and cache node bounds
+			//TODO: cache node bounds
 			RowMap.Clear();
 			int row = 0;
 			_contentWidth = 0;
@@ -614,8 +621,7 @@ namespace Aga.Controls.Tree
 				RowMap.Add(node);
 				if (!UseColumns)
 				{
-					Rectangle rect = GetNodeBounds(node);
-					_contentWidth = Math.Max(_contentWidth, rect.Right);
+					_contentWidth = Math.Max(_contentWidth, GetNodeWidth(node));
 				}
 				row++;
 			}
@@ -628,10 +634,25 @@ namespace Aga.Controls.Tree
 			}
 		}
 
-		private Rectangle GetNodeBounds(TreeNodeAdv node)
+		private int GetNodeWidth(TreeNodeAdv node)
+		{
+			if (node.Width == null)
+			{
+				Rectangle res = GetNodeBounds(GetNodeControls(node, Rectangle.Empty));
+				node.Width = res.Width;
+			}
+			return node.Width.Value;
+		}
+
+		internal Rectangle GetNodeBounds(TreeNodeAdv node)
+		{
+			return GetNodeBounds(GetNodeControls(node));
+		}
+
+		private Rectangle GetNodeBounds(IEnumerable<NodeControlInfo> nodeControls)
 		{
 			Rectangle res = Rectangle.Empty;
-			foreach (NodeControlInfo info in GetNodeControls(node))
+			foreach (NodeControlInfo info in nodeControls)
 			{
 				if (res == Rectangle.Empty)
 					res = info.Bounds;
@@ -922,18 +943,15 @@ namespace Aga.Controls.Tree
 			if (parent != null && parent.IsVisible  && parent.IsExpanded)
 			{
 				if (InvokeRequired)
-					Invoke(new UpdateContentWidthDelegate(UpdateContentWidth), e, parent);
+					Invoke(new UpdateContentWidthDelegate(ClearNodesSize), e, parent);
 				else
-					UpdateContentWidth(e, parent);
-
-				_rowLayout.ClearCache();
-				SafeUpdateScrollBars();
-				UpdateView();
+					ClearNodesSize(e, parent);
+				SmartFullUpdate();
 			}
 		}
 
 		private delegate void UpdateContentWidthDelegate(TreeModelEventArgs e, TreeNodeAdv parent);
-		private void UpdateContentWidth(TreeModelEventArgs e, TreeNodeAdv parent)
+		private void ClearNodesSize(TreeModelEventArgs e, TreeNodeAdv parent)
 		{
 			if (e.Indices != null)
 			{
@@ -942,8 +960,7 @@ namespace Aga.Controls.Tree
 					if (index >= 0 && index < parent.Nodes.Count)
 					{
 						TreeNodeAdv node = parent.Nodes[index];
-						Rectangle rect = GetNodeBounds(node);
-						_contentWidth = Math.Max(_contentWidth, rect.Right);
+						node.Height = node.Width = null;
 					}
 					else
 						throw new ArgumentOutOfRangeException("Index out of range");
@@ -956,8 +973,7 @@ namespace Aga.Controls.Tree
 					foreach (object obj in e.Children)
 						if (node.Tag == obj)
 						{
-							Rectangle rect = GetNodeBounds(node);
-							_contentWidth = Math.Max(_contentWidth, rect.Right);
+							node.Height = node.Width = null;
 						}
 				}
 			}

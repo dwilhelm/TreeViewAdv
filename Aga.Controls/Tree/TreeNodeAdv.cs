@@ -166,7 +166,6 @@ namespace Aga.Controls.Tree
 		public TreeNodeAdv Parent
 		{
 			get { return _parent; }
-			//internal set { _parent = value; }
 		}
 
 		public int Level
@@ -254,6 +253,20 @@ namespace Aga.Controls.Tree
 			{
 				return _children;
 			}
+		}
+
+		private int? _width;
+		internal int? Width
+		{
+			get { return _width; }
+			set { _width = value; }
+		}
+
+		private int? _height;
+		internal int? Height
+		{
+			get { return _height; }
+			set { _height = value; }
 		}
 
 		#endregion
@@ -346,15 +359,7 @@ namespace Aga.Controls.Tree
 			if (value && !_isExpandedOnce)
 			{
 				Cursor oldCursor = Tree.Cursor;
-				try
-				{
-					Tree.Cursor = Cursors.WaitCursor;
-					Tree.ReadChilds(this);
-				}
-				finally
-				{
-					Tree.Cursor = oldCursor;
-				}
+				Tree.ReadChilds(this);
 			}
 			_isExpanded = value;
 			Tree.SmartFullUpdate();

@@ -109,7 +109,12 @@ namespace SampleApp
 							foreach (string str in Directory.GetDirectories(parent.ItemPath))
 								items.Add(new FolderItem(str, parent, this));
 							foreach (string str in Directory.GetFiles(parent.ItemPath))
-								items.Add(new FileItem(str, parent, this));
+							{
+								FileItem item = new FileItem(str, parent, this);
+								//if (item.ItemPath.ToLower().EndsWith(".bmp"))
+								//	item.Icon = new Bitmap(item.ItemPath);
+								items.Add(item);
+							}
 						}
 						catch (IOException)
 						{

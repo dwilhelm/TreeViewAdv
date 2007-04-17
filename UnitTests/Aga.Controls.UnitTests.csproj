@@ -45,6 +45,8 @@
     <Compile Include="NodeTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SerializationTest.cs" />
+    <Compile Include="TreeNodeAdvTest.cs" />
+    <Compile Include="VSCodeGenAccessors.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Aga.Controls\Aga.Controls.csproj">

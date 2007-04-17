@@ -5,8 +5,9 @@
 + ExpandAll, CollapseAll methods added to TreeNodeAdv class
 + Incremental search works like in standard TreeView now. Warning: no Search property anymore!
 + ClearSelection method optimized
++ Performance during Expand/Collapse/FullUpdate improved
 + Graphics.DrawString is replaced with TextRenderer.DrawText
-TODO: preformance of Expand/Collapse method: do not use FullUpdate
+TODO: Bug in FolderBrowser example: the row doesn't expand to fill in big images(greater then row height)
 
 1.4.4:
 + Bug during drag&drop of nodes in SimpleExample fixed.
