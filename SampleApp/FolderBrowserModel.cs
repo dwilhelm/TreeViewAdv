@@ -111,8 +111,6 @@ namespace SampleApp
 							foreach (string str in Directory.GetFiles(parent.ItemPath))
 							{
 								FileItem item = new FileItem(str, parent, this);
-								//if (item.ItemPath.ToLower().EndsWith(".bmp"))
-								//	item.Icon = new Bitmap(item.ItemPath);
 								items.Add(item);
 							}
 						}

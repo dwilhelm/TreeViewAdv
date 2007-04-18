@@ -560,31 +560,13 @@ namespace Aga.Controls.Tree
 			if (!parentNode.IsLeaf)
 			{
 				parentNode.IsExpandedOnce = true;
-
-				List<TreeNodeAdv> oldNodes = new List<TreeNodeAdv>(parentNode.Nodes);
 				parentNode.Nodes.Clear();
-
 				if (Model != null)
 				{
 					IEnumerable items = Model.GetChildren(GetPath(parentNode));
 					if (items != null)
 						foreach (object obj in items)
-						{
-							bool found = false;
-							if (obj != null)
-							{
-								for (int i = 0; i < oldNodes.Count; i++)
-									if (obj == oldNodes[i].Tag)
-									{
-										AddNode(parentNode, -1, oldNodes[i]);
-										oldNodes.RemoveAt(i);
-										found = true;
-										break;
-									}
-							}
-							if (!found)
-								AddNewNode(parentNode, obj, -1);
-						}
+							AddNewNode(parentNode, obj, -1);
 				}
 			}
 		}

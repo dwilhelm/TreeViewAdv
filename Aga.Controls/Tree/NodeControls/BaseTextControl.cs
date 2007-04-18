@@ -140,6 +140,7 @@ namespace Aga.Controls.Tree.NodeControls
 				context.Graphics.DrawRectangle(_focusPen, focusRect);
 			}
 			TextRenderer.DrawText(context.Graphics, label, font, bounds, textColor, _formatFlags);
+			//context.Graphics.DrawString(label, font, Brushes.Black, bounds);
 		}
 
 		private void CreateBrushes(TreeNodeAdv node, DrawContext context, out Brush backgroundBrush, out Color textColor, out Font font)
