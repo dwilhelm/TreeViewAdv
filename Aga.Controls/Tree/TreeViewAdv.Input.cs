@@ -63,6 +63,8 @@ namespace Aga.Controls.Tree
 
 		protected override void OnKeyDown(KeyEventArgs e)
 		{
+
+            int a = DateTime.Now.Millisecond;
 			base.OnKeyDown(e);
 			if (!e.Handled)
 			{
@@ -79,10 +81,13 @@ namespace Aga.Controls.Tree
 					}
 				}
 			}
+            int b = DateTime.Now.Millisecond;
+            Console.WriteLine("OnKeyDown " + Convert.ToString(b - a));
 		}
 
 		protected override void OnKeyUp(KeyEventArgs e)
 		{
+            int a = DateTime.Now.Millisecond;
 			base.OnKeyUp(e);
 			if (!e.Handled)
 			{
@@ -98,13 +103,18 @@ namespace Aga.Controls.Tree
 					}
 				}
 			}
+            int b = DateTime.Now.Millisecond;
+            Console.WriteLine("OnKeyUp " + Convert.ToString(b - a));
 		}
 
 		protected override void OnKeyPress(KeyPressEventArgs e)
 		{
+            int a = DateTime.Now.Millisecond;
 			base.OnKeyPress(e);
 			if (!e.Handled)
 				_search.Search(e.KeyChar);
+            int b = DateTime.Now.Millisecond;
+            Console.WriteLine("OnKeyPress " + Convert.ToString(b - a));
 		}
 
 		#endregion
