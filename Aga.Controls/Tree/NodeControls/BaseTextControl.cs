@@ -98,7 +98,22 @@ namespace Aga.Controls.Tree.NodeControls
 
 		protected Size GetLabelSize(TreeNodeAdv node, DrawContext context)
 		{
+			return GetLabelSize(node, context, GetLabel(node));
+		}
+
+		protected Size GetLabelSize(TreeNodeAdv node, DrawContext context, string label)
+		{
 			CheckThread();
+			Font font = GetFont(node, context);
+			Size s = TextRenderer.MeasureText(label, font);
+			if (!s.IsEmpty)
+				return s;
+			else
+				return new Size(10, Font.Height);
+		}
+
+		protected Font GetFont(TreeNodeAdv node, DrawContext context)
+		{
 			Font font = context.Font;
 			if (DrawText != null)
 			{
@@ -107,12 +122,14 @@ namespace Aga.Controls.Tree.NodeControls
 				OnDrawText(args);
 				font = args.Font;
 			}
-			
-			Size s = TextRenderer.MeasureText(GetLabel(node), font);
-			if (!s.IsEmpty)
-				return s;
-			else
-				return new Size(10, Font.Height);
+			return font;
+		}
+
+		protected void SetEditControlProperties(Control control, TreeNodeAdv node)
+		{
+			DrawContext context = new DrawContext();
+			context.Font = control.Font;
+			control.Font = GetFont(node, context);
 		}
 
 		public override void Draw(TreeNodeAdv node, DrawContext context)
@@ -143,7 +160,7 @@ namespace Aga.Controls.Tree.NodeControls
 			//context.Graphics.DrawString(label, font, Brushes.Black, bounds);
 		}
 
-		private void CreateBrushes(TreeNodeAdv node, DrawContext context, out Brush backgroundBrush, out Color textColor, out Font font)
+		protected void CreateBrushes(TreeNodeAdv node, DrawContext context, out Brush backgroundBrush, out Color textColor, out Font font)
 		{
 			textColor = SystemColors.ControlText;
 			backgroundBrush = null;

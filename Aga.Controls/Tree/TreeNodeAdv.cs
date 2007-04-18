@@ -324,17 +324,23 @@ namespace Aga.Controls.Tree
 
 		private void SetIsExpanded(bool value, bool ignoreChildren)
 		{
-			this.Tree.BeginUpdate();
-
-			if (Tree == null)
-				_isExpanded = value;
-			else if (Tree.IsMyNode(this) && _isExpanded != value)
-				AssignIsExpanded(value);
-
 			if (!ignoreChildren)
-				SetIsExpandedRecursive(this, value);
+				Tree.BeginUpdate();
+			try
+			{
+				if (Tree == null)
+					_isExpanded = value;
+				else if (Tree.IsMyNode(this) && _isExpanded != value)
+					AssignIsExpanded(value);
 
-			this.Tree.EndUpdate();
+				if (!ignoreChildren)
+					SetIsExpandedRecursive(this, value);
+			}
+			finally
+			{
+				if (!ignoreChildren)
+					Tree.EndUpdate();
+			}
 		}
 
         private void SetIsExpandedRecursive(TreeNodeAdv root, bool value)
@@ -357,10 +363,8 @@ namespace Aga.Controls.Tree
 				Tree.OnCollapsing(this);
 
 			if (value && !_isExpandedOnce)
-			{
-				Cursor oldCursor = Tree.Cursor;
 				Tree.ReadChilds(this);
-			}
+
 			_isExpanded = value;
 			Tree.SmartFullUpdate();
 

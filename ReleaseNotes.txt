@@ -7,7 +7,7 @@
 + ClearSelection method optimized
 + Performance during Expand/Collapse/FullUpdate improved
 + Graphics.DrawString is replaced with TextRenderer.DrawText
-TODO: Expand TextBox when typing in NodeTextBox
+
 
 1.4.4:
 + Bug during drag&drop of nodes in SimpleExample fixed.

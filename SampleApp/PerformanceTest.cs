@@ -71,22 +71,25 @@ namespace SampleApp
 			label5.Text = "Working";
 			Application.DoEvents();
 
-			_treeView2.BeginUpdate();
 			_treeView2.Nodes.Clear();
 
 			TimeCounter.Start();
+			_treeView2.BeginUpdate();
+
+			List<TreeNode> list = new List<TreeNode>();
 			for (int i = 0; i < 10; i++)
 			{
-				_treeView2.Nodes.Add(i.ToString());
+				list.Add(new TreeNode(i.ToString()));
 				for (int n = 0; n < 500; n++)
 				{
-					_treeView2.Nodes[i].Nodes.Add(n.ToString());
+					list[i].Nodes.Add(n.ToString());
 					for (int k = 0; k < 5; k++)
-						_treeView2.Nodes[i].Nodes[n].Nodes.Add(k.ToString());
+						list[i].Nodes[n].Nodes.Add(k.ToString());
 				}
 			}
-			_treeView2.EndUpdate();
+			_treeView2.Nodes.AddRange(list.ToArray());
 
+			_treeView2.EndUpdate();
 			label5.Text = TimeCounter.Finish().ToString();
 		}
 

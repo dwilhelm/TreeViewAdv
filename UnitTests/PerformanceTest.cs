@@ -26,7 +26,7 @@ namespace Aga.Controls.UnitTests
 			TimeCounter.Start();
 			for (int i = 0; i < num; i++)
 			{
-				TextRenderer.MeasureText(gr, text, Control.DefaultFont);
+				TextRenderer.MeasureText(text, Control.DefaultFont);
 				TextRenderer.DrawText(gr, text, Control.DefaultFont, rect, Color.Black);
 			}
 			Console.WriteLine("TextRenderer {0}", TimeCounter.Finish());

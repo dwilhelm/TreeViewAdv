@@ -30,7 +30,7 @@ namespace Aga.Controls.Tree.NodeControls
 				return context.Bounds.Size;
 			else
 			{
-				Size size = GetLabelSize(context.CurrentNode, context.DrawContext);
+				Size size = GetLabelSize(context.CurrentNode, context.DrawContext, _label);
 				int width = Math.Max(size.Width + Font.Height, MinTextBoxWidth); // reserve a place for new typed character
 				return new Size(width, size.Height);
 			}
@@ -53,6 +53,7 @@ namespace Aga.Controls.Tree.NodeControls
 			textBox.BorderStyle = BorderStyle.FixedSingle;
 			textBox.TextChanged += new EventHandler(textBox_TextChanged);
 			_label = textBox.Text;
+			SetEditControlProperties(textBox, node);
 			return textBox;
 		}
 

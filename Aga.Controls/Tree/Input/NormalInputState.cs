@@ -22,6 +22,7 @@ namespace Aga.Controls.Tree
 			{
 				switch (args.KeyCode)
 				{
+					case Keys.Add:
 					case Keys.Right:
 						if (!Tree.CurrentNode.IsExpanded)
 							Tree.CurrentNode.IsExpanded = true;
@@ -66,10 +67,10 @@ namespace Aga.Controls.Tree
 						Tree.CurrentNode.Collapse();
 						args.Handled = true;
 						break;
-					case Keys.Add:
+					/*case Keys.Add:
 						Tree.CurrentNode.Expand();
 						args.Handled = true;
-						break;
+						break;*/
 					case Keys.Multiply:
 						Tree.CurrentNode.ExpandAll();
 						args.Handled = true;

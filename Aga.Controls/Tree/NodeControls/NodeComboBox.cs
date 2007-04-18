@@ -52,6 +52,7 @@ namespace Aga.Controls.Tree.NodeControls
 			comboBox.SelectedItem = GetValue(node);
 			comboBox.DropDownStyle = ComboBoxStyle.DropDownList;
 			comboBox.DropDownClosed += new EventHandler(EditorDropDownClosed);
+			SetEditControlProperties(comboBox, node);
 			return comboBox;
 		}
 
