@@ -104,7 +104,7 @@ namespace Aga.Controls.Tree.NodeControls
 		protected Size GetLabelSize(TreeNodeAdv node, DrawContext context, string label)
 		{
 			CheckThread();
-			Font font = GetFont(node, context);
+			Font font = GetDrawingFont(node, context);
 			Size s = TextRenderer.MeasureText(label, font);
 			if (!s.IsEmpty)
 				return s;
@@ -112,7 +112,7 @@ namespace Aga.Controls.Tree.NodeControls
 				return new Size(10, Font.Height);
 		}
 
-		protected Font GetFont(TreeNodeAdv node, DrawContext context)
+		protected Font GetDrawingFont(TreeNodeAdv node, DrawContext context)
 		{
 			Font font = context.Font;
 			if (DrawText != null)
@@ -129,7 +129,7 @@ namespace Aga.Controls.Tree.NodeControls
 		{
 			DrawContext context = new DrawContext();
 			context.Font = control.Font;
-			control.Font = GetFont(node, context);
+			control.Font = GetDrawingFont(node, context);
 		}
 
 		public override void Draw(TreeNodeAdv node, DrawContext context)
@@ -160,7 +160,7 @@ namespace Aga.Controls.Tree.NodeControls
 			//context.Graphics.DrawString(label, font, Brushes.Black, bounds);
 		}
 
-		protected void CreateBrushes(TreeNodeAdv node, DrawContext context, out Brush backgroundBrush, out Color textColor, out Font font)
+		private void CreateBrushes(TreeNodeAdv node, DrawContext context, out Brush backgroundBrush, out Color textColor, out Font font)
 		{
 			textColor = SystemColors.ControlText;
 			backgroundBrush = null;
@@ -223,7 +223,6 @@ namespace Aga.Controls.Tree.NodeControls
 			if (disposing)
 			{
 				_focusPen.Dispose();
-                //_format.Dispose();
 			}
 		}
 
