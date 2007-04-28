@@ -131,8 +131,9 @@ namespace Aga.Controls.Tree
 			{
 				int lines = e.Delta / 120 * SystemInformation.MouseWheelScrollLines;
 				int newValue = _vScrollBar.Value - lines;
-				_vScrollBar.Value = Math.Max(_vScrollBar.Minimum,
-					Math.Min(_vScrollBar.Maximum - _vScrollBar.LargeChange + 1, newValue));
+				newValue = Math.Min(_vScrollBar.Maximum - _vScrollBar.LargeChange + 1, newValue);
+				newValue = Math.Min(_vScrollBar.Maximum, newValue);
+				_vScrollBar.Value = Math.Max(_vScrollBar.Minimum, newValue);
 			}
 			base.OnMouseWheel(e);
 		}

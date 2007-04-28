@@ -1,13 +1,13 @@
-1.5.0:
+1.5:
 + Column resizing behaviour improved
 + GridLineStyle property introduced
-+ Additional navigate keys added (+,-,*)
++ Additional navigation keys support added (+,-,*)
 + ExpandAll, CollapseAll methods added to TreeNodeAdv class
 + Incremental search works like in standard TreeView now. Warning: no Search property anymore!
 + ClearSelection method optimized
 + Performance during Expand/Collapse/FullUpdate improved
-+ Graphics.DrawString is replaced with TextRenderer.DrawText
-TODO: introduce UseCompatibleTextRendering property, Improve performance?
++ UseCompatibleTextRendering property added to BaseTextControl class. 
+
 
 1.4.4:
 + Bug during drag&drop of nodes in SimpleExample fixed.

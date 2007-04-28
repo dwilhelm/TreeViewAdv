@@ -44,13 +44,13 @@ namespace SampleApp
 			this.btnExpNodes = new System.Windows.Forms.Button();
 			this.btnCollNode = new System.Windows.Forms.Button();
 			this.btnCollNodes = new System.Windows.Forms.Button();
+			this.button3 = new System.Windows.Forms.Button();
 			this._tree2 = new Aga.Controls.Tree.TreeViewAdv();
 			this.nodeTextBox1 = new Aga.Controls.Tree.NodeControls.NodeTextBox();
 			this._tree = new Aga.Controls.Tree.TreeViewAdv();
 			this._nodeCheckBox = new Aga.Controls.Tree.NodeControls.NodeCheckBox();
 			this._nodeStateIcon = new Aga.Controls.Tree.NodeControls.NodeStateIcon();
 			this._nodeTextBox = new Aga.Controls.Tree.NodeControls.NodeTextBox();
-			this.button3 = new System.Windows.Forms.Button();
 			((System.ComponentModel.ISupportInitialize)(this._fontSize)).BeginInit();
 			this.SuspendLayout();
 			// 
@@ -229,6 +229,17 @@ namespace SampleApp
 			this.btnCollNodes.UseVisualStyleBackColor = true;
 			this.btnCollNodes.Click += new System.EventHandler(this.btnCollNodes_Click);
 			// 
+			// button3
+			// 
+			this.button3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.button3.Location = new System.Drawing.Point(478, 119);
+			this.button3.Name = "button3";
+			this.button3.Size = new System.Drawing.Size(91, 23);
+			this.button3.TabIndex = 21;
+			this.button3.Text = "Clear Selection";
+			this.button3.UseVisualStyleBackColor = true;
+			this.button3.Click += new System.EventHandler(this.button3_Click);
+			// 
 			// _tree2
 			// 
 			this._tree2.AllowDrop = true;
@@ -254,6 +265,7 @@ namespace SampleApp
 			// 
 			this.nodeTextBox1.DataPropertyName = "Text";
 			this.nodeTextBox1.IncrementalSearchEnabled = true;
+			this.nodeTextBox1.LeftMargin = 3;
 			this.nodeTextBox1.ParentColumn = null;
 			// 
 			// _tree
@@ -291,29 +303,21 @@ namespace SampleApp
 			// _nodeCheckBox
 			// 
 			this._nodeCheckBox.DataPropertyName = "CheckState";
+			this._nodeCheckBox.LeftMargin = 0;
 			this._nodeCheckBox.ParentColumn = null;
 			this._nodeCheckBox.ThreeState = true;
 			// 
 			// _nodeStateIcon
 			// 
+			this._nodeStateIcon.LeftMargin = 1;
 			this._nodeStateIcon.ParentColumn = null;
 			// 
 			// _nodeTextBox
 			// 
 			this._nodeTextBox.DataPropertyName = "Text";
 			this._nodeTextBox.IncrementalSearchEnabled = true;
+			this._nodeTextBox.LeftMargin = 3;
 			this._nodeTextBox.ParentColumn = null;
-			// 
-			// button3
-			// 
-			this.button3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.button3.Location = new System.Drawing.Point(478, 119);
-			this.button3.Name = "button3";
-			this.button3.Size = new System.Drawing.Size(91, 23);
-			this.button3.TabIndex = 21;
-			this.button3.Text = "Clear Selection";
-			this.button3.UseVisualStyleBackColor = true;
-			this.button3.Click += new System.EventHandler(this.button3_Click);
 			// 
 			// SimpleExample
 			// 

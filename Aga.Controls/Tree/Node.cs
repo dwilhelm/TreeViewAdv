@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Collections.ObjectModel;
 using System.Windows.Forms;
+using System.Drawing;
 
 namespace Aga.Controls.Tree
 {
@@ -160,6 +161,20 @@ namespace Aga.Controls.Tree
 				if (_checkState != value)
 				{
 					_checkState = value;
+					NotifyModel();
+				}
+			}
+		}
+
+		private Image _image;
+		public Image Image
+		{
+			get { return _image; }
+			set 
+			{
+				if (_image != value)
+				{
+					_image = value;
 					NotifyModel();
 				}
 			}

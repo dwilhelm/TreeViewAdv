@@ -64,6 +64,20 @@ namespace Aga.Controls.Tree.NodeControls
 			}
 		}
 
+		private int _leftMargin = 0;
+		public int LeftMargin
+		{
+			get { return _leftMargin; }
+			set 
+			{
+				if (value < 0)
+					throw new ArgumentOutOfRangeException();
+
+				_leftMargin = value;
+				if (_parent != null)
+					_parent.FullUpdate();
+			}
+		}
 		#endregion
 
 		internal virtual void AssignParent(TreeViewAdv parent)
@@ -74,16 +88,16 @@ namespace Aga.Controls.Tree.NodeControls
 		protected virtual Rectangle GetBounds(TreeNodeAdv node, DrawContext context)
 		{
 			Rectangle r = context.Bounds;
-			Size s = MeasureSize(node, context);
-			Size bs = new Size(r.Width, s.Height);
+			Size s = GetActualSize(node, context);
+			Size bs = new Size(r.Width - LeftMargin, s.Height);
 			switch (VerticalAlign)
 			{
 				case VerticalAlignment.Top:
-					return new Rectangle(new Point(r.X, r.Y), bs);
+					return new Rectangle(new Point(r.X + LeftMargin, r.Y), bs);
 				case VerticalAlignment.Bottom:
-					return new Rectangle(new Point(r.X, r.Bottom - s.Height), bs);
+					return new Rectangle(new Point(r.X + LeftMargin, r.Bottom - s.Height), bs);
 				default:
-					return new Rectangle(new Point(r.X, r.Y + (r.Height - s.Height) / 2), bs);
+					return new Rectangle(new Point(r.X + LeftMargin, r.Y + (r.Height - s.Height) / 2), bs);
 			}
 		}
 
@@ -105,7 +119,10 @@ namespace Aga.Controls.Tree.NodeControls
 		internal Size GetActualSize(TreeNodeAdv node, DrawContext context)
 		{
 			if (IsVisible(node))
-				return MeasureSize(node, context);
+			{
+				Size s = MeasureSize(node, context);
+				return new Size(s.Width + LeftMargin, s.Height);
+			}
 			else
 				return Size.Empty;
 		}

@@ -51,13 +51,14 @@ namespace Aga.Controls.Tree
 
             if (UseColumns)
             {
-                DrawColumnHeaders(e.Graphics);
+				DrawColumnHeaders(e.Graphics);
                 y += ColumnHeaderHeight;
                 if (Columns.Count == 0 || e.ClipRectangle.Height <= y)
                     return;
             }
 
-            y -= _rowLayout.GetRowBounds(FirstVisibleRow).Y;
+			int firstRowY = _rowLayout.GetRowBounds(FirstVisibleRow).Y;
+            y -= firstRowY;
 
             e.Graphics.ResetTransform();
             e.Graphics.TranslateTransform(-OffsetX, y);
@@ -72,10 +73,10 @@ namespace Aga.Controls.Tree
                     DrawRow(e, ref context, row, rowRect);
             }
 
-            if ((GridLineStyle & GridLineStyle.Vertical) == GridLineStyle.Vertical)
-                DrawVerticalGridLines(e.Graphics);
+			if ((GridLineStyle & GridLineStyle.Vertical) == GridLineStyle.Vertical)
+				DrawVerticalGridLines(e.Graphics, firstRowY);
 
-            if (_dropPosition.Node != null && DragMode)
+			if (_dropPosition.Node != null && DragMode)
                 DrawDropMark(e.Graphics);
 
             e.Graphics.ResetTransform();
@@ -134,17 +135,27 @@ namespace Aga.Controls.Tree
 			DrawNode(node, context);
 		}
 
+		private void DrawVerticalGridLines(Graphics gr, int y)
+		{
+			int x = 0;
+			foreach (TreeColumn c in Columns)
+			{
+				x += c.Width;
+				gr.DrawLine(SystemPens.InactiveBorder, x - 1, y, x - 1, gr.ClipBounds.Bottom);
+			}
+		}
+
 		private void DrawColumnHeaders(Graphics gr)
 		{
 			ReorderColumnState reorder = Input as ReorderColumnState;
 			int x = 0;
-			TreeColumn.DrawBackground(gr, new Rectangle(0, 0, ClientRectangle.Width + 10, ColumnHeaderHeight), false, false);
+			TreeColumn.DrawBackground(gr, new Rectangle(0, 0, ClientRectangle.Width + 2, ColumnHeaderHeight - 1), false, false);
 			gr.TranslateTransform(-OffsetX, 0);
 			foreach (TreeColumn c in Columns)
 			{
 				if (c.IsVisible)
 				{
-					Rectangle rect = new Rectangle(x, 0, c.Width, ColumnHeaderHeight);
+					Rectangle rect = new Rectangle(x, 0, c.Width, ColumnHeaderHeight - 1);
 					gr.SetClip(rect);
 					bool pressed = ((Input is ClickColumnState || reorder != null) && ((Input as ColumnState).Column == c));
 					c.Draw(gr, rect, Font, pressed, _hotColumn == c);
@@ -230,17 +241,6 @@ namespace Aga.Controls.Tree
 
 			gr.ResetClip();
 		}
-
-		private void DrawVerticalGridLines(Graphics gr)
-        {
-			int x = 0;
-			if (UseColumns)
-				foreach (TreeColumn c in Columns)
-				{
-					x += c.Width;
-					gr.DrawLine(SystemPens.InactiveBorder, x - 1, 0, x - 1, gr.ClipBounds.Bottom);
-				}
-        }
 
 		#region Performance
 

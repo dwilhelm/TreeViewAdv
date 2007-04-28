@@ -132,17 +132,20 @@ namespace SampleApp
 			// nodeCheckBox1
 			// 
 			this.nodeCheckBox1.DataPropertyName = "IsChecked";
+			this.nodeCheckBox1.LeftMargin = 0;
 			this.nodeCheckBox1.ParentColumn = this.treeColumn1;
 			// 
 			// _icon
 			// 
 			this._icon.DataPropertyName = "Icon";
+			this._icon.LeftMargin = 1;
 			this._icon.ParentColumn = this.treeColumn1;
 			// 
 			// _name
 			// 
 			this._name.DataPropertyName = "Name";
 			this._name.IncrementalSearchEnabled = true;
+			this._name.LeftMargin = 3;
 			this._name.ParentColumn = this.treeColumn1;
 			this._name.Trimming = System.Drawing.StringTrimming.EllipsisCharacter;
 			// 
@@ -150,6 +153,7 @@ namespace SampleApp
 			// 
 			this._size.DataPropertyName = "Size";
 			this._size.IncrementalSearchEnabled = true;
+			this._size.LeftMargin = 3;
 			this._size.ParentColumn = this.treeColumn2;
 			this._size.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
 			// 
@@ -157,6 +161,7 @@ namespace SampleApp
 			// 
 			this._date.DataPropertyName = "Date";
 			this._date.IncrementalSearchEnabled = true;
+			this._date.LeftMargin = 3;
 			this._date.ParentColumn = this.treeColumn3;
 			this._date.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
 			// 

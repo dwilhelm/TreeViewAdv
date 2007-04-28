@@ -9,6 +9,11 @@ namespace Aga.Controls.Tree.NodeControls
 {
 	public class NodeIcon : BindableControl
 	{
+		public NodeIcon()
+		{
+			LeftMargin = 1;
+		}
+
 		public override Size MeasureSize(TreeNodeAdv node, DrawContext context)
 		{
 			Image image = GetIcon(node);

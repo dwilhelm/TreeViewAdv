@@ -456,7 +456,7 @@ namespace Aga.Controls.Tree
 					rect.Width = Columns[0].Width - x;
 
 				yield return new NodeControlInfo(_plusMinus, rect, node);
-				x += (width + 1);
+				x += width;
 			}
 
 			if (!UseColumns)
@@ -465,7 +465,7 @@ namespace Aga.Controls.Tree
 				{
 					width = c.GetActualSize(node, _measureContext).Width;
 					rect = new Rectangle(x, y, width, rowRect.Height);
-					x += (width + 1);
+					x += rect.Width;
 					yield return new NodeControlInfo(c, rect, node);
 				}
 			}
@@ -495,7 +495,7 @@ namespace Aga.Controls.Tree
 									width = nc.GetActualSize(node, _measureContext).Width;
 								int maxWidth = Math.Max(0, right - x);
 								rect = new Rectangle(x, y, Math.Min(maxWidth, width), rowRect.Height);
-								x += (width + 1);
+								x += width;
 								yield return new NodeControlInfo(nc, rect, node);
 							}
 						}
@@ -823,6 +823,7 @@ namespace Aga.Controls.Tree
 				if (context.Owner == info.Control && info.Control is EditableControl)
 				{
 					Point p = info.Bounds.Location;
+					p.X += info.Control.LeftMargin;
 					p.X -= OffsetX;
 					p.Y -= (_rowLayout.GetRowBounds(FirstVisibleRow).Y - ColumnHeaderHeight);
 					int width = DisplayRectangle.Width - p.X;

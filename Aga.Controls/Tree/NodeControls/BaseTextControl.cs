@@ -13,6 +13,7 @@ namespace Aga.Controls.Tree.NodeControls
 		private TextFormatFlags _baseFormatFlags;
         private TextFormatFlags _formatFlags;
         private Pen _focusPen;
+		private StringFormat _format;
 
 		#region Properties
 
@@ -72,6 +73,14 @@ namespace Aga.Controls.Tree.NodeControls
 			set { _displayHiddenContentInToolTip = value; }
 		}
 
+		private bool _useCompatibleTextRendering = false;
+		[DefaultValue(false)]
+		public bool UseCompatibleTextRendering
+		{
+			get { return _useCompatibleTextRendering; }
+			set { _useCompatibleTextRendering = value; }
+		}
+
 		#endregion
 
 		protected BaseTextControl()
@@ -80,13 +89,18 @@ namespace Aga.Controls.Tree.NodeControls
 			_focusPen = new Pen(Color.Black);
 			_focusPen.DashStyle = System.Drawing.Drawing2D.DashStyle.Dot;
 
+			_format = new StringFormat(StringFormatFlags.NoWrap | StringFormatFlags.FitBlackBox | StringFormatFlags.NoClip | StringFormatFlags.MeasureTrailingSpaces);
 			_baseFormatFlags = TextFormatFlags.PreserveGraphicsClipping |
                            TextFormatFlags.PreserveGraphicsTranslateTransform;
 			SetFormatFlags();
+			LeftMargin = 3;
 		}
 
 		private void SetFormatFlags()
 		{
+			_format.Alignment = TextHelper.TranslateAligment(TextAlign);
+			_format.Trimming = Trimming;
+
 			_formatFlags = _baseFormatFlags | TextHelper.TranslateAligmentToFlag(TextAlign)
 				| TextHelper.TranslateTrimmingToFlag(Trimming);
 		}
@@ -105,7 +119,15 @@ namespace Aga.Controls.Tree.NodeControls
 		{
 			CheckThread();
 			Font font = GetDrawingFont(node, context);
-			Size s = TextRenderer.MeasureText(label, font);
+			Size s = Size.Empty;
+			if (UseCompatibleTextRendering)
+				s = TextRenderer.MeasureText(label, font);
+			else
+			{
+				SizeF sf = context.Graphics.MeasureString(label, font);
+				s = new Size((int)sf.Width, (int)sf.Height);
+			}
+
 			if (!s.IsEmpty)
 				return s;
 			else
@@ -139,8 +161,8 @@ namespace Aga.Controls.Tree.NodeControls
 
 			string label = GetLabel(node);
 			Rectangle bounds = GetBounds(node, context);
-			Rectangle focusRect = new Rectangle(context.Bounds.Location,
-				new Size(bounds.Width, context.Bounds.Height));
+			Rectangle focusRect = new Rectangle(bounds.X, context.Bounds.Y,	
+				bounds.Width, context.Bounds.Height);
 
 			Brush backgroundBrush;
 			Color textColor;
@@ -156,8 +178,14 @@ namespace Aga.Controls.Tree.NodeControls
 				context.Graphics.DrawRectangle(Pens.Gray, focusRect);
 				context.Graphics.DrawRectangle(_focusPen, focusRect);
 			}
-			TextRenderer.DrawText(context.Graphics, label, font, bounds, textColor, _formatFlags);
-			//context.Graphics.DrawString(label, font, Brushes.Black, bounds);
+			if (UseCompatibleTextRendering)
+				TextRenderer.DrawText(context.Graphics, label, font, bounds, textColor, _formatFlags);
+			else
+			{
+				Brush textBrush = new SolidBrush(textColor);
+				context.Graphics.DrawString(label, font, textBrush, bounds, _format);
+				textBrush.Dispose();
+			}
 		}
 
 		private void CreateBrushes(TreeNodeAdv node, DrawContext context, out Brush backgroundBrush, out Color textColor, out Font font)
@@ -223,6 +251,7 @@ namespace Aga.Controls.Tree.NodeControls
 			if (disposing)
 			{
 				_focusPen.Dispose();
+				_format.Dispose();
 			}
 		}
 

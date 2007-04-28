@@ -41,6 +41,7 @@ namespace Aga.Controls.Tree.NodeControls
 			_uncheck = Resources.uncheck;
 			_unknown = Resources.unknown;
 			DataPropertyName = propertyName;
+			LeftMargin = 0;
 		}
 
 		public override Size MeasureSize(TreeNodeAdv node, DrawContext context)
