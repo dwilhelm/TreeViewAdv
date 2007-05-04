@@ -106,6 +106,7 @@ namespace SampleApp
 			this._treeView.Size = new System.Drawing.Size(533, 298);
 			this._treeView.TabIndex = 0;
 			this._treeView.UseColumns = true;
+			this._treeView.NodeMouseDoubleClick += new System.EventHandler<Aga.Controls.Tree.TreeNodeAdvMouseEventArgs>(this._treeView_NodeMouseDoubleClick);
 			this._treeView.ColumnClicked += new System.EventHandler<Aga.Controls.Tree.TreeColumnEventArgs>(this._treeView_ColumnClicked);
 			this._treeView.MouseClick += new System.Windows.Forms.MouseEventHandler(this._treeView_MouseClick);
 			// 

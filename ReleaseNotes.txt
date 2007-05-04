@@ -1,3 +1,6 @@
+1.5.1:
++ Bug in CheckBoxNodeControl using in VirtualMode fixed
+
 1.5:
 + Column resizing behaviour improved
 + GridLineStyle property introduced

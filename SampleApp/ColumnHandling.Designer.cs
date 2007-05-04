@@ -59,6 +59,7 @@
 			this.treeViewAdv1.TabIndex = 0;
 			this.treeViewAdv1.Text = "treeViewAdv1";
 			this.treeViewAdv1.UseColumns = true;
+			this.treeViewAdv1.NodeMouseDoubleClick += new System.EventHandler<Aga.Controls.Tree.TreeNodeAdvMouseEventArgs>(this.treeViewAdv1_NodeMouseDoubleClick);
 			// 
 			// treeColumn1
 			// 

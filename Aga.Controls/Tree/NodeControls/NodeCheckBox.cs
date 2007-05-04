@@ -90,16 +90,24 @@ namespace Aga.Controls.Tree.NodeControls
 
 		protected virtual void SetCheckState(TreeNodeAdv node, CheckState value)
 		{
-			Type type = GetPropertyType(node);
-			if (type == typeof(CheckState))
+			if (VirtualMode)
 			{
 				SetValue(node, value);
 				OnCheckStateChanged(node);
 			}
-			else if (type == typeof(bool))
+			else
 			{
-				SetValue(node, value != CheckState.Unchecked);
-				OnCheckStateChanged(node);
+				Type type = GetPropertyType(node);
+				if (type == typeof(CheckState))
+				{
+					SetValue(node, value);
+					OnCheckStateChanged(node);
+				}
+				else if (type == typeof(bool))
+				{
+					SetValue(node, value != CheckState.Unchecked);
+					OnCheckStateChanged(node);
+				}
 			}
 		}
 

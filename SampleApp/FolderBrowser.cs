@@ -79,5 +79,10 @@ namespace SampleApp
         {
             _treeView.ShowLines = cbLines.Checked;
         }
+
+		private void _treeView_NodeMouseDoubleClick(object sender, TreeNodeAdvMouseEventArgs e)
+		{
+			Console.WriteLine(e.Node);
+		}
 	}
 }
