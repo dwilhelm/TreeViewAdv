@@ -160,7 +160,7 @@ namespace Aga.Controls.Tree.NodeControls
 		}
 
 		public event EventHandler<NodeControlValueEventArgs> IsVisibleValueNeeded;
-		private void OnIsVisibleValueNeeded(NodeControlValueEventArgs args)
+		protected virtual void OnIsVisibleValueNeeded(NodeControlValueEventArgs args)
 		{
 			if (IsVisibleValueNeeded != null)
 				IsVisibleValueNeeded(this, args);

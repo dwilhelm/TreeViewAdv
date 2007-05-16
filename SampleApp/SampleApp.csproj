@@ -42,6 +42,12 @@
     <Compile Include="AdvancedExample.Designer.cs">
       <DependentUpon>AdvancedExample.cs</DependentUpon>
     </Compile>
+    <Compile Include="BackgroundExpand.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="BackgroundExpand.Designer.cs">
+      <DependentUpon>BackgroundExpand.cs</DependentUpon>
+    </Compile>
     <Compile Include="ColumnHandling.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -75,6 +81,10 @@
     <EmbeddedResource Include="AdvancedExample.resx">
       <SubType>Designer</SubType>
       <DependentUpon>AdvancedExample.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BackgroundExpand.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>BackgroundExpand.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FolderBrowser.resx">
       <SubType>Designer</SubType>
@@ -121,6 +131,7 @@
     <Compile Include="SimpleExample.Designer.cs">
       <DependentUpon>SimpleExample.cs</DependentUpon>
     </Compile>
+    <Compile Include="SlowModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Aga.Controls\Aga.Controls.csproj">
@@ -130,6 +141,9 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\loading_icon" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

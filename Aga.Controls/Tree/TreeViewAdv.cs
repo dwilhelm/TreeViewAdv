@@ -13,6 +13,8 @@ using System.Drawing.Design;
 using Aga.Controls.Tree.NodeControls;
 using System.Drawing.Imaging;
 using System.Diagnostics;
+using System.Threading;
+
 
 namespace Aga.Controls.Tree
 {
@@ -33,10 +35,12 @@ namespace Aga.Controls.Tree
 		private Control _currentEditor;
 		private EditableControl _currentEditorOwner;
 		private ToolTip _toolTip;
-		private Timer _dragTimer;
+		private System.Windows.Forms.Timer _dragTimer;
 		private DrawContext _measureContext;
 		private TreeColumn _hotColumn = null;
 		private IncrementalSearch _search;
+
+		private List<TreeNodeAdv> _expandingNodes = new List<TreeNodeAdv>();
 
 		#region Public Events
 
@@ -96,7 +100,7 @@ namespace Aga.Controls.Tree
 
 		[Category("Behavior")]
 		public event EventHandler<TreeViewAdvEventArgs> Collapsing;
-		internal void OnCollapsing(TreeNodeAdv node)
+		private void OnCollapsing(TreeNodeAdv node)
 		{
 			if (Collapsing != null)
 				Collapsing(this, new TreeViewAdvEventArgs(node));
@@ -104,7 +108,7 @@ namespace Aga.Controls.Tree
 
 		[Category("Behavior")]
 		public event EventHandler<TreeViewAdvEventArgs> Collapsed;
-		internal void OnCollapsed(TreeNodeAdv node)
+		private void OnCollapsed(TreeNodeAdv node)
 		{
 			if (Collapsed != null)
 				Collapsed(this, new TreeViewAdvEventArgs(node));
@@ -112,7 +116,7 @@ namespace Aga.Controls.Tree
 
 		[Category("Behavior")]
 		public event EventHandler<TreeViewAdvEventArgs> Expanding;
-		internal void OnExpanding(TreeNodeAdv node)
+		private void OnExpanding(TreeNodeAdv node)
 		{
 			if (Expanding != null)
 				Expanding(this, new TreeViewAdvEventArgs(node));
@@ -120,7 +124,7 @@ namespace Aga.Controls.Tree
 
 		[Category("Behavior")]
 		public event EventHandler<TreeViewAdvEventArgs> Expanded;
-		internal void OnExpanded(TreeNodeAdv node)
+		private void OnExpanded(TreeNodeAdv node)
 		{
 			if (Expanded != null)
 				Expanded(this, new TreeViewAdvEventArgs(node));
@@ -161,7 +165,7 @@ namespace Aga.Controls.Tree
 			_readonlySelection = new ReadOnlyCollection<TreeNodeAdv>(_selection);
 			_columns = new TreeColumnCollection(this);
 			_toolTip = new ToolTip();
-			_dragTimer = new Timer();
+			_dragTimer = new System.Windows.Forms.Timer();
 			_dragTimer.Interval = 100;
 			_dragTimer.Tick += new EventHandler(DragTimerTick);
 			
@@ -180,6 +184,34 @@ namespace Aga.Controls.Tree
 			_controls = new NodeControlsCollection(this);
 
             Font = _font;
+			ExpandingIcon.IconChanged += ExpandingIconChanged;
+		}
+
+		void ExpandingIconChanged(object sender, EventArgs e)
+		{
+			if (IsHandleCreated)
+				Invoke(new MethodInvoker(DrawIcons));
+		}
+
+		private void DrawIcons()
+		{
+			Graphics gr = Graphics.FromHwnd(this.Handle);
+			int firstRowY = _rowLayout.GetRowBounds(FirstVisibleRow).Y;
+			DrawContext context = new DrawContext();
+			context.Graphics = gr;
+			for (int i = 0; i < _expandingNodes.Count; i++)
+			{
+				foreach (NodeControlInfo info in GetNodeControls(_expandingNodes[i]))
+					if (info.Control is ExpandingIcon)
+					{
+						Rectangle rect = info.Bounds;
+						rect.X -= OffsetX;
+						rect.Y -= firstRowY;
+						context.Bounds = rect;
+						info.Control.Draw(info.Node, context);
+					}
+			}
+			gr.Dispose();
 		}
 
 		#region Public Methods
@@ -557,6 +589,11 @@ namespace Aga.Controls.Tree
 
 		internal void ReadChilds(TreeNodeAdv parentNode)
 		{
+			ReadChilds(parentNode, false);
+		}
+
+		internal void ReadChilds(TreeNodeAdv parentNode, bool performFullUpdate)
+		{
 			if (!parentNode.IsLeaf)
 			{
 				parentNode.IsExpandedOnce = true;
@@ -575,7 +612,7 @@ namespace Aga.Controls.Tree
 								for (int i = 0; i < oldNodes.Count; i++)
 									if (obj == oldNodes[i].Tag)
 									{
-										oldNodes[i].Width = oldNodes[i].Height = null;
+										oldNodes[i].RightBounds = oldNodes[i].Height = null;
 										AddNode(parentNode, -1, oldNodes[i]);
 										oldNodes.RemoveAt(i);
 										found = true;
@@ -584,6 +621,9 @@ namespace Aga.Controls.Tree
 							}
 							if (!found)
 								AddNewNode(parentNode, obj, -1);
+
+							if (performFullUpdate)
+								FullUpdate();
 						}
 				}
 
@@ -610,9 +650,108 @@ namespace Aga.Controls.Tree
 				ReadChilds(node);
 		}
 
+		private struct ExpandArgs
+		{
+			public TreeNodeAdv Node;
+			public bool Value;
+			public bool IgnoreChildren;
+		}
+
+		internal void SetIsExpanded(TreeNodeAdv node, bool value, bool ignoreChildren)
+		{
+			ExpandArgs eargs = new ExpandArgs();
+			eargs.Node = node;
+			eargs.Value = value;
+			eargs.IgnoreChildren = ignoreChildren;
+
+			if (AsyncExpanding && LoadOnDemand && !Thread.CurrentThread.IsThreadPoolThread)
+			{
+				WaitCallback wc = delegate(object argument) { SetIsExpanded((ExpandArgs)argument); };
+				ThreadPool.QueueUserWorkItem(wc, eargs);
+			}
+			else
+				SetIsExpanded(eargs);
+		}
+
+		private void SetIsExpanded(ExpandArgs eargs)
+		{
+			bool update = !eargs.IgnoreChildren && !AsyncExpanding;
+			if (update)
+				BeginUpdate();
+			try
+			{
+				if (IsMyNode(eargs.Node) && eargs.Node.IsExpanded != eargs.Value)
+					SetIsExpanded(eargs.Node, eargs.Value);
+
+				if (!eargs.IgnoreChildren)
+					SetIsExpandedRecursive(eargs.Node, eargs.Value);
+			}
+			finally
+			{
+				if (update)
+					EndUpdate();
+			}
+		}
+
+		internal void SetIsExpanded(TreeNodeAdv node, bool value)
+		{
+			if (Root == node && !value)
+				return; //Can't collapse root node
+
+			if (value)
+				OnExpanding(node);
+			else
+				OnCollapsing(node);
+
+			if (value && !node.IsExpandedOnce)
+			{
+				if (AsyncExpanding && LoadOnDemand)
+				{
+					AddExpandingNode(node);
+					node.AssignIsExpanded(true);
+					Invalidate();
+				}
+				ReadChilds(node, AsyncExpanding);
+				RemoveExpandingNode(node);
+			}
+			node.AssignIsExpanded(value);
+			SmartFullUpdate();
+
+			if (value)
+				OnExpanded(node);
+			else
+				OnCollapsed(node);
+		}
+
+		private void RemoveExpandingNode(TreeNodeAdv node)
+		{
+			node.IsExpandingNow = false;
+			_expandingNodes.Remove(node);
+			if (_expandingNodes.Count == 0)
+				ExpandingIcon.Stop();
+		}
+
+		private void AddExpandingNode(TreeNodeAdv node)
+		{
+			node.IsExpandingNow = true;
+			_expandingNodes.Add(node);
+			if (_expandingNodes.Count > 0)
+				ExpandingIcon.Start();
+		}
+
+		internal void SetIsExpandedRecursive(TreeNodeAdv root, bool value)
+		{
+			//foreach (TreeNodeAdv node in root.Nodes)
+			for (int i = 0; i < root.Nodes.Count; i++)
+			{
+				TreeNodeAdv node = root.Nodes[i];
+				node.IsExpanded = value;
+				SetIsExpandedRecursive(node, value);
+			}
+		}
+
 		private void CreateRowMap()
 		{
-			//TODO: cache node bounds
 			RowMap.Clear();
 			int row = 0;
 			_contentWidth = 0;
@@ -637,12 +776,12 @@ namespace Aga.Controls.Tree
 
 		private int GetNodeWidth(TreeNodeAdv node)
 		{
-			if (node.Width == null)
+			if (node.RightBounds == null)
 			{
 				Rectangle res = GetNodeBounds(GetNodeControls(node, Rectangle.Empty));
-				node.Width = res.Width;
+				node.RightBounds = res.Right;
 			}
-			return node.Width.Value;
+			return node.RightBounds.Value;
 		}
 
 		internal Rectangle GetNodeBounds(TreeNodeAdv node)
@@ -742,7 +881,9 @@ namespace Aga.Controls.Tree
 			if (!root.IsExpandedOnce && readChilds)
 				ReadChilds(root);
 
-			foreach (TreeNodeAdv node in root.Nodes)
+			for (int i = 0; i < root.Nodes.Count; i++)
+			{
+				TreeNodeAdv node = root.Nodes[i];
 				if (node.Tag == path.FullPath[level])
 				{
 					if (level == path.FullPath.Length - 1)
@@ -750,6 +891,7 @@ namespace Aga.Controls.Tree
 					else
 						return FindNode(node, path, level + 1, readChilds);
 				}
+			}
 			return null;
 		}
 
@@ -962,7 +1104,7 @@ namespace Aga.Controls.Tree
 					if (index >= 0 && index < parent.Nodes.Count)
 					{
 						TreeNodeAdv node = parent.Nodes[index];
-						node.Height = node.Width = null;
+						node.Height = node.RightBounds = null;
 					}
 					else
 						throw new ArgumentOutOfRangeException("Index out of range");
@@ -975,7 +1117,7 @@ namespace Aga.Controls.Tree
 					foreach (object obj in e.Children)
 						if (node.Tag == obj)
 						{
-							node.Height = node.Width = null;
+							node.Height = node.RightBounds = null;
 						}
 				}
 			}

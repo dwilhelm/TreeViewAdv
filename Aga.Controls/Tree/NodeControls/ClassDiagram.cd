@@ -26,7 +26,7 @@
     <Position X="1.5" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <FileName>Tree\NodeControls\NodeControl.cs</FileName>
-      <HashCode>AAAAABEAgIgBkkIQAAkAQAAwAAAFEIQAAEBIAAAAAAA=</HashCode>
+      <HashCode>AAAAAJAAgIgBkkoQAAgAQAAwAAABEIQAAEBIAAAAAAA=</HashCode>
     </TypeIdentifier>
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
@@ -50,7 +50,7 @@
     <Position X="3" Y="5" Width="1.5" />
     <TypeIdentifier>
       <FileName>Tree\NodeControls\BaseTextControl.cs</FileName>
-      <HashCode>AAAAIABQACAAIgAAAAAEAQA8AAiFAAAwAAAAAAACAMA=</HashCode>
+      <HashCode>AAAAICBQACAAIgAABCAEAQA8AgmFgAAwAAAAACACAMA=</HashCode>
     </TypeIdentifier>
   </Class>
   <Class Name="Aga.Controls.Tree.NodeControls.NodeTextBox" Collapsed="true">
@@ -64,7 +64,7 @@
     <Position X="3" Y="4" Width="1.5" />
     <TypeIdentifier>
       <FileName>Tree\NodeControls\EditableControl.cs</FileName>
-      <HashCode>QQAgAAAACCgkAMAABAEEkADAEAAUEAAABAGoAAAAAQA=</HashCode>
+      <HashCode>QQAgAAAACGgkAMAABAEEkADAEAAUEAAABAGoAAAAAQA=</HashCode>
     </TypeIdentifier>
   </Class>
   <Class Name="Aga.Controls.Tree.NodeControls.NodeComboBox" Collapsed="true">
@@ -85,7 +85,14 @@
     <Position X="4" Y="2.75" Width="1.5" />
     <TypeIdentifier>
       <FileName>Tree\NodeControls\InteractiveControl.cs</FileName>
-      <HashCode>AAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAA=</HashCode>
+      <HashCode>AAAABAAAAAAAAAAACAAAAAAAABAAAQAAAAAAAAIAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Aga.Controls.Tree.NodeControls.ExpandingMark" Collapsed="true">
+    <Position X="5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Tree\NodeControls\ExpandingMark.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAgAAAAAAAAAgAAAAAAAAAAAAAAAAAAA=</HashCode>
     </TypeIdentifier>
   </Class>
 </ClassDiagram>

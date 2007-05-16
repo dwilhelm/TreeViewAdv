@@ -125,7 +125,7 @@ namespace Aga.Controls.Tree.NodeControls
 			else
 			{
 				SizeF sf = context.Graphics.MeasureString(label, font);
-				s = new Size((int)sf.Width, (int)sf.Height);
+				s = new Size((int)Math.Ceiling(sf.Width), (int)Math.Ceiling(sf.Height)); 
 			}
 
 			if (!s.IsEmpty)
@@ -175,7 +175,10 @@ namespace Aga.Controls.Tree.NodeControls
 			{
 				focusRect.Width--;
 				focusRect.Height--;
-				context.Graphics.DrawRectangle(Pens.Gray, focusRect);
+				if (context.DrawSelection == DrawSelectionMode.None)
+					_focusPen.Color = SystemColors.ControlText;
+				else
+					_focusPen.Color = SystemColors.InactiveCaption;
 				context.Graphics.DrawRectangle(_focusPen, focusRect);
 			}
 			if (UseCompatibleTextRendering)

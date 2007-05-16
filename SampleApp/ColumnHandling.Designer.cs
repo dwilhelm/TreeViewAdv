@@ -65,6 +65,7 @@
 			// 
 			this.treeColumn1.Header = "Hiddenable";
 			this.treeColumn1.SortOrder = System.Windows.Forms.SortOrder.None;
+			this.treeColumn1.TooltipText = "qweqweqwe";
 			this.treeColumn1.Width = 100;
 			// 
 			// treeColumn2
@@ -72,6 +73,7 @@
 			this.treeColumn2.Header = "Min width 10";
 			this.treeColumn2.MinColumnWidth = 10;
 			this.treeColumn2.SortOrder = System.Windows.Forms.SortOrder.None;
+			this.treeColumn2.TooltipText = "xcvxcxcvxcvxv";
 			this.treeColumn2.Width = 150;
 			// 
 			// treeColumn3
@@ -80,6 +82,7 @@
 			this.treeColumn3.MaxColumnWidth = 100;
 			this.treeColumn3.MinColumnWidth = 100;
 			this.treeColumn3.SortOrder = System.Windows.Forms.SortOrder.None;
+			this.treeColumn3.TooltipText = "12312312313";
 			this.treeColumn3.Width = 100;
 			// 
 			// treeColumn4
@@ -87,12 +90,14 @@
 			this.treeColumn4.Header = "Max width 150";
 			this.treeColumn4.MaxColumnWidth = 150;
 			this.treeColumn4.SortOrder = System.Windows.Forms.SortOrder.None;
+			this.treeColumn4.TooltipText = null;
 			this.treeColumn4.Width = 150;
 			// 
 			// treeColumn5
 			// 
 			this.treeColumn5.Header = "Hiddenable";
 			this.treeColumn5.SortOrder = System.Windows.Forms.SortOrder.None;
+			this.treeColumn5.TooltipText = null;
 			this.treeColumn5.Width = 75;
 			// 
 			// ColumnHandling

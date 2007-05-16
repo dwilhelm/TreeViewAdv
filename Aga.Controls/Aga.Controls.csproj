@@ -49,6 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GifDecoder.cs" />
     <Compile Include="ResourceHelper.cs" />
     <Compile Include="StringCollectionEditor.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
@@ -59,6 +60,9 @@
     <Compile Include="BitmapHelper.cs" />
     <Compile Include="TimeCounter.cs" />
     <Compile Include="Tree\Input\ReorderColumnState.cs" />
+    <Compile Include="Tree\NodeControls\ExpandingIcon.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Tree\NodeControls\InteractiveControl.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -172,6 +176,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\loading_icon" />
     <None Include="Tree\ClassDiagram.cd" />
     <None Include="Tree\NodeControls\ClassDiagram.cd" />
     <None Include="Resources\unknown.bmp" />

@@ -67,6 +67,14 @@ namespace Aga.Controls.Tree
 			}
 		}
 
+		private string _tooltipText;
+		[Localizable(true)]
+		public string TooltipText
+		{
+			get { return _tooltipText; }
+			set { _tooltipText = value; }
+		}
+
 		private int _width;
 		[DefaultValue(50), Localizable(true)]
 		public int Width

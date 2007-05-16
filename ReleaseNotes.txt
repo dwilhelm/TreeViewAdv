@@ -1,5 +1,9 @@
-1.5.1:
+1.6:
++ Asynchronous nodes expanding feature added
++ Tooltips added to the column headers
 + Bug in CheckBoxNodeControl using in VirtualMode fixed
++ Bug in HScrolllBar fixed
+
 
 1.5:
 + Column resizing behaviour improved

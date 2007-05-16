@@ -155,11 +155,16 @@ namespace Aga.Controls.Tree
             get { return _isExpanded; }
             set 
 			{
-				if (Tree == null)
-					_isExpanded = value;
-				else if (Tree.IsMyNode(this) && _isExpanded != value)
-					AssignIsExpanded(value);
+				if (value)
+					Expand();
+				else
+					Collapse();
 			}
+		}
+
+		internal void AssignIsExpanded(bool value)
+		{
+			_isExpanded = value;
 		}
 
 		private TreeNodeAdv _parent;
@@ -255,11 +260,11 @@ namespace Aga.Controls.Tree
 			}
 		}
 
-		private int? _width;
-		internal int? Width
+		private int? _rightBounds;
+		internal int? RightBounds
 		{
-			get { return _width; }
-			set { _width = value; }
+			get { return _rightBounds; }
+			set { _rightBounds = value; }
 		}
 
 		private int? _height;
@@ -267,6 +272,13 @@ namespace Aga.Controls.Tree
 		{
 			get { return _height; }
 			set { _height = value; }
+		}
+
+		private bool _isExpandingNow;
+		internal bool IsExpandingNow
+		{
+			get { return _isExpandingNow; }
+			set { _isExpandingNow = value; }
 		}
 
 		#endregion
@@ -294,7 +306,8 @@ namespace Aga.Controls.Tree
 
         public void Collapse()
         {
-            Collapse(true);
+			if (_isExpanded)
+				Collapse(true);
         }
 
         public void CollapseAll()
@@ -309,7 +322,8 @@ namespace Aga.Controls.Tree
 
 		public void Expand()
 		{
-			Expand(true);
+			if (!_isExpanded)
+				Expand(true);
 		}
 
 		public void ExpandAll()
@@ -324,54 +338,14 @@ namespace Aga.Controls.Tree
 
 		private void SetIsExpanded(bool value, bool ignoreChildren)
 		{
-			if (!ignoreChildren)
-				Tree.BeginUpdate();
-			try
+			if (Tree == null)
 			{
-				if (Tree == null)
-					_isExpanded = value;
-				else if (Tree.IsMyNode(this) && _isExpanded != value)
-					AssignIsExpanded(value);
-
+				_isExpanded = value;
 				if (!ignoreChildren)
-					SetIsExpandedRecursive(this, value);
+					Tree.SetIsExpandedRecursive(this, value);
 			}
-			finally
-			{
-				if (!ignoreChildren)
-					Tree.EndUpdate();
-			}
-		}
-
-        private void SetIsExpandedRecursive(TreeNodeAdv root, bool value)
-        {
-            foreach (TreeNodeAdv node in root.Nodes)
-            {
-                node.IsExpanded = value;
-                SetIsExpandedRecursive(node, value);
-            }
-        }
-
-        private void AssignIsExpanded(bool value)
-		{
-			if (Tree != null && Tree.Root == this && !value)
-				return; //Can't collapse root node
-
-			if (value)
-				Tree.OnExpanding(this);
 			else
-				Tree.OnCollapsing(this);
-
-			if (value && !_isExpandedOnce)
-				Tree.ReadChilds(this);
-
-			_isExpanded = value;
-			Tree.SmartFullUpdate();
-
-			if (value)
-				Tree.OnExpanded(this);
-			else
-				Tree.OnCollapsed(this);
+				Tree.SetIsExpanded(this, value, ignoreChildren);
 		}
 
 		#region ISerializable Members

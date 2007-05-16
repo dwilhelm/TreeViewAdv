@@ -114,6 +114,7 @@ namespace SampleApp
 			// 
 			this.treeColumn1.Header = "Name";
 			this.treeColumn1.SortOrder = System.Windows.Forms.SortOrder.None;
+			this.treeColumn1.TooltipText = "File name";
 			this.treeColumn1.Width = 250;
 			// 
 			// treeColumn2
@@ -121,6 +122,7 @@ namespace SampleApp
 			this.treeColumn2.Header = "Size";
 			this.treeColumn2.SortOrder = System.Windows.Forms.SortOrder.None;
 			this.treeColumn2.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+			this.treeColumn2.TooltipText = "File size";
 			this.treeColumn2.Width = 100;
 			// 
 			// treeColumn3
@@ -128,6 +130,7 @@ namespace SampleApp
 			this.treeColumn3.Header = "Date";
 			this.treeColumn3.SortOrder = System.Windows.Forms.SortOrder.None;
 			this.treeColumn3.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+			this.treeColumn3.TooltipText = "File date";
 			this.treeColumn3.Width = 150;
 			// 
 			// nodeCheckBox1

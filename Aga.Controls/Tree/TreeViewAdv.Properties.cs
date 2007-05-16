@@ -539,6 +539,18 @@ namespace Aga.Controls.Tree
 			}
 		}
 
+		private bool _asyncExpanding;
+		/// <summary>
+		/// When set to true, node contents will be read in background thread
+		/// </summary>
+		[Category("Behavior")]
+		[DefaultValue(false)]
+		public bool AsyncExpanding
+		{
+			get { return _asyncExpanding; }
+			set { _asyncExpanding = value; }
+		}
+
 		#endregion
 
 		#region RunTime

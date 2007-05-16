@@ -216,20 +216,13 @@ namespace Aga.Controls.Tree
 
 			base.OnMouseMove(e);
 			SetCursor(e);
-			if (e.Location.Y <= ColumnHeaderHeight)
+			UpdateToolTip(e);
+			if (ItemDragMode && Dist(e.Location, ItemDragStart) > ItemDragSensivity
+				&& CurrentNode != null && CurrentNode.IsSelected)
 			{
+				ItemDragMode = false;
 				_toolTip.Active = false;
-			}
-			else
-			{
-				UpdateToolTip(e);
-				if (ItemDragMode && Dist(e.Location, ItemDragStart) > ItemDragSensivity
-					&& CurrentNode != null && CurrentNode.IsSelected)
-				{
-					ItemDragMode = false;
-					_toolTip.Active = false;
-					OnItemDrag(e.Button, Selection.ToArray());
-				}
+				OnItemDrag(e.Button, Selection.ToArray());
 			}
 		}
 
@@ -314,32 +307,49 @@ namespace Aga.Controls.Tree
 			return null;
 		}
 
-		TreeNodeAdv _hoverNode;
-		NodeControl _hoverControl;
+		TreeColumn _tooltipColumn;
 		private void UpdateToolTip(MouseEventArgs e)
+		{
+			TreeColumn col = GetColumnAt(e.Location);
+			if (col != null)
+			{
+				if (col != _tooltipColumn)
+					SetTooltip(col.TooltipText);
+			}
+			else
+				DisplayNodesTooltip(e);
+			_tooltipColumn = col;
+		}
+
+		TreeNodeAdv _hotNode;
+		NodeControl _hotControl;
+		private void DisplayNodesTooltip(MouseEventArgs e)
 		{
 			if (ShowNodeToolTips)
 			{
 				TreeNodeAdvMouseEventArgs args = CreateMouseArgs(e);
 				if (args.Node != null && args.Control != null)
 				{
-					if (args.Node != _hoverNode || args.Control != _hoverControl)
-					{
-						string msg = GetNodeToolTip(args);
-						if (!String.IsNullOrEmpty(msg))
-						{
-							_toolTip.SetToolTip(this, msg);
-							_toolTip.Active = true;
-						}
-						else
-							_toolTip.SetToolTip(this, null);
-					}
+					if (args.Node != _hotNode || args.Control != _hotControl)
+						SetTooltip(GetNodeToolTip(args));
 				}
 				else
 					_toolTip.SetToolTip(this, null);
 
-				_hoverControl = args.Control;
-				_hoverNode = args.Node;
+				_hotControl = args.Control;
+				_hotNode = args.Node;
+			}
+			else
+				_toolTip.SetToolTip(this, null);
+		}
+
+		private void SetTooltip(string text)
+		{
+			if (!String.IsNullOrEmpty(text))
+			{
+				_toolTip.Active = false;
+				_toolTip.SetToolTip(this, text);
+				_toolTip.Active = true;
 			}
 			else
 				_toolTip.SetToolTip(this, null);
