@@ -14,6 +14,7 @@ using Aga.Controls.Tree.NodeControls;
 using System.Drawing.Imaging;
 using System.Diagnostics;
 using System.Threading;
+using Aga.Controls.Threading;
 
 
 namespace Aga.Controls.Tree
@@ -39,8 +40,8 @@ namespace Aga.Controls.Tree
 		private DrawContext _measureContext;
 		private TreeColumn _hotColumn = null;
 		private IncrementalSearch _search;
-
 		private List<TreeNodeAdv> _expandingNodes = new List<TreeNodeAdv>();
+		private AbortableThreadPool _threadPool = new AbortableThreadPool();
 
 		#region Public Events
 
@@ -657,6 +658,15 @@ namespace Aga.Controls.Tree
 			public bool IgnoreChildren;
 		}
 
+		public void AbortBackgroundExpandingThreads()
+		{
+			_threadPool.CancelAll(true);
+			for (int i = 0; i < _expandingNodes.Count; i++)
+				_expandingNodes[i].IsExpandingNow = false;
+			_expandingNodes.Clear();
+			Invalidate();
+		}
+
 		internal void SetIsExpanded(TreeNodeAdv node, bool value, bool ignoreChildren)
 		{
 			ExpandArgs eargs = new ExpandArgs();
@@ -664,10 +674,10 @@ namespace Aga.Controls.Tree
 			eargs.Value = value;
 			eargs.IgnoreChildren = ignoreChildren;
 
-			if (AsyncExpanding && LoadOnDemand && !Thread.CurrentThread.IsThreadPoolThread)
+			if (AsyncExpanding && LoadOnDemand && !_threadPool.IsMyThread(Thread.CurrentThread))
 			{
 				WaitCallback wc = delegate(object argument) { SetIsExpanded((ExpandArgs)argument); };
-				ThreadPool.QueueUserWorkItem(wc, eargs);
+				_threadPool.QueueUserWorkItem(wc, eargs);
 			}
 			else
 				SetIsExpanded(eargs);
@@ -727,21 +737,17 @@ namespace Aga.Controls.Tree
 		{
 			node.IsExpandingNow = false;
 			_expandingNodes.Remove(node);
-			if (_expandingNodes.Count == 0)
-				ExpandingIcon.Stop();
 		}
 
 		private void AddExpandingNode(TreeNodeAdv node)
 		{
 			node.IsExpandingNow = true;
 			_expandingNodes.Add(node);
-			if (_expandingNodes.Count > 0)
-				ExpandingIcon.Start();
+			ExpandingIcon.Start();
 		}
 
 		internal void SetIsExpandedRecursive(TreeNodeAdv root, bool value)
 		{
-			//foreach (TreeNodeAdv node in root.Nodes)
 			for (int i = 0; i < root.Nodes.Count; i++)
 			{
 				TreeNodeAdv node = root.Nodes[i];

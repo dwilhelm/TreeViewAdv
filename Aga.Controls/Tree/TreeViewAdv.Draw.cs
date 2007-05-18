@@ -76,7 +76,7 @@ namespace Aga.Controls.Tree
 			if ((GridLineStyle & GridLineStyle.Vertical) == GridLineStyle.Vertical)
 				DrawVerticalGridLines(e.Graphics, firstRowY);
 
-			if (_dropPosition.Node != null && DragMode)
+			if (_dropPosition.Node != null && DragMode && HighlightDropPosition)
                 DrawDropMark(e.Graphics);
 
             e.Graphics.ResetTransform();
@@ -95,7 +95,7 @@ namespace Aga.Controls.Tree
 			context.CurrentEditorOwner = _currentEditorOwner;
 			if (DragMode)
 			{
-				if ((_dropPosition.Node == node) && _dropPosition.Position == NodePosition.Inside)
+				if ((_dropPosition.Node == node) && _dropPosition.Position == NodePosition.Inside && HighlightDropPosition)
 					context.DrawSelection = DrawSelectionMode.Active;
 			}
 			else

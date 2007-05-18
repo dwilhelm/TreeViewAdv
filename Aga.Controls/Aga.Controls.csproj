@@ -58,6 +58,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="BitmapHelper.cs" />
+    <Compile Include="Threading\AbortableThreadPool.cs" />
+    <Compile Include="Threading\WorkItemStatus.cs" />
+    <Compile Include="Threading\WorkItem.cs" />
     <Compile Include="TimeCounter.cs" />
     <Compile Include="Tree\Input\ReorderColumnState.cs" />
     <Compile Include="Tree\NodeControls\ExpandingIcon.cs">

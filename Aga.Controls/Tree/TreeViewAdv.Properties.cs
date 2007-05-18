@@ -300,6 +300,7 @@ namespace Aga.Controls.Tree
 			{
 				if (_model != value)
 				{
+					AbortBackgroundExpandingThreads();
 					if (_model != null)
 						UnbindModelEvents();
 					_model = value;
@@ -519,6 +520,14 @@ namespace Aga.Controls.Tree
 				_dragDropMarkWidth = value;
 				CreateMarkPen();
 			}
+		}
+
+		private bool _highlightDropPosition = true;
+		[DefaultValue(true), Category("Behavior")]
+		public bool HighlightDropPosition
+		{
+			get { return _highlightDropPosition; }
+			set { _highlightDropPosition = value; }
 		}
 
 		private TreeColumnCollection _columns;

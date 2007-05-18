@@ -41,7 +41,7 @@ namespace Aga.Controls
 		private static GifDecoder GetGifDecoder(byte[] data)
 		{
 			using(MemoryStream ms = new MemoryStream(data))
-				return new GifDecoder(ms);
+				return new GifDecoder(ms, true);
 		}
 
     }

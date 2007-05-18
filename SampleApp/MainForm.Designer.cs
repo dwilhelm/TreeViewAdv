@@ -30,17 +30,19 @@ namespace SampleApp
 		{
 			this.tabControl1 = new System.Windows.Forms.TabControl();
 			this.tabPage2 = new System.Windows.Forms.TabPage();
-			this.tabPage3 = new System.Windows.Forms.TabPage();
-			this.tabPage1 = new System.Windows.Forms.TabPage();
-			this.tabPage4 = new System.Windows.Forms.TabPage();
-			this.tabPage5 = new System.Windows.Forms.TabPage();
-			this.tabPage6 = new System.Windows.Forms.TabPage();
 			this.simpleExample1 = new SampleApp.SimpleExample();
+			this.tabPage3 = new System.Windows.Forms.TabPage();
 			this.advancedExample1 = new SampleApp.AdvancedExample();
+			this.tabPage1 = new System.Windows.Forms.TabPage();
 			this.folderBrowser1 = new SampleApp.FolderBrowser();
+			this.tabPage4 = new System.Windows.Forms.TabPage();
 			this.performanceTest1 = new SampleApp.PerformanceTest();
+			this.tabPage5 = new System.Windows.Forms.TabPage();
 			this.hiddenColumn1 = new SampleApp.ColumnHandling();
+			this.tabPage6 = new System.Windows.Forms.TabPage();
 			this.backgroundExpand1 = new SampleApp.BackgroundExpand();
+			this.tabPage7 = new System.Windows.Forms.TabPage();
+			this.dataTableTreeExample1 = new SampleApp.DataTableTreeExample();
 			this.tabControl1.SuspendLayout();
 			this.tabPage2.SuspendLayout();
 			this.tabPage3.SuspendLayout();
@@ -48,6 +50,7 @@ namespace SampleApp
 			this.tabPage4.SuspendLayout();
 			this.tabPage5.SuspendLayout();
 			this.tabPage6.SuspendLayout();
+			this.tabPage7.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// tabControl1
@@ -58,6 +61,7 @@ namespace SampleApp
 			this.tabControl1.Controls.Add(this.tabPage4);
 			this.tabControl1.Controls.Add(this.tabPage5);
 			this.tabControl1.Controls.Add(this.tabPage6);
+			this.tabControl1.Controls.Add(this.tabPage7);
 			this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.tabControl1.Location = new System.Drawing.Point(0, 0);
 			this.tabControl1.Name = "tabControl1";
@@ -76,6 +80,14 @@ namespace SampleApp
 			this.tabPage2.Text = "Simple Example";
 			this.tabPage2.UseVisualStyleBackColor = true;
 			// 
+			// simpleExample1
+			// 
+			this.simpleExample1.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.simpleExample1.Location = new System.Drawing.Point(3, 3);
+			this.simpleExample1.Name = "simpleExample1";
+			this.simpleExample1.Size = new System.Drawing.Size(820, 557);
+			this.simpleExample1.TabIndex = 0;
+			// 
 			// tabPage3
 			// 
 			this.tabPage3.Controls.Add(this.advancedExample1);
@@ -86,6 +98,14 @@ namespace SampleApp
 			this.tabPage3.TabIndex = 2;
 			this.tabPage3.Text = "Advanced Example";
 			this.tabPage3.UseVisualStyleBackColor = true;
+			// 
+			// advancedExample1
+			// 
+			this.advancedExample1.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.advancedExample1.Location = new System.Drawing.Point(3, 3);
+			this.advancedExample1.Name = "advancedExample1";
+			this.advancedExample1.Size = new System.Drawing.Size(820, 557);
+			this.advancedExample1.TabIndex = 0;
 			// 
 			// tabPage1
 			// 
@@ -98,6 +118,14 @@ namespace SampleApp
 			this.tabPage1.Text = "Folder Browser";
 			this.tabPage1.UseVisualStyleBackColor = true;
 			// 
+			// folderBrowser1
+			// 
+			this.folderBrowser1.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.folderBrowser1.Location = new System.Drawing.Point(3, 3);
+			this.folderBrowser1.Name = "folderBrowser1";
+			this.folderBrowser1.Size = new System.Drawing.Size(820, 557);
+			this.folderBrowser1.TabIndex = 0;
+			// 
 			// tabPage4
 			// 
 			this.tabPage4.Controls.Add(this.performanceTest1);
@@ -109,6 +137,14 @@ namespace SampleApp
 			this.tabPage4.Text = "Performance Test";
 			this.tabPage4.UseVisualStyleBackColor = true;
 			// 
+			// performanceTest1
+			// 
+			this.performanceTest1.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.performanceTest1.Location = new System.Drawing.Point(3, 3);
+			this.performanceTest1.Name = "performanceTest1";
+			this.performanceTest1.Size = new System.Drawing.Size(820, 557);
+			this.performanceTest1.TabIndex = 0;
+			// 
 			// tabPage5
 			// 
 			this.tabPage5.Controls.Add(this.hiddenColumn1);
@@ -118,6 +154,14 @@ namespace SampleApp
 			this.tabPage5.TabIndex = 4;
 			this.tabPage5.Text = "Column Handling";
 			this.tabPage5.UseVisualStyleBackColor = true;
+			// 
+			// hiddenColumn1
+			// 
+			this.hiddenColumn1.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.hiddenColumn1.Location = new System.Drawing.Point(0, 0);
+			this.hiddenColumn1.Name = "hiddenColumn1";
+			this.hiddenColumn1.Size = new System.Drawing.Size(826, 563);
+			this.hiddenColumn1.TabIndex = 0;
 			// 
 			// tabPage6
 			// 
@@ -130,46 +174,6 @@ namespace SampleApp
 			this.tabPage6.Text = "Background Expanding";
 			this.tabPage6.UseVisualStyleBackColor = true;
 			// 
-			// simpleExample1
-			// 
-			this.simpleExample1.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.simpleExample1.Location = new System.Drawing.Point(3, 3);
-			this.simpleExample1.Name = "simpleExample1";
-			this.simpleExample1.Size = new System.Drawing.Size(820, 557);
-			this.simpleExample1.TabIndex = 0;
-			// 
-			// advancedExample1
-			// 
-			this.advancedExample1.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.advancedExample1.Location = new System.Drawing.Point(3, 3);
-			this.advancedExample1.Name = "advancedExample1";
-			this.advancedExample1.Size = new System.Drawing.Size(820, 557);
-			this.advancedExample1.TabIndex = 0;
-			// 
-			// folderBrowser1
-			// 
-			this.folderBrowser1.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.folderBrowser1.Location = new System.Drawing.Point(3, 3);
-			this.folderBrowser1.Name = "folderBrowser1";
-			this.folderBrowser1.Size = new System.Drawing.Size(820, 557);
-			this.folderBrowser1.TabIndex = 0;
-			// 
-			// performanceTest1
-			// 
-			this.performanceTest1.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.performanceTest1.Location = new System.Drawing.Point(3, 3);
-			this.performanceTest1.Name = "performanceTest1";
-			this.performanceTest1.Size = new System.Drawing.Size(820, 557);
-			this.performanceTest1.TabIndex = 0;
-			// 
-			// hiddenColumn1
-			// 
-			this.hiddenColumn1.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.hiddenColumn1.Location = new System.Drawing.Point(0, 0);
-			this.hiddenColumn1.Name = "hiddenColumn1";
-			this.hiddenColumn1.Size = new System.Drawing.Size(826, 563);
-			this.hiddenColumn1.TabIndex = 0;
-			// 
 			// backgroundExpand1
 			// 
 			this.backgroundExpand1.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -177,6 +181,25 @@ namespace SampleApp
 			this.backgroundExpand1.Name = "backgroundExpand1";
 			this.backgroundExpand1.Size = new System.Drawing.Size(820, 557);
 			this.backgroundExpand1.TabIndex = 0;
+			// 
+			// tabPage7
+			// 
+			this.tabPage7.Controls.Add(this.dataTableTreeExample1);
+			this.tabPage7.Location = new System.Drawing.Point(4, 22);
+			this.tabPage7.Name = "tabPage7";
+			this.tabPage7.Padding = new System.Windows.Forms.Padding(3);
+			this.tabPage7.Size = new System.Drawing.Size(826, 563);
+			this.tabPage7.TabIndex = 6;
+			this.tabPage7.Text = "DataTableModel";
+			this.tabPage7.UseVisualStyleBackColor = true;
+			// 
+			// dataTableTreeExample1
+			// 
+			this.dataTableTreeExample1.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.dataTableTreeExample1.Location = new System.Drawing.Point(3, 3);
+			this.dataTableTreeExample1.Name = "dataTableTreeExample1";
+			this.dataTableTreeExample1.Size = new System.Drawing.Size(820, 557);
+			this.dataTableTreeExample1.TabIndex = 0;
 			// 
 			// MainForm
 			// 
@@ -193,6 +216,7 @@ namespace SampleApp
 			this.tabPage4.ResumeLayout(false);
 			this.tabPage5.ResumeLayout(false);
 			this.tabPage6.ResumeLayout(false);
+			this.tabPage7.ResumeLayout(false);
 			this.ResumeLayout(false);
 
 		}
@@ -212,6 +236,8 @@ namespace SampleApp
         private ColumnHandling hiddenColumn1;
 		private System.Windows.Forms.TabPage tabPage6;
 		private BackgroundExpand backgroundExpand1;
+		private System.Windows.Forms.TabPage tabPage7;
+		private DataTableTreeExample dataTableTreeExample1;
 	}
 }
 

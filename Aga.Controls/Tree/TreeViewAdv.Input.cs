@@ -10,24 +10,6 @@ namespace Aga.Controls.Tree
 {
 	public partial class TreeViewAdv
 	{
-		private void SetDropPosition(Point pt)
-		{
-			TreeNodeAdv node = GetNodeAt(pt);
-			_dropPosition.Node = node;
-			if (node != null)
-			{
-				Rectangle first = _rowLayout.GetRowBounds(FirstVisibleRow);
-				Rectangle bounds = _rowLayout.GetRowBounds(node.Row);
-				//float pos = (pt.Y - ColumnHeaderHeight - ((node.Row - FirstVisibleRow) * rowHeight)) / (float)rowHeight;
-				float pos = (pt.Y + first.Y - ColumnHeaderHeight - bounds.Y) / (float)bounds.Height;
-				if (pos < TopEdgeSensivity)
-					_dropPosition.Position = NodePosition.Before;
-				else if (pos > (1 - BottomEdgeSensivity))
-					_dropPosition.Position = NodePosition.After;
-				else
-					_dropPosition.Position = NodePosition.Inside;
-			}
-		}
 
 		#region Keys
 
@@ -381,6 +363,24 @@ namespace Aga.Controls.Tree
 		private bool _dragAutoScrollFlag = false;
 		private Bitmap _dragBitmap = null;
 
+		private void SetDropPosition(Point pt)
+		{
+			TreeNodeAdv node = GetNodeAt(pt);
+			_dropPosition.Node = node;
+			if (node != null)
+			{
+				Rectangle first = _rowLayout.GetRowBounds(FirstVisibleRow);
+				Rectangle bounds = _rowLayout.GetRowBounds(node.Row);
+				float pos = (pt.Y + first.Y - ColumnHeaderHeight - bounds.Y) / (float)bounds.Height;
+				if (pos < TopEdgeSensivity)
+					_dropPosition.Position = NodePosition.Before;
+				else if (pos > (1 - BottomEdgeSensivity))
+					_dropPosition.Position = NodePosition.After;
+				else
+					_dropPosition.Position = NodePosition.Inside;
+			}
+		}
+
 		private void DragTimerTick(object sender, EventArgs e)
 		{
 			_dragAutoScrollFlag = true;
@@ -410,7 +410,7 @@ namespace Aga.Controls.Tree
 		{
 			if (UseColumns || !DisplayDraggingNodes)
 				return;
-			
+
 			TreeNodeAdv[] nodes = data.GetData(typeof(TreeNodeAdv[])) as TreeNodeAdv[];
 			if (nodes != null && nodes.Length > 0)
 			{

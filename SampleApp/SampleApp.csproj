@@ -54,6 +54,14 @@
     <Compile Include="ColumnHandling.Designer.cs">
       <DependentUpon>ColumnHandling.cs</DependentUpon>
     </Compile>
+    <Compile Include="DataTableExample\DataRowNode.cs" />
+    <Compile Include="DataTableExample\DataTableTreeExample.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="DataTableExample\DataTableTreeExample.designer.cs">
+      <DependentUpon>DataTableTreeExample.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DataTableExample\DataTableTreeModel.cs" />
     <Compile Include="FolderItemSorter.cs" />
     <Compile Include="FolderItems.cs" />
     <Compile Include="FolderBrowser.cs">
@@ -143,6 +151,10 @@
     <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="DataTableExample\DataTableTreeExample.resx">
+      <DependentUpon>DataTableTreeExample.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Resources\loading_icon" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
