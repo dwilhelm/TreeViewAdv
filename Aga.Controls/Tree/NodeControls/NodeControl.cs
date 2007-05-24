@@ -89,7 +89,7 @@ namespace Aga.Controls.Tree.NodeControls
 		{
 			Rectangle r = context.Bounds;
 			Size s = GetActualSize(node, context);
-			Size bs = new Size(r.Width - LeftMargin, s.Height);
+			Size bs = new Size(r.Width - LeftMargin, Math.Min(r.Height, s.Height));
 			switch (VerticalAlign)
 			{
 				case VerticalAlignment.Top:

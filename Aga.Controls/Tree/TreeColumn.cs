@@ -32,7 +32,8 @@ namespace Aga.Controls.Tree
         private TextFormatFlags _headerFlags;
         private TextFormatFlags _baseHeaderFlags = TextFormatFlags.NoPadding | 
                                                    TextFormatFlags.EndEllipsis |
-                                                   TextFormatFlags.VerticalCenter;
+                                                   TextFormatFlags.VerticalCenter |
+												TextFormatFlags.PreserveGraphicsTranslateTransform;
 
 		#region Properties
 

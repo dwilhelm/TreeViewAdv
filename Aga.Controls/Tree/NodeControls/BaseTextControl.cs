@@ -89,7 +89,7 @@ namespace Aga.Controls.Tree.NodeControls
 			_focusPen = new Pen(Color.Black);
 			_focusPen.DashStyle = System.Drawing.Drawing2D.DashStyle.Dot;
 
-			_format = new StringFormat(StringFormatFlags.NoWrap | StringFormatFlags.FitBlackBox | StringFormatFlags.NoClip | StringFormatFlags.MeasureTrailingSpaces);
+			_format = new StringFormat(StringFormatFlags.NoClip | StringFormatFlags.FitBlackBox | StringFormatFlags.MeasureTrailingSpaces);
 			_baseFormatFlags = TextFormatFlags.PreserveGraphicsClipping |
                            TextFormatFlags.PreserveGraphicsTranslateTransform;
 			SetFormatFlags();
@@ -167,7 +167,7 @@ namespace Aga.Controls.Tree.NodeControls
 			Brush backgroundBrush;
 			Color textColor;
 			Font font;
-			CreateBrushes(node, context, out backgroundBrush, out textColor, out font);
+			CreateBrushes(node, context, out backgroundBrush, out textColor, out font, ref label);
 
 			if (backgroundBrush != null)
 				context.Graphics.FillRectangle(backgroundBrush, focusRect);
@@ -191,7 +191,7 @@ namespace Aga.Controls.Tree.NodeControls
 			}
 		}
 
-		private void CreateBrushes(TreeNodeAdv node, DrawContext context, out Brush backgroundBrush, out Color textColor, out Font font)
+		private void CreateBrushes(TreeNodeAdv node, DrawContext context, out Brush backgroundBrush, out Color textColor, out Font font, ref string label)
 		{
 			textColor = SystemColors.ControlText;
 			backgroundBrush = null;
@@ -215,6 +215,7 @@ namespace Aga.Controls.Tree.NodeControls
 			if (DrawText != null)
 			{
 				DrawEventArgs args = new DrawEventArgs(node, context);
+				args.Text = label;
 				args.TextColor = textColor;
 				args.BackgroundBrush = backgroundBrush;
 				args.Font = font;
@@ -224,6 +225,7 @@ namespace Aga.Controls.Tree.NodeControls
 				textColor = args.TextColor;
 				backgroundBrush = args.BackgroundBrush;
 				font = args.Font;
+				label = args.Text;
 			}
 		}
 
