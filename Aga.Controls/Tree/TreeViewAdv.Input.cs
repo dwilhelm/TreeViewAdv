@@ -433,11 +433,15 @@ namespace Aga.Controls.Tree
 							int height = _rowLayout.GetRowBounds(node.Row).Height;
 							foreach (NodeControl c in NodeControls)
 							{
-								int width = c.GetActualSize(node, context).Width;
-								rect = new Rectangle(x, y, width, height);
-								x += (width + 1);
-								context.Bounds = rect;
-								c.Draw(node, context);
+								Size s = c.GetActualSize(node, context);
+								if (!s.IsEmpty)
+								{
+									int width = s.Width;
+									rect = new Rectangle(x, y, width, height);
+									x += (width + 1);
+									context.Bounds = rect;
+									c.Draw(node, context);
+								}
 							}
 							y += height;
 							maxWidth = Math.Max(maxWidth, x);

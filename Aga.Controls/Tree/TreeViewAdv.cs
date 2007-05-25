@@ -496,10 +496,14 @@ namespace Aga.Controls.Tree
 			{
 				foreach (NodeControl c in NodeControls)
 				{
-					width = c.GetActualSize(node, _measureContext).Width;
-					rect = new Rectangle(x, y, width, rowRect.Height);
-					x += rect.Width;
-					yield return new NodeControlInfo(c, rect, node);
+					Size s = c.GetActualSize(node, _measureContext);
+					if (!s.IsEmpty)
+					{
+						width = s.Width;
+						rect = new Rectangle(x, y, width, rowRect.Height);
+						x += rect.Width;
+						yield return new NodeControlInfo(c, rect, node);
+					}
 				}
 			}
 			else
@@ -515,21 +519,25 @@ namespace Aga.Controls.Tree
 							NodeControl nc = NodeControls[i];
 							if (nc.ParentColumn == col)
 							{
-								bool isLastControl = true;
-								for (int k = i + 1; k < NodeControls.Count; k++)
-									if (NodeControls[k].ParentColumn == col)
-									{
-										isLastControl = false;
-										break;
-									}
+								Size s = nc.GetActualSize(node, _measureContext);
+								if (!s.IsEmpty)
+								{
+									bool isLastControl = true;
+									for (int k = i + 1; k < NodeControls.Count; k++)
+										if (NodeControls[k].ParentColumn == col)
+										{
+											isLastControl = false;
+											break;
+										}
 
-								width = right - x;
-								if (!isLastControl)
-									width = nc.GetActualSize(node, _measureContext).Width;
-								int maxWidth = Math.Max(0, right - x);
-								rect = new Rectangle(x, y, Math.Min(maxWidth, width), rowRect.Height);
-								x += width;
-								yield return new NodeControlInfo(nc, rect, node);
+									width = right - x;
+									if (!isLastControl)
+										width = s.Width;
+									int maxWidth = Math.Max(0, right - x);
+									rect = new Rectangle(x, y, Math.Min(maxWidth, width), rowRect.Height);
+									x += width;
+									yield return new NodeControlInfo(nc, rect, node);
+								}
 							}
 						}
 						x = right;
