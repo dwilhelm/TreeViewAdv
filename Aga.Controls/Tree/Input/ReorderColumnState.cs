@@ -28,11 +28,19 @@ namespace Aga.Controls.Tree
 			get { return _dropColumn; }
 		}
 
+		private int _dragOffset;
+		public int DragOffset
+		{
+			get { return _dragOffset; }
+		}
+
 		#endregion
 
-		public ReorderColumnState(TreeViewAdv tree, TreeColumn column)
+		public ReorderColumnState(TreeViewAdv tree, TreeColumn column, Point initialMouseLocation)
 			: base(tree, column)
 		{
+			_location = new Point(initialMouseLocation.X + Tree.OffsetX, 0);
+			_dragOffset = tree.GetColumnX(column) - initialMouseLocation.X;
 			_ghostImage = column.CreateGhostImage(new Rectangle(0, 0, column.Width, tree.ColumnHeaderHeight), tree.Font);
 		}
 

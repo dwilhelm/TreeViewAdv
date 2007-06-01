@@ -167,13 +167,12 @@ namespace Aga.Controls.Tree
                     x += c.Width;
 				}
 			}
-			
 
 			if (reorder != null)
 			{
 				if (reorder.DropColumn == null)
 					TreeColumn.DrawDropMark(gr, new Rectangle(x, 0, 0, ColumnHeaderHeight));
-				gr.DrawImage(reorder.GhostImage, reorder.Location);
+				gr.DrawImage(reorder.GhostImage, new Point(reorder.Location.X +  + reorder.DragOffset, reorder.Location.Y));
 			}
 		}
 

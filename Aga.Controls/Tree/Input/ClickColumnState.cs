@@ -29,7 +29,7 @@ namespace Aga.Controls.Tree
 			if (TreeViewAdv.Dist(_location, args.Location) > TreeViewAdv.ItemDragSensivity
 				&& Tree.AllowColumnReorder)
 			{
-				Tree.Input = new ReorderColumnState(Tree, Column);
+				Tree.Input = new ReorderColumnState(Tree, Column, args.Location);
 				Tree.UpdateView();
 			}
 			return true;

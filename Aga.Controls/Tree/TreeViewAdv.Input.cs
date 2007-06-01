@@ -256,6 +256,22 @@ namespace Aga.Controls.Tree
 			return null;
 		}
 
+		internal int GetColumnX(TreeColumn column)
+		{
+			int x = -OffsetX;
+			foreach (TreeColumn col in Columns)
+			{
+				if (col.IsVisible)
+				{
+					if (column == col)
+						return x;
+					else
+						x += col.Width;
+				}
+			}
+			return x;
+		}
+
 		internal TreeColumn GetColumnDividerAt(Point p)
 		{
 			if (p.Y > ColumnHeaderHeight)
