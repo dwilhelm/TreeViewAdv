@@ -10,8 +10,12 @@ namespace Aga.Controls.Tree
 {
 	public partial class TreeViewAdv
 	{
-
 		#region Keys
+
+		protected override bool IsInputChar(char charCode)
+		{
+			return true;
+		}
 
 		protected override bool IsInputKey(Keys keyData)
 		{
@@ -511,6 +515,5 @@ namespace Aga.Controls.Tree
 		}
 
 		#endregion
-
 	}
 }

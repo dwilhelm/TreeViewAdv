@@ -113,7 +113,7 @@ namespace SampleApp
 			this._autoRowHeight.Name = "_autoRowHeight";
 			this._autoRowHeight.Size = new System.Drawing.Size(101, 17);
 			this._autoRowHeight.TabIndex = 7;
-			this._autoRowHeight.Text = "AutoRowHeight";
+			this._autoRowHeight.Text = "&AutoRowHeight";
 			this._autoRowHeight.UseVisualStyleBackColor = true;
 			this._autoRowHeight.Click += new System.EventHandler(this._autoRowHeight_Click);
 			// 
