@@ -185,9 +185,11 @@ namespace Aga.Controls.Tree.NodeControls
 				TextRenderer.DrawText(context.Graphics, label, font, bounds, textColor, _formatFlags);
 			else
 			{
+				//TODO: cache brushes based on colors
 				Brush textBrush = new SolidBrush(textColor);
 				context.Graphics.DrawString(label, font, textBrush, bounds, _format);
 				textBrush.Dispose();
+				//context.Graphics.DrawString(label, font, Brushes.Black, bounds, _format);
 			}
 		}
 

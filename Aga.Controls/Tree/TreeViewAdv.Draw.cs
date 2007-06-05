@@ -155,16 +155,18 @@ namespace Aga.Controls.Tree
 			{
 				if (c.IsVisible)
 				{
-					Rectangle rect = new Rectangle(x, 0, c.Width, ColumnHeaderHeight - 1);
-					gr.SetClip(rect);
-					bool pressed = ((Input is ClickColumnState || reorder != null) && ((Input as ColumnState).Column == c));
-					c.Draw(gr, rect, Font, pressed, _hotColumn == c);
-					gr.ResetClip();
+					if (x >= OffsetX && x - OffsetX < this.Bounds.Width)// skip invisible columns
+					{
+						Rectangle rect = new Rectangle(x, 0, c.Width, ColumnHeaderHeight - 1);
+						gr.SetClip(rect);
+						bool pressed = ((Input is ClickColumnState || reorder != null) && ((Input as ColumnState).Column == c));
+						c.Draw(gr, rect, Font, pressed, _hotColumn == c);
+						gr.ResetClip();
 
-					if (reorder != null && reorder.DropColumn == c)
-						TreeColumn.DrawDropMark(gr, rect);
-
-                    x += c.Width;
+						if (reorder != null && reorder.DropColumn == c)
+							TreeColumn.DrawDropMark(gr, rect);
+					}
+					x += c.Width;
 				}
 			}
 
@@ -180,10 +182,13 @@ namespace Aga.Controls.Tree
 		{
 			foreach (NodeControlInfo item in GetNodeControls(node))
 			{
-				context.Bounds = item.Bounds;
-				context.Graphics.SetClip(context.Bounds);
-				item.Control.Draw(node, context);
-				context.Graphics.ResetClip();
+				if (item.Bounds.X >= OffsetX && item.Bounds.X - OffsetX < this.Bounds.Width)// skip invisible nodes
+				{
+					context.Bounds = item.Bounds;
+					context.Graphics.SetClip(context.Bounds);
+					item.Control.Draw(node, context);
+					context.Graphics.ResetClip();
+				}
 			}
 		}
 
