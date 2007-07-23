@@ -152,6 +152,7 @@ namespace SampleApp
 			this._name.LeftMargin = 3;
 			this._name.ParentColumn = this.treeColumn1;
 			this._name.Trimming = System.Drawing.StringTrimming.EllipsisCharacter;
+			this._name.UseCompatibleTextRendering = true;
 			// 
 			// _size
 			// 

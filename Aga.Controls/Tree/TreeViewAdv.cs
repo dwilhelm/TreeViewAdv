@@ -54,6 +54,14 @@ namespace Aga.Controls.Tree
 		}
 
 		[Category("Behavior")]
+		public event EventHandler<TreeNodeAdvMouseEventArgs> NodeMouseClick;
+		private void OnNodeMouseClick(TreeNodeAdvMouseEventArgs args)
+		{
+			if (NodeMouseClick != null)
+				NodeMouseClick(this, args);
+		}
+
+		[Category("Behavior")]
 		public event EventHandler<TreeNodeAdvMouseEventArgs> NodeMouseDoubleClick;
 		private void OnNodeMouseDoubleClick(TreeNodeAdvMouseEventArgs args)
 		{

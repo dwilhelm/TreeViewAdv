@@ -29,6 +29,8 @@ namespace SampleApp
 		{
 			InitializeComponent();
 
+			_tree.NodeMouseClick += new EventHandler<TreeNodeAdvMouseEventArgs>(_tree_NodeMouseClick);
+
 			_nodeTextBox.ToolTipProvider = new ToolTipProvider();
             _nodeTextBox.DrawText += new EventHandler<DrawEventArgs>(_nodeTextBox_DrawText);
 			_model = new TreeModel();
@@ -53,6 +55,11 @@ namespace SampleApp
 			_tree2.Model = model2;
 			for (int i = 0; i < 10; i++)
 				model2.Nodes.Add(new MyNode("Node" + i.ToString()));
+		}
+
+		void _tree_NodeMouseClick(object sender, TreeNodeAdvMouseEventArgs e)
+		{
+			Console.WriteLine("NodeMouseClick at " + e.Node.Index.ToString());
 		}
 
 		void _nodeTextBox_DrawText(object sender, DrawEventArgs e)

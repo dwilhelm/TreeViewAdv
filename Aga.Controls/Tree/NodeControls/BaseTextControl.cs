@@ -90,7 +90,7 @@ namespace Aga.Controls.Tree.NodeControls
 			_focusPen.DashStyle = System.Drawing.Drawing2D.DashStyle.Dot;
 
 			_format = new StringFormat(StringFormatFlags.NoClip | StringFormatFlags.FitBlackBox | StringFormatFlags.MeasureTrailingSpaces);
-			_baseFormatFlags = TextFormatFlags.PreserveGraphicsClipping |
+			_baseFormatFlags = TextFormatFlags.PreserveGraphicsClipping | TextFormatFlags.NoPrefix |
                            TextFormatFlags.PreserveGraphicsTranslateTransform;
 			SetFormatFlags();
 			LeftMargin = 3;
@@ -117,16 +117,18 @@ namespace Aga.Controls.Tree.NodeControls
 
 		protected Size GetLabelSize(TreeNodeAdv node, DrawContext context, string label)
 		{
+			PerformanceAnalyzer.Start("GetLabelSize");
 			CheckThread();
-			Font font = GetDrawingFont(node, context);
+			Font font = GetDrawingFont(node, context, label);
 			Size s = Size.Empty;
 			if (UseCompatibleTextRendering)
 				s = TextRenderer.MeasureText(label, font);
 			else
 			{
 				SizeF sf = context.Graphics.MeasureString(label, font);
-				s = new Size((int)Math.Ceiling(sf.Width), (int)Math.Ceiling(sf.Height)); 
+				s = Size.Ceiling(sf); 
 			}
+			PerformanceAnalyzer.Finish("GetLabelSize");
 
 			if (!s.IsEmpty)
 				return s;
@@ -134,12 +136,12 @@ namespace Aga.Controls.Tree.NodeControls
 				return new Size(10, Font.Height);
 		}
 
-		protected Font GetDrawingFont(TreeNodeAdv node, DrawContext context)
+		protected Font GetDrawingFont(TreeNodeAdv node, DrawContext context, string label)
 		{
 			Font font = context.Font;
 			if (DrawText != null)
 			{
-				DrawEventArgs args = new DrawEventArgs(node, context);
+				DrawEventArgs args = new DrawEventArgs(node, context, label);
 				args.Font = context.Font;
 				OnDrawText(args);
 				font = args.Font;
@@ -149,9 +151,10 @@ namespace Aga.Controls.Tree.NodeControls
 
 		protected void SetEditControlProperties(Control control, TreeNodeAdv node)
 		{
+			string label = GetLabel(node);
 			DrawContext context = new DrawContext();
 			context.Font = control.Font;
-			control.Font = GetDrawingFont(node, context);
+			control.Font = GetDrawingFont(node, context, label);
 		}
 
 		public override void Draw(TreeNodeAdv node, DrawContext context)
@@ -159,6 +162,7 @@ namespace Aga.Controls.Tree.NodeControls
 			if (context.CurrentEditorOwner == this && node == Parent.CurrentNode)
 				return;
 
+			PerformanceAnalyzer.Start("BaseTextControl.Draw");
 			string label = GetLabel(node);
 			Rectangle bounds = GetBounds(node, context);
 			Rectangle focusRect = new Rectangle(bounds.X, context.Bounds.Y,	
@@ -167,7 +171,7 @@ namespace Aga.Controls.Tree.NodeControls
 			Brush backgroundBrush;
 			Color textColor;
 			Font font;
-			CreateBrushes(node, context, out backgroundBrush, out textColor, out font, ref label);
+			CreateBrushes(node, context, label, out backgroundBrush, out textColor, out font, ref label);
 
 			if (backgroundBrush != null)
 				context.Graphics.FillRectangle(backgroundBrush, focusRect);
@@ -184,16 +188,25 @@ namespace Aga.Controls.Tree.NodeControls
 			if (UseCompatibleTextRendering)
 				TextRenderer.DrawText(context.Graphics, label, font, bounds, textColor, _formatFlags);
 			else
-			{
-				//TODO: cache brushes based on colors
-				Brush textBrush = new SolidBrush(textColor);
-				context.Graphics.DrawString(label, font, textBrush, bounds, _format);
-				textBrush.Dispose();
-				//context.Graphics.DrawString(label, font, Brushes.Black, bounds, _format);
-			}
+				context.Graphics.DrawString(label, font, GetFrush(textColor), bounds, _format);
+			PerformanceAnalyzer.Finish("BaseTextControl.Draw");
 		}
 
-		private void CreateBrushes(TreeNodeAdv node, DrawContext context, out Brush backgroundBrush, out Color textColor, out Font font, ref string label)
+		private static Dictionary<Color, Brush> _brushes = new Dictionary<Color,Brush>();
+		private static Brush GetFrush(Color color)
+		{
+			Brush br;
+			if (_brushes.ContainsKey(color))
+				br = _brushes[color];
+			else
+			{
+				br = new SolidBrush(color);
+				_brushes.Add(color, br);
+			}
+			return br;
+		}
+
+		private void CreateBrushes(TreeNodeAdv node, DrawContext context, string text, out Brush backgroundBrush, out Color textColor, out Font font, ref string label)
 		{
 			textColor = SystemColors.ControlText;
 			backgroundBrush = null;
@@ -216,8 +229,7 @@ namespace Aga.Controls.Tree.NodeControls
 
 			if (DrawText != null)
 			{
-				DrawEventArgs args = new DrawEventArgs(node, context);
-				args.Text = label;
+				DrawEventArgs args = new DrawEventArgs(node, context, text);
 				args.TextColor = textColor;
 				args.BackgroundBrush = backgroundBrush;
 				args.Font = font;

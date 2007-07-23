@@ -46,13 +46,13 @@ namespace Aga.Controls.Tree.NodeControls
 		public string Text
 		{
 			get { return _text; }
-			set { _text = value; }
 		}
 
-		public DrawEventArgs(TreeNodeAdv node, DrawContext context)
+		public DrawEventArgs(TreeNodeAdv node, DrawContext context, string text)
 			: base(node)
 		{
 			_context = context;
+			_text = text;
 		}
 	}
 }

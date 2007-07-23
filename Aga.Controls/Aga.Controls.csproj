@@ -50,6 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GifDecoder.cs" />
+    <Compile Include="PerformanceAnalyzer.cs" />
     <Compile Include="ResourceHelper.cs" />
     <Compile Include="StringCollectionEditor.cs" />
     <Compile Include="Properties\Resources.Designer.cs">

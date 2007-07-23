@@ -160,6 +160,16 @@ namespace Aga.Controls.Tree
 			base.OnMouseDown(e);
 		}
 
+		protected override void OnMouseClick(MouseEventArgs e)
+		{
+			//TODO: Disable when click on plusminus icon
+			TreeNodeAdvMouseEventArgs args = CreateMouseArgs(e);
+			if (args.Node != null)
+				OnNodeMouseClick(args);
+
+			base.OnMouseClick(e);
+		}
+
 		protected override void OnMouseDoubleClick(MouseEventArgs e)
 		{
 			TreeNodeAdvMouseEventArgs args = CreateMouseArgs(e);
