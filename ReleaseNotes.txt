@@ -1,3 +1,8 @@
+1.6.1: 
++ Fixed: DragAutoScroll() is not working when FPS low. 
++ Tutorial project in VB and a short documentation added (Thanks to Richard Pope).
+
+
 1.6:
 + Asynchronous nodes expanding feature added
 + Tooltips added to the column headers

@@ -97,10 +97,10 @@ namespace Aga.Controls.Tree
 			{
 				if (_isSelected != value)
 				{
-					_isSelected = value;
 					if (Tree.IsMyNode(this))
 					{
-						if (_isSelected)
+						//_tree.OnSelectionChanging
+						if (value)
 						{
 							if (!_tree.Selection.Contains(this))
 								_tree.Selection.Add(this);
@@ -113,6 +113,7 @@ namespace Aga.Controls.Tree
 						_tree.UpdateView();
 						_tree.OnSelectionChanged();
 					}
+					_isSelected = value;
 				}
 			}
 		}

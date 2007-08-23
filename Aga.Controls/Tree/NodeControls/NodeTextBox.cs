@@ -47,7 +47,7 @@ namespace Aga.Controls.Tree.NodeControls
 
 		protected override Control CreateEditor(TreeNodeAdv node)
 		{
-			TextBox textBox = new TextBox();
+			TextBox textBox = CreateTextBox();
 			textBox.TextAlign = TextAlign;
 			textBox.Text = GetLabel(node);
 			textBox.BorderStyle = BorderStyle.FixedSingle;
@@ -55,6 +55,11 @@ namespace Aga.Controls.Tree.NodeControls
 			_label = textBox.Text;
 			SetEditControlProperties(textBox, node);
 			return textBox;
+		}
+
+		protected virtual TextBox CreateTextBox()
+		{
+			return new TextBox();
 		}
 
 		private string _label;

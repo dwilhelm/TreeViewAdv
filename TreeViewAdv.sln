@@ -146,10 +146,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		{B4F97281-0DBD-4835-9ED8-7DFB966E87FF} = {B4F97281-0DBD-4835-9ED8-7DFB966E87FF}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PerformanceTest", "PerformanceTest\PerformanceTest.csproj", "{054AB154-375E-4437-AF50-EA217EBC66DB}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TreeViewAdvTest", "TreeViewAdvTest\TreeViewAdvTest.csproj", "{E6E922CF-D7A8-4990-9520-8C88A1167C9E}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -168,14 +164,6 @@ Global
 		{F74BBDC5-A90C-438B-A6C2-347B49398FDB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F74BBDC5-A90C-438B-A6C2-347B49398FDB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F74BBDC5-A90C-438B-A6C2-347B49398FDB}.Release|Any CPU.Build.0 = Release|Any CPU
-		{054AB154-375E-4437-AF50-EA217EBC66DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{054AB154-375E-4437-AF50-EA217EBC66DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{054AB154-375E-4437-AF50-EA217EBC66DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{054AB154-375E-4437-AF50-EA217EBC66DB}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E6E922CF-D7A8-4990-9520-8C88A1167C9E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E6E922CF-D7A8-4990-9520-8C88A1167C9E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E6E922CF-D7A8-4990-9520-8C88A1167C9E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E6E922CF-D7A8-4990-9520-8C88A1167C9E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -41,13 +41,15 @@ namespace Aga.Controls.Tree
 			set
 			{
 				_dragMode = value;
-				_dragTimer.Enabled = value;
 				if (!value)
 				{
+					StopDragTimer();
 					if (_dragBitmap != null)
 						_dragBitmap.Dispose();
 					_dragBitmap = null;
 				}
+				else
+					StartDragTimer();
 			}
 		}
 

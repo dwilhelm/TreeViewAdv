@@ -5,6 +5,7 @@ using System.Windows.Forms;
 using System.Drawing;
 using Aga.Controls.Tree.NodeControls;
 using System.Drawing.Imaging;
+using System.Threading;
 
 namespace Aga.Controls.Tree
 {
@@ -392,6 +393,22 @@ namespace Aga.Controls.Tree
 
 		private bool _dragAutoScrollFlag = false;
 		private Bitmap _dragBitmap = null;
+		private System.Threading.Timer _dragTimer;
+
+		private void StartDragTimer()
+		{
+			if (_dragTimer == null)
+				_dragTimer = new System.Threading.Timer(new TimerCallback(DragTimerTick), null, 0, 100);
+		}
+
+		private void StopDragTimer()
+		{
+			if (_dragTimer != null)
+			{
+				_dragTimer.Dispose();
+				_dragTimer = null;
+			}
+		}
 
 		private void SetDropPosition(Point pt)
 		{
@@ -411,7 +428,7 @@ namespace Aga.Controls.Tree
 			}
 		}
 
-		private void DragTimerTick(object sender, EventArgs e)
+		private void DragTimerTick(object state)
 		{
 			_dragAutoScrollFlag = true;
 		}

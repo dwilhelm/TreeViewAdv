@@ -64,6 +64,15 @@
     <Compile Include="Threading\WorkItem.cs" />
     <Compile Include="TimeCounter.cs" />
     <Compile Include="Tree\Input\ReorderColumnState.cs" />
+    <Compile Include="Tree\NodeControls\NodeIntegerTextBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Tree\NodeControls\NodeDecimalTextBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="NumericTextBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Tree\NodeControls\ExpandingIcon.cs">
       <SubType>Component</SubType>
     </Compile>

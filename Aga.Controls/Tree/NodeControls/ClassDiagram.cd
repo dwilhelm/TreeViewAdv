@@ -50,14 +50,14 @@
     <Position X="3" Y="5" Width="1.5" />
     <TypeIdentifier>
       <FileName>Tree\NodeControls\BaseTextControl.cs</FileName>
-      <HashCode>AAAAICBQACAAIgAABCAEAQA8AgmFgAAwAAAAACACAMA=</HashCode>
+      <HashCode>AAAAICBQACAAIgACBCAEAQA8AgmFoAAwAAAAACACAMA=</HashCode>
     </TypeIdentifier>
   </Class>
   <Class Name="Aga.Controls.Tree.NodeControls.NodeTextBox" Collapsed="true">
     <Position X="1" Y="6" Width="1.5" />
     <TypeIdentifier>
       <FileName>Tree\NodeControls\NodeTextBox.cs</FileName>
-      <HashCode>QQQAhAAAADAMgAAAABAAAAAAAgEAAAAAAAAAAIAAAAA=</HashCode>
+      <HashCode>QQQAhAAAADAMgAAAABAAAAAAAgEAIAAAAAAAAIAAAAA=</HashCode>
     </TypeIdentifier>
   </Class>
   <Class Name="Aga.Controls.Tree.NodeControls.EditableControl" Collapsed="true">
@@ -71,7 +71,7 @@
     <Position X="3" Y="6" Width="1.5" />
     <TypeIdentifier>
       <FileName>Tree\NodeControls\NodeComboBox.cs</FileName>
-      <HashCode>wQACAAAAAAAMAABAAAAAAABAAAAAAAABAAAAAAAAAAA=</HashCode>
+      <HashCode>wQACAAAAAAAMAEBAAAAAAABAAAAAAAABAAAAAAAAAAA=</HashCode>
     </TypeIdentifier>
   </Class>
   <Class Name="Aga.Controls.Tree.NodeControls.NodeNumericUpDown" Collapsed="true">
@@ -88,11 +88,18 @@
       <HashCode>AAAABAAAAAAAAAAACAAAAAAAABAAAQAAAAAAAAIAAAA=</HashCode>
     </TypeIdentifier>
   </Class>
-  <Class Name="Aga.Controls.Tree.NodeControls.ExpandingMark" Collapsed="true">
-    <Position X="5" Y="1.5" Width="1.5" />
+  <Class Name="Aga.Controls.Tree.NodeControls.NodeDecimalTextBox" Collapsed="true">
+    <Position X="2.5" Y="7" Width="1.75" />
     <TypeIdentifier>
-      <FileName>Tree\NodeControls\ExpandingMark.cs</FileName>
-      <HashCode>AAAAAAAAAAAAAgAAAAAAAAAgAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Tree\NodeControls\NodeDecimalTextBox.cs</FileName>
+      <HashCode>AQAAAAAAAACAAAACAAAAAAQAAAAAIAAAAAgAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Aga.Controls.Tree.NodeControls.NodeIntegerTextBox" Collapsed="true">
+    <Position X="0.5" Y="7" Width="1.75" />
+    <TypeIdentifier>
+      <FileName>Tree\NodeControls\NodeIntegerTextBox.cs</FileName>
+      <HashCode>AQAAAAAAAAAAAAACAAAAAAQAAAAAIAAAAAAAAAAAAAA=</HashCode>
     </TypeIdentifier>
   </Class>
 </ClassDiagram>

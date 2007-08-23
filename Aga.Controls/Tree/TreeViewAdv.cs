@@ -36,7 +36,6 @@ namespace Aga.Controls.Tree
 		private Control _currentEditor;
 		private EditableControl _currentEditorOwner;
 		private ToolTip _toolTip;
-		private System.Windows.Forms.Timer _dragTimer;
 		private DrawContext _measureContext;
 		private TreeColumn _hotColumn = null;
 		private IncrementalSearch _search;
@@ -174,9 +173,6 @@ namespace Aga.Controls.Tree
 			_readonlySelection = new ReadOnlyCollection<TreeNodeAdv>(_selection);
 			_columns = new TreeColumnCollection(this);
 			_toolTip = new ToolTip();
-			_dragTimer = new System.Windows.Forms.Timer();
-			_dragTimer.Interval = 100;
-			_dragTimer.Tick += new EventHandler(DragTimerTick);
 			
 			_measureContext = new DrawContext();
 			_measureContext.Font = Font;
