@@ -68,12 +68,16 @@ namespace SampleApp
 			// _nodeCheckBox
 			// 
 			this._nodeCheckBox.DataPropertyName = "Checked";
-			this._nodeCheckBox.IncrementalSearchEnabled = false;
+			this._nodeCheckBox.EditEnabled = true;
+			this._nodeCheckBox.LeftMargin = 0;
 			this._nodeCheckBox.ParentColumn = null;
 			// 
 			// _nodeTextBox
 			// 
 			this._nodeTextBox.DataPropertyName = "Text";
+			this._nodeTextBox.EditEnabled = true;
+			this._nodeTextBox.IncrementalSearchEnabled = true;
+			this._nodeTextBox.LeftMargin = 3;
 			this._nodeTextBox.ParentColumn = null;
 			// 
 			// AdvancedExample

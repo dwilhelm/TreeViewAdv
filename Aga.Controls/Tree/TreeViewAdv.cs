@@ -146,6 +146,14 @@ namespace Aga.Controls.Tree
 				GridLineStyleChanged(this, EventArgs.Empty);
         }
 
+        [Category("Behavior")]
+        public event ScrollEventHandler Scroll;
+        protected virtual void OnScroll(ScrollEventArgs e)
+        {
+            if (Scroll != null)
+                Scroll(this, e);
+        }
+
 		#endregion
 
 		public TreeViewAdv()
@@ -200,23 +208,39 @@ namespace Aga.Controls.Tree
 
 		private void DrawIcons()
 		{
-			Graphics gr = Graphics.FromHwnd(this.Handle);
-			int firstRowY = _rowLayout.GetRowBounds(FirstVisibleRow).Y;
-			DrawContext context = new DrawContext();
-			context.Graphics = gr;
-			for (int i = 0; i < _expandingNodes.Count; i++)
-			{
-				foreach (NodeControlInfo info in GetNodeControls(_expandingNodes[i]))
-					if (info.Control is ExpandingIcon)
-					{
-						Rectangle rect = info.Bounds;
-						rect.X -= OffsetX;
-						rect.Y -= firstRowY;
-						context.Bounds = rect;
-						info.Control.Draw(info.Node, context);
-					}
-			}
-			gr.Dispose();
+            using (Graphics gr = Graphics.FromHwnd(this.Handle))
+            {
+                //Apply the same Graphics Transform logic as used in OnPaint.
+                int y = 0;
+                if (UseColumns)
+                {
+                    y += ColumnHeaderHeight;
+                    if (Columns.Count == 0)
+                        return;
+                }
+                int firstRowY = _rowLayout.GetRowBounds(FirstVisibleRow).Y;
+                y -= firstRowY;
+                gr.ResetTransform();
+                gr.TranslateTransform(-OffsetX, y);
+
+                DrawContext context = new DrawContext();
+                context.Graphics = gr;
+                for (int i = 0; i < _expandingNodes.Count; i++)
+                {
+                    foreach (NodeControlInfo item in GetNodeControls(_expandingNodes[i]))
+                    {
+                        if (item.Control is ExpandingIcon )
+                        {
+                            Rectangle bounds = item.Bounds;
+                            if (item.Node.Parent == null && UseColumns)
+                                bounds.Location = Point.Empty; // display root expanding icon at 0,0
+                            
+                            context.Bounds = bounds;
+                            item.Control.Draw(item.Node, context);
+                        }
+                    }
+                }
+            }
 		}
 
 		#region Public Methods
@@ -749,6 +773,8 @@ namespace Aga.Controls.Tree
 		{
 			node.IsExpandingNow = false;
 			_expandingNodes.Remove(node);
+            if (_expandingNodes.Count <= 0)
+                ExpandingIcon.Stop();
 		}
 
 		private void AddExpandingNode(TreeNodeAdv node)
@@ -829,6 +855,16 @@ namespace Aga.Controls.Tree
 		{
 			OffsetX = _hScrollBar.Value;
 		}
+
+        private void _vScrollBar_Scroll(object sender, ScrollEventArgs e)
+        {
+            OnScroll(e);
+        }
+
+        private void _hScrollBar_Scroll(object sender, ScrollEventArgs e)
+        {
+            OnScroll(e);
+        }
 
 		internal void SmartFullUpdate()
 		{
@@ -929,6 +965,36 @@ namespace Aga.Controls.Tree
 					return res;
 			}
 			return null;
+		}
+
+		public void SelectAllNodes()
+		{
+			if (SelectionMode == TreeSelectionMode.MultiSameParent)
+			{
+				//TODO:
+			}
+			else if (SelectionMode == TreeSelectionMode.Multi)
+			{
+				SuspendSelectionEvent = true;
+				try
+				{
+					SelectNodes(Root.Nodes);
+				}
+				finally
+				{
+					SuspendSelectionEvent = false;
+				}
+			}
+		}
+
+		private void SelectNodes(Collection<TreeNodeAdv> nodes)
+		{
+			foreach (TreeNodeAdv n in nodes)
+			{
+				n.IsSelected = true;
+				if (n.IsExpanded)
+					SelectNodes(n.Nodes);
+			}
 		}
 
 		#region Editor

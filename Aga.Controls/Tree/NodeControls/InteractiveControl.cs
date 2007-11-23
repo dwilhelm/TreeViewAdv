@@ -7,8 +7,8 @@ namespace Aga.Controls.Tree.NodeControls
 {
 	public abstract class InteractiveControl : BindableControl
 	{
-		private bool _editEnabled = true;
-		[DefaultValue(true)]
+		private bool _editEnabled = false;
+		[DefaultValue(false)]
 		public bool EditEnabled
 		{
 			get { return _editEnabled; }

@@ -77,6 +77,10 @@ namespace Aga.Controls.Tree
 						args.Handled = true;
 						args.SuppressKeyPress = true;
 						break;
+					case Keys.A:
+						if (args.Modifiers == Keys.Control)
+							Tree.SelectAllNodes();
+						break;
 				}
 			}
 		}
@@ -146,7 +150,7 @@ namespace Aga.Controls.Tree
 
 		protected virtual void MouseDownAtEmptySpace(TreeNodeAdvMouseEventArgs args)
 		{
-			Tree.ClearSelectionInternal();
+			Tree.ClearSelection();
 		}
 
 		protected virtual void FocusRow(TreeNodeAdv node)

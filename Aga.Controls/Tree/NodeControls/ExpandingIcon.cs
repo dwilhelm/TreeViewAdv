@@ -16,6 +16,7 @@ namespace Aga.Controls.Tree.NodeControls
 		private static GifDecoder _gif = ResourceHelper.LoadingIcon;
 		private static int _index = 0;
 		private static Thread _animatingThread;
+        private static object _lock = new object();
 
 		public override Size MeasureSize(TreeNodeAdv node, DrawContext context)
 		{
@@ -37,19 +38,31 @@ namespace Aga.Controls.Tree.NodeControls
 
 		public static void Start()
 		{
-			_index = 0;
-			if (_animatingThread == null)
-			{
-				_animatingThread = new Thread(new ThreadStart(IterateIcons));
-				_animatingThread.IsBackground = true;
-				_animatingThread.Priority = ThreadPriority.Lowest;
-				_animatingThread.Start();
-			}
+            lock (_lock)
+            {
+                if (_animatingThread == null)
+                {
+                    _index = 0;
+                    _animatingThread = new Thread(new ThreadStart(IterateIcons));
+                    _animatingThread.IsBackground = true;
+                    _animatingThread.Priority = ThreadPriority.Lowest;
+                    _animatingThread.Start();
+                }
+            }
 		}
+
+        public static void Stop()
+        {
+            lock (_lock)
+            {
+                _index = 0;
+                _animatingThread = null;
+            }
+        }
 
 		private static void IterateIcons()
 		{
-			while (true)
+            while (_animatingThread != null)
 			{
 				if (_index < _gif.FrameCount - 1)
 					_index++;

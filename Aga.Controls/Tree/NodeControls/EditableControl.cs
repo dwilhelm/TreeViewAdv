@@ -98,7 +98,8 @@ namespace Aga.Controls.Tree.NodeControls
 
 		private void EditorValidating(object sender, CancelEventArgs e)
 		{
-			ApplyChanges();
+			if (_editNode != null)
+				ApplyChanges();
 		}
 
 		internal void HideEditor(Control editor)

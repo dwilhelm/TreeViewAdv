@@ -678,7 +678,22 @@ namespace Aga.Controls.Tree
         public int ItemCount
         {
             get { return RowMap.Count; }
-        } 
+        }
+
+		/// <summary>
+		/// Indicates the distance the content is scrolled to the left
+		/// </summary>
+		[Browsable(false)]
+		public int HorizontalScrollPosition
+		{
+			get
+			{
+				if (_hScrollBar.Visible)
+					return _hScrollBar.Value;
+				else
+					return 0;
+			}
+		}
 
 		#endregion
 

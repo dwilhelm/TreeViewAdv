@@ -295,14 +295,15 @@ namespace SampleApp
 			this._tree.Size = new System.Drawing.Size(375, 223);
 			this._tree.TabIndex = 0;
 			this._tree.NodeMouseDoubleClick += new System.EventHandler<Aga.Controls.Tree.TreeNodeAdvMouseEventArgs>(this._tree_NodeMouseDoubleClick);
-			this._tree.DragDrop += new System.Windows.Forms.DragEventHandler(this._tree_DragDrop);
 			this._tree.SelectionChanged += new System.EventHandler(this._tree_SelectionChanged);
-			this._tree.ItemDrag += new System.Windows.Forms.ItemDragEventHandler(this._tree_ItemDrag);
 			this._tree.DragOver += new System.Windows.Forms.DragEventHandler(this._tree_DragOver);
+			this._tree.DragDrop += new System.Windows.Forms.DragEventHandler(this._tree_DragDrop);
+			this._tree.ItemDrag += new System.Windows.Forms.ItemDragEventHandler(this._tree_ItemDrag);
 			// 
 			// _nodeCheckBox
 			// 
 			this._nodeCheckBox.DataPropertyName = "CheckState";
+			this._nodeCheckBox.EditEnabled = true;
 			this._nodeCheckBox.LeftMargin = 0;
 			this._nodeCheckBox.ParentColumn = null;
 			this._nodeCheckBox.ThreeState = true;
@@ -315,6 +316,7 @@ namespace SampleApp
 			// _nodeTextBox
 			// 
 			this._nodeTextBox.DataPropertyName = "Text";
+			this._nodeTextBox.EditEnabled = true;
 			this._nodeTextBox.IncrementalSearchEnabled = true;
 			this._nodeTextBox.LeftMargin = 3;
 			this._nodeTextBox.ParentColumn = null;

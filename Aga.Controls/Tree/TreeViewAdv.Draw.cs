@@ -189,7 +189,7 @@ namespace Aga.Controls.Tree
 		{
 			foreach (NodeControlInfo item in GetNodeControls(node))
 			{
-				if (item.Bounds.X >= OffsetX && item.Bounds.X - OffsetX < this.Bounds.Width)// skip invisible nodes
+				if (item.Bounds.Right >= OffsetX && item.Bounds.X - OffsetX < this.Bounds.Width)// skip invisible nodes
 				{
 					context.Bounds = item.Bounds;
 					context.Graphics.SetClip(context.Bounds);

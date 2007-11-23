@@ -340,11 +340,7 @@ namespace Aga.Controls.Tree
 		private void SetIsExpanded(bool value, bool ignoreChildren)
 		{
 			if (Tree == null)
-			{
 				_isExpanded = value;
-				if (!ignoreChildren)
-					Tree.SetIsExpandedRecursive(this, value);
-			}
 			else
 				Tree.SetIsExpanded(this, value, ignoreChildren);
 		}

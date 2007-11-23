@@ -185,10 +185,14 @@ namespace Aga.Controls.Tree.NodeControls
 					_focusPen.Color = SystemColors.InactiveCaption;
 				context.Graphics.DrawRectangle(_focusPen, focusRect);
 			}
+			
+			PerformanceAnalyzer.Start("BaseTextControl.DrawText");
 			if (UseCompatibleTextRendering)
 				TextRenderer.DrawText(context.Graphics, label, font, bounds, textColor, _formatFlags);
 			else
 				context.Graphics.DrawString(label, font, GetFrush(textColor), bounds, _format);
+			PerformanceAnalyzer.Finish("BaseTextControl.DrawText");
+
 			PerformanceAnalyzer.Finish("BaseTextControl.Draw");
 		}
 
