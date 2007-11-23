@@ -178,7 +178,7 @@ namespace Aga.Controls.Tree
 		}
 
 		private int _offsetX;
-		internal int OffsetX
+		public int OffsetX
 		{
 			get { return _offsetX; }
 			private set
@@ -473,6 +473,14 @@ namespace Aga.Controls.Tree
 		{
 			get { return _loadOnDemand; }
 			set { _loadOnDemand = value; }
+		}
+
+		private bool _unloadCollapsedOnReload = false;
+		[DefaultValue(false), Category("Behavior")]
+		public bool UnloadCollapsedOnReload
+		{
+			get { return _unloadCollapsedOnReload; }
+			set { _unloadCollapsedOnReload = value; }
 		}
 
 		private int _indent = 19;

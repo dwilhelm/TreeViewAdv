@@ -25,7 +25,7 @@ namespace Aga.Controls.Tree
 		internal const int ItemDragSensivity = 4;
 		private readonly int _columnHeaderHeight;
 		private const int DividerWidth = 9;
-        private const int DividerCorrectionGap = -2;
+		private const int DividerCorrectionGap = -2;
 
 		private Pen _linePen;
 		private Pen _markPen;
@@ -138,22 +138,44 @@ namespace Aga.Controls.Tree
 				Expanded(this, new TreeViewAdvEventArgs(node));
 		}
 
-        [Category("Behavior")]
-        public event EventHandler GridLineStyleChanged;
+		[Category("Behavior")]
+		public event EventHandler GridLineStyleChanged;
 		private void OnGridLineStyleChanged()
-        {
+		{
 			if (GridLineStyleChanged != null)
 				GridLineStyleChanged(this, EventArgs.Empty);
-        }
+		}
 
-        [Category("Behavior")]
-        public event ScrollEventHandler Scroll;
-        protected virtual void OnScroll(ScrollEventArgs e)
-        {
-            if (Scroll != null)
-                Scroll(this, e);
-        }
+		[Category("Behavior")]
+		public event ScrollEventHandler Scroll;
+		protected virtual void OnScroll(ScrollEventArgs e)
+		{
+			if (Scroll != null)
+				Scroll(this, e);
+		}
 
+		[Category("Behavior")]
+		public event EventHandler<TreeViewRowDrawEventArgs> RowDraw;
+		protected virtual void OnRowDraw(PaintEventArgs e, TreeNodeAdv node, DrawContext context, int row, Rectangle rowRect)
+		{
+			if (RowDraw != null)
+			{
+				TreeViewRowDrawEventArgs args = new TreeViewRowDrawEventArgs(e.Graphics, e.ClipRectangle, node, context, row, rowRect);
+				RowDraw(this, args);
+			}
+		}
+
+		[Category("Drag Drop")]
+		public event EventHandler<DropNodeValidatingEventArgs> DropNodeValidating;
+		protected virtual void OnDropNodeValidating(Point point, ref TreeNodeAdv node)
+		{
+			if (DropNodeValidating != null)
+			{
+				DropNodeValidatingEventArgs args = new DropNodeValidatingEventArgs(point, node);
+				DropNodeValidating(this, args);
+				node = args.Node;
+			}
+		}
 		#endregion
 
 		public TreeViewAdv()
@@ -196,7 +218,7 @@ namespace Aga.Controls.Tree
 			_plusMinus = new NodePlusMinus();
 			_controls = new NodeControlsCollection(this);
 
-            Font = _font;
+			Font = _font;
 			ExpandingIcon.IconChanged += ExpandingIconChanged;
 		}
 
@@ -208,39 +230,39 @@ namespace Aga.Controls.Tree
 
 		private void DrawIcons()
 		{
-            using (Graphics gr = Graphics.FromHwnd(this.Handle))
-            {
-                //Apply the same Graphics Transform logic as used in OnPaint.
-                int y = 0;
-                if (UseColumns)
-                {
-                    y += ColumnHeaderHeight;
-                    if (Columns.Count == 0)
-                        return;
-                }
-                int firstRowY = _rowLayout.GetRowBounds(FirstVisibleRow).Y;
-                y -= firstRowY;
-                gr.ResetTransform();
-                gr.TranslateTransform(-OffsetX, y);
+			using (Graphics gr = Graphics.FromHwnd(this.Handle))
+			{
+				//Apply the same Graphics Transform logic as used in OnPaint.
+				int y = 0;
+				if (UseColumns)
+				{
+					y += ColumnHeaderHeight;
+					if (Columns.Count == 0)
+						return;
+				}
+				int firstRowY = _rowLayout.GetRowBounds(FirstVisibleRow).Y;
+				y -= firstRowY;
+				gr.ResetTransform();
+				gr.TranslateTransform(-OffsetX, y);
 
-                DrawContext context = new DrawContext();
-                context.Graphics = gr;
-                for (int i = 0; i < _expandingNodes.Count; i++)
-                {
-                    foreach (NodeControlInfo item in GetNodeControls(_expandingNodes[i]))
-                    {
-                        if (item.Control is ExpandingIcon )
-                        {
-                            Rectangle bounds = item.Bounds;
-                            if (item.Node.Parent == null && UseColumns)
-                                bounds.Location = Point.Empty; // display root expanding icon at 0,0
-                            
-                            context.Bounds = bounds;
-                            item.Control.Draw(item.Node, context);
-                        }
-                    }
-                }
-            }
+				DrawContext context = new DrawContext();
+				context.Graphics = gr;
+				for (int i = 0; i < _expandingNodes.Count; i++)
+				{
+					foreach (NodeControlInfo item in GetNodeControls(_expandingNodes[i]))
+					{
+						if (item.Control is ExpandingIcon )
+						{
+							Rectangle bounds = item.Bounds;
+							if (item.Node.Parent == null && UseColumns)
+								bounds.Location = Point.Empty; // display root expanding icon at 0,0
+							
+							context.Bounds = bounds;
+							item.Control.Draw(item.Node, context);
+						}
+					}
+				}
+			}
 		}
 
 		#region Public Methods
@@ -647,7 +669,7 @@ namespace Aga.Controls.Tree
 							if (obj != null)
 							{
 								for (int i = 0; i < oldNodes.Count; i++)
-									if (obj == oldNodes[i].Tag)
+									if (object.Equals(obj, oldNodes[i].Tag))
 									{
 										oldNodes[i].RightBounds = oldNodes[i].Height = null;
 										AddNode(parentNode, -1, oldNodes[i]);
@@ -683,8 +705,21 @@ namespace Aga.Controls.Tree
 			node.IsLeaf = Model.IsLeaf(GetPath(node));
 			if (node.IsLeaf)
 				node.Nodes.Clear();
-			if (!LoadOnDemand || node.IsExpandedOnce)
+
+			if (!LoadOnDemand)
 				ReadChilds(node);
+			else if (node.IsExpandedOnce)
+			{
+				if (!node.IsExpanded && UnloadCollapsedOnReload)
+				{
+					node.IsExpandedOnce = false;
+					node.Nodes.Clear();
+				}
+				else
+					ReadChilds(node);
+			}
+			/*if (!LoadOnDemand || node.IsExpandedOnce)
+				ReadChilds(node);*/
 		}
 
 		private struct ExpandArgs
@@ -773,8 +808,8 @@ namespace Aga.Controls.Tree
 		{
 			node.IsExpandingNow = false;
 			_expandingNodes.Remove(node);
-            if (_expandingNodes.Count <= 0)
-                ExpandingIcon.Stop();
+			if (_expandingNodes.Count <= 0)
+				ExpandingIcon.Stop();
 		}
 
 		private void AddExpandingNode(TreeNodeAdv node)
@@ -856,15 +891,15 @@ namespace Aga.Controls.Tree
 			OffsetX = _hScrollBar.Value;
 		}
 
-        private void _vScrollBar_Scroll(object sender, ScrollEventArgs e)
-        {
-            OnScroll(e);
-        }
+		private void _vScrollBar_Scroll(object sender, ScrollEventArgs e)
+		{
+			OnScroll(e);
+		}
 
-        private void _hScrollBar_Scroll(object sender, ScrollEventArgs e)
-        {
-            OnScroll(e);
-        }
+		private void _hScrollBar_Scroll(object sender, ScrollEventArgs e)
+		{
+			OnScroll(e);
+		}
 
 		internal void SmartFullUpdate()
 		{

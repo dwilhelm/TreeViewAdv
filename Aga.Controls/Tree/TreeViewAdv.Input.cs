@@ -180,11 +180,14 @@ namespace Aga.Controls.Tree
 
 			if (!args.Handled)
 			{
-				if (args.Node != null && args.Button == MouseButtons.Left)
-					args.Node.IsExpanded = !args.Node.IsExpanded;
-
 				if (args.Node != null)
 					OnNodeMouseDoubleClick(args);
+
+				if (!args.Handled)
+				{
+					if (args.Node != null && args.Button == MouseButtons.Left)
+						args.Node.IsExpanded = !args.Node.IsExpanded;
+				}
 			}
 
 			base.OnMouseDoubleClick(e);
@@ -413,6 +416,7 @@ namespace Aga.Controls.Tree
 		private void SetDropPosition(Point pt)
 		{
 			TreeNodeAdv node = GetNodeAt(pt);
+			OnDropNodeValidating(pt, ref node);
 			_dropPosition.Node = node;
 			if (node != null)
 			{

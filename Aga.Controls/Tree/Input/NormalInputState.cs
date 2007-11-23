@@ -182,7 +182,7 @@ namespace Aga.Controls.Tree
 
 		protected virtual void DoMouseOperation(TreeNodeAdvMouseEventArgs args)
 		{
-			if (Tree.SelectedNodes.Count == 1 && args.Node.IsSelected)
+			if (Tree.SelectedNodes.Count == 1 && args.Node != null && args.Node.IsSelected)
 				return;
 
 			Tree.SuspendSelectionEvent = true;

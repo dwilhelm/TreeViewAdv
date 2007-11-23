@@ -108,6 +108,8 @@ namespace Aga.Controls.Tree
 					context.DrawSelection = DrawSelectionMode.Inactive;
 			}
 			context.DrawFocus = Focused && CurrentNode == node;
+			
+			OnRowDraw(e, node, context, row, rowRect);
 
 			if (FullRowSelect)
 			{

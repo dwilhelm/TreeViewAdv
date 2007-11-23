@@ -127,6 +127,7 @@
     <Compile Include="Tree\TreeColumnEventArgs.cs" />
     <Compile Include="Tree\TreeModel.cs" />
     <Compile Include="Tree\TreeViewAdvCancelEventArgs.cs" />
+    <Compile Include="Tree\DropNodeValidatingEventArgs.cs" />
     <Compile Include="Tree\TreeViewAdvEventArgs.cs" />
     <Compile Include="Tree\TreePathEventArgs.cs" />
     <Compile Include="Tree\EditorContext.cs" />
@@ -168,6 +169,7 @@
     <Compile Include="Tree\TreeViewAdv.Designer.cs">
       <DependentUpon>TreeViewAdv.cs</DependentUpon>
     </Compile>
+    <Compile Include="Tree\TreeViewRowDrawEventArgs.cs" />
     <Service Include="{94E38DFF-614B-4cbd-B67C-F211BB35CE8B}" />
     <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
   </ItemGroup>

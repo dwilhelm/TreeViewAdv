@@ -15,7 +15,7 @@ namespace Aga.Controls.Tree.NodeControls
 	{
 		private static GifDecoder _gif = ResourceHelper.LoadingIcon;
 		private static int _index = 0;
-		private static Thread _animatingThread;
+		private static volatile Thread _animatingThread;
         private static object _lock = new object();
 
 		public override Size MeasureSize(TreeNodeAdv node, DrawContext context)
@@ -75,6 +75,7 @@ namespace Aga.Controls.Tree.NodeControls
 				int delay = _gif.GetFrame(_index).Delay;
 				Thread.Sleep(delay);
 			}
+            System.Diagnostics.Debug.WriteLine("IterateIcons Stopped");
 		}
 
 		public static event EventHandler IconChanged;
