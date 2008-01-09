@@ -923,7 +923,7 @@ namespace Aga.Controls.Tree
 			return node == _root;
 		}
 
-		private void UpdateSelection()
+		internal void UpdateSelection()
 		{
 			bool flag = false;
 

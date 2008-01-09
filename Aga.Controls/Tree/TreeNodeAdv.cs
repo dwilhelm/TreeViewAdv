@@ -43,6 +43,10 @@ namespace Aga.Controls.Tree
 						this[i]._index++;
 					base.InsertItem(index, item);
 				}
+				
+				if (_owner.Tree != null && _owner.Tree.Model == null) {
+					_owner.Tree.SmartFullUpdate();
+				}
 			}
 
 			protected override void RemoveItem(int index)
@@ -53,6 +57,11 @@ namespace Aga.Controls.Tree
 				for (int i = index + 1; i < Count; i++)
 					this[i]._index--;
 				base.RemoveItem(index);
+				
+				if (_owner.Tree != null && _owner.Tree.Model == null) {
+					_owner.Tree.UpdateSelection();
+					_owner.Tree.SmartFullUpdate();
+				}
 			}
 
 			protected override void SetItem(int index, TreeNodeAdv item)
@@ -252,8 +261,8 @@ namespace Aga.Controls.Tree
 			get { return _nodes; }
 		}
 
-		private ReadOnlyCollection<TreeNodeAdv> _children;
-		public ReadOnlyCollection<TreeNodeAdv> Children
+		private IList<TreeNodeAdv> _children;
+		public IList<TreeNodeAdv> Children
 		{
 			get
 			{
@@ -293,7 +302,11 @@ namespace Aga.Controls.Tree
 			_row = -1;
 			_tree = tree;
 			_nodes = new NodeCollection(this);
-			_children = new ReadOnlyCollection<TreeNodeAdv>(_nodes);
+			if (tree.Model != null) {
+				_children = new ReadOnlyCollection<TreeNodeAdv>(_nodes);
+			} else {
+				_children = _nodes;
+			}
 			_tag = tag;
         }
 
