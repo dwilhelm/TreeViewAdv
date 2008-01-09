@@ -77,28 +77,28 @@ namespace Aga.Controls.Tree
 		#region Events
 		
 		public event EventHandler<TreeViewAdvEventArgs> Collapsing;
-		internal virtual void OnCollapsing()
+		internal protected virtual void OnCollapsing()
 		{
 			if (Collapsing != null)
 				Collapsing(this, new TreeViewAdvEventArgs(this));
 		}
 
 		public event EventHandler<TreeViewAdvEventArgs> Collapsed;
-		internal virtual void OnCollapsed()
+		internal protected virtual void OnCollapsed()
 		{
 			if (Collapsed != null)
 				Collapsed(this, new TreeViewAdvEventArgs(this));
 		}
 
 		public event EventHandler<TreeViewAdvEventArgs> Expanding;
-		internal virtual void OnExpanding()
+		internal protected virtual void OnExpanding()
 		{
 			if (Expanding != null)
 				Expanding(this, new TreeViewAdvEventArgs(this));
 		}
 
 		public event EventHandler<TreeViewAdvEventArgs> Expanded;
-		internal virtual void OnExpanded()
+		internal protected virtual void OnExpanded()
 		{
 			if (Expanded != null)
 				Expanded(this, new TreeViewAdvEventArgs(this));
