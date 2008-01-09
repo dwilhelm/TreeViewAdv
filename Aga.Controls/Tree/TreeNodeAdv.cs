@@ -10,7 +10,7 @@ using System.Security.Permissions;
 namespace Aga.Controls.Tree
 {
 	[Serializable]
-	public sealed class TreeNodeAdv : ISerializable
+	public class TreeNodeAdv : ISerializable
 	{
 		#region NodeCollection
 		private class NodeCollection : Collection<TreeNodeAdv>
