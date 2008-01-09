@@ -181,14 +181,14 @@ namespace Aga.Controls.Tree
 		public bool IsLeaf
 		{
 			get { return _isLeaf; }
-			internal set { _isLeaf = value; }
+			internal protected set { _isLeaf = value; }
 		}
 
 		private bool _isExpandedOnce;
 		public bool IsExpandedOnce
 		{
 			get { return _isExpandedOnce; }
-			internal set { _isExpandedOnce = value; }
+			internal protected set { _isExpandedOnce = value; }
 		}
 
 		private bool _isExpanded;
@@ -329,7 +329,7 @@ namespace Aga.Controls.Tree
 		{
 		}
 
-		public TreeNodeAdv(TreeViewAdv tree, object tag)
+		internal protected TreeNodeAdv(TreeViewAdv tree, object tag)
 		{
 			_row = -1;
 			_tree = tree;
