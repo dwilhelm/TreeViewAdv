@@ -109,7 +109,7 @@ namespace Aga.Controls.Tree
 		#region Properties
 
 		private TreeViewAdv _tree;
-		internal TreeViewAdv Tree
+		public TreeViewAdv Tree
 		{
 			get { return _tree; }
 		}
@@ -329,7 +329,7 @@ namespace Aga.Controls.Tree
 		{
 		}
 
-		internal TreeNodeAdv(TreeViewAdv tree, object tag)
+		public TreeNodeAdv(TreeViewAdv tree, object tag)
 		{
 			_row = -1;
 			_tree = tree;
