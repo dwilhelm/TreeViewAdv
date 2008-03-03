@@ -165,6 +165,29 @@ namespace Aga.Controls.Tree
 			}
 		}
 
+		/// <summary>
+		/// Fires when control is going to draw. Can be used to change text or back color
+		/// </summary>
+		[Category("Behavior")]
+		public event EventHandler<DrawEventArgs> DrawControl;
+
+		internal bool DrawControlMustBeFired()
+		{
+			return DrawControl != null;
+		}
+
+		internal void FireDrawControl(DrawEventArgs args)
+		{
+			OnDrawControl(args);
+		}
+
+		protected virtual void OnDrawControl(DrawEventArgs args)
+		{
+			if (DrawControl != null)
+				DrawControl(this, args);
+		}
+
+
 		[Category("Drag Drop")]
 		public event EventHandler<DropNodeValidatingEventArgs> DropNodeValidating;
 		protected virtual void OnDropNodeValidating(Point point, ref TreeNodeAdv node)

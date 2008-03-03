@@ -139,9 +139,9 @@ namespace Aga.Controls.Tree.NodeControls
 		protected Font GetDrawingFont(TreeNodeAdv node, DrawContext context, string label)
 		{
 			Font font = context.Font;
-			if (DrawText != null)
+			if (DrawTextMustBeFired(node))
 			{
-				DrawEventArgs args = new DrawEventArgs(node, context, label);
+				DrawEventArgs args = new DrawEventArgs(node, this, context, label);
 				args.Font = context.Font;
 				OnDrawText(args);
 				font = args.Font;
@@ -231,9 +231,9 @@ namespace Aga.Controls.Tree.NodeControls
 			if (!context.Enabled)
 				textColor = SystemColors.GrayText;
 
-			if (DrawText != null)
+			if (DrawTextMustBeFired(node))
 			{
-				DrawEventArgs args = new DrawEventArgs(node, context, text);
+				DrawEventArgs args = new DrawEventArgs(node, this, context, text);
 				args.TextColor = textColor;
 				args.BackgroundBrush = backgroundBrush;
 				args.Font = font;
@@ -284,8 +284,16 @@ namespace Aga.Controls.Tree.NodeControls
 		public event EventHandler<DrawEventArgs> DrawText;
 		protected virtual void OnDrawText(DrawEventArgs args)
 		{
+			TreeViewAdv tree = args.Node.Tree;
+			if (tree != null)
+				tree.FireDrawControl(args);
 			if (DrawText != null)
 				DrawText(this, args);
+		}
+
+		protected virtual bool DrawTextMustBeFired(TreeNodeAdv node)
+		{
+			return DrawText != null || (node.Tree != null && node.Tree.DrawControlMustBeFired());
 		}
 	}
 }

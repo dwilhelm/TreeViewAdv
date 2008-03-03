@@ -48,9 +48,17 @@ namespace Aga.Controls.Tree.NodeControls
 			get { return _text; }
 		}
 
-		public DrawEventArgs(TreeNodeAdv node, DrawContext context, string text)
+
+		private EditableControl _control;
+		public EditableControl Control
+		{
+			get { return _control; }
+		}
+
+		public DrawEventArgs(TreeNodeAdv node, EditableControl control, DrawContext context, string text)
 			: base(node)
 		{
+			_control = control;
 			_context = context;
 			_text = text;
 		}
