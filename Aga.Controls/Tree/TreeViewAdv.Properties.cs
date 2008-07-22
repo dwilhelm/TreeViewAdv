@@ -313,9 +313,12 @@ namespace Aga.Controls.Tree
 			}
 		}
 
-        // Font proprety for Tahoma as default font
+        // Tahoma is the default font
         private static Font _font = new Font("Tahoma", 8.25F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(0)), false);
-        [Category("Appearance")]
+        /// <summary>
+        /// The font to render TreeViewAdv content in.
+        /// </summary>
+        [Category("Appearance"), Description("The font to render TreeViewAdv content in.")]
         public override Font Font
         {
             get
@@ -328,7 +331,7 @@ namespace Aga.Controls.Tree
                     base.Font = _font;
                 else
                 {
-                    if (value == System.Windows.Forms.Control.DefaultFont)
+                    if (value == DefaultFont)
                         base.Font = _font;
                     else
                         base.Font = value;
@@ -562,7 +565,7 @@ namespace Aga.Controls.Tree
 
 		private bool _asyncExpanding;
 		/// <summary>
-		/// When set to true, node contents will be read in background thread
+		/// When set to true, node contents will be read in background thread.
 		/// </summary>
 		[Category("Behavior"), DefaultValue(false), Description("Read children in a background thread when expanding.")]
 		public bool AsyncExpanding

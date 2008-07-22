@@ -1,11 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Windows.Forms;
 using System.Drawing;
-using System.Windows.Forms.VisualStyles;
 using System.Diagnostics;
 using System.Drawing.Drawing2D;
+using System.Windows.Forms;
 using Aga.Controls.Tree.NodeControls;
 
 namespace Aga.Controls.Tree
