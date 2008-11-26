@@ -1,13 +1,15 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 using Aga.Controls.Tree;
 
 namespace SampleApp
 {
+    /// <summary>
+    /// Inherits the node class to show how the class can be extended.
+    /// </summary>
 	public class MyNode : Node
 	{
-		public override string Text
+	    /// <exception cref="ArgumentNullException">Argument is null.</exception>
+	    public override string Text
 		{
 			get
 			{
@@ -23,12 +25,19 @@ namespace SampleApp
 		}
 
 		private bool _checked;
+        /// <summary>
+        /// Whether the box is checked or not.
+        /// </summary>
 		public bool Checked
 		{
 			get { return _checked; }
 			set { _checked = value; }
 		}
 
+        /// <summary>
+        /// Initializes a new MyNode class with a given Text property.
+        /// </summary>
+        /// <param name="text">String to set the text property with.</param>
 		public MyNode(string text)
 			: base(text)
 		{
