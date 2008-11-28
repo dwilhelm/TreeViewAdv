@@ -14,13 +14,19 @@ using Aga.Controls.Threading;
 
 namespace Aga.Controls.Tree
 {
+    /// <summary>
+    /// Extensible advanced TreeView implemented in 100% managed C# code. Features:
+    /// Model/View architecture. Multiple column per node. Ability to select multiple
+    /// tree nodes. Different types of controls for each node column: CheckBox, Icon,
+    /// Label... Drag and Drop highlighting. Load on demand of nodes. Incremental
+    /// search
+    /// </summary>
 	public partial class TreeViewAdv : Control
 	{
 		private const int LeftMargin = 7;
 		internal const int ItemDragSensivity = 4;
 		private readonly int _columnHeaderHeight;
 		private const int DividerWidth = 9;
-		private const int DividerCorrectionGap = -2;
 
 		private Pen _linePen;
 		private Pen _markPen;
@@ -32,7 +38,7 @@ namespace Aga.Controls.Tree
 		private EditableControl _currentEditorOwner;
 		private ToolTip _toolTip;
 		private DrawContext _measureContext;
-		private TreeColumn _hotColumn = null;
+		private TreeColumn _hotColumn;
 		private IncrementalSearch _search;
 		private List<TreeNodeAdv> _expandingNodes = new List<TreeNodeAdv>();
 		private AbortableThreadPool _threadPool = new AbortableThreadPool();
@@ -1030,7 +1036,7 @@ namespace Aga.Controls.Tree
 		{
 			if (SelectionMode == TreeSelectionMode.MultiSameParent)
 			{
-				//TODO:
+                //TODO: Implement TreeViewAdvSelectAllNodes() functionality for when SelectionMode == TreeSelectionMode.MultiSameParent
 			}
 			else if (SelectionMode == TreeSelectionMode.Multi)
 			{
@@ -1058,7 +1064,8 @@ namespace Aga.Controls.Tree
 
 		#region Editor
 
-		public void DisplayEditor(Control control, EditableControl owner)
+        /// <exception cref="ArgumentNullException">control or owner parameter is null.</exception>
+        public void DisplayEditor(Control control, EditableControl owner)
 		{
 			if (control == null || owner == null)
 				throw new ArgumentNullException();

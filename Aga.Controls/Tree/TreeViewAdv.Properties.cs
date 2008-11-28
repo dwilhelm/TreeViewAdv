@@ -293,7 +293,10 @@ namespace Aga.Controls.Tree
 		}
 
 		private ITreeModel _model;
-		[Category("Data")]
+        /// <Summary>
+        /// The model associated with this TreeViewAdv.
+        /// </Summary>
+        [Category("Data"), Description("The model associated with this TreeViewAdv.")]
 		public ITreeModel Model
 		{
 			get { return _model; }
