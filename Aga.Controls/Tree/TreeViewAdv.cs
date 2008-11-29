@@ -15,11 +15,11 @@ using Aga.Controls.Threading;
 namespace Aga.Controls.Tree
 {
     /// <summary>
-    /// Extensible advanced TreeView implemented in 100% managed C# code. Features:
-    /// Model/View architecture. Multiple column per node. Ability to select multiple
-    /// tree nodes. Different types of controls for each node column: CheckBox, Icon,
-    /// Label... Drag and Drop highlighting. Load on demand of nodes. Incremental
-    /// search
+    /// Extensible advanced <see cref="TreeView"/> implemented in 100% managed C# code.
+    /// Features: Model/View architecture. Multiple column per node. Ability to select
+    /// multiple tree nodes. Different types of controls for each node column: 
+    /// <see cref="CheckBox"/>, Icon, Label... Drag and Drop highlighting. Load on
+    /// demand of nodes. Incremental search of nodes.
     /// </summary>
 	public partial class TreeViewAdv : Control
 	{
