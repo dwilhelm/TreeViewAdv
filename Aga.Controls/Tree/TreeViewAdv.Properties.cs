@@ -294,9 +294,11 @@ namespace Aga.Controls.Tree
 
 		private ITreeModel _model;
         /// <Summary>
-        /// The model associated with this TreeViewAdv.
+        /// The model associated with this <see cref="TreeViewAdv"/>.
         /// </Summary>
-        [Category("Data"), Description("The model associated with this TreeViewAdv.")]
+        /// <seealso cref="ITreeModel"/>
+        /// <seealso cref="TreeModel"/>
+        [Browsable(false)]
 		public ITreeModel Model
 		{
 			get { return _model; }
@@ -319,7 +321,7 @@ namespace Aga.Controls.Tree
         // Tahoma is the default font
         private static Font _font = new Font("Tahoma", 8.25F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(0)), false);
         /// <summary>
-        /// The font to render TreeViewAdv content in.
+        /// The font to render <see cref="TreeViewAdv"/> content in.
         /// </summary>
         [Category("Appearance"), Description("The font to render TreeViewAdv content in.")]
         public override Font Font
