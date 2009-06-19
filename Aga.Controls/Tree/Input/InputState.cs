@@ -29,5 +29,9 @@ namespace Aga.Controls.Tree
 		{
 			return false;
 		}
+
+		public virtual void MouseDoubleClick(TreeNodeAdvMouseEventArgs args)
+		{
+		}
 	}
 }

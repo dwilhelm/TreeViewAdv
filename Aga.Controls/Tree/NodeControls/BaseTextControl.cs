@@ -81,6 +81,13 @@ namespace Aga.Controls.Tree.NodeControls
 			set { _useCompatibleTextRendering = value; }
 		}
 
+		[DefaultValue(false)]
+		public bool TrimMultiLine
+		{
+			get;
+			set;
+		}
+
 		#endregion
 
 		protected BaseTextControl()
@@ -89,9 +96,9 @@ namespace Aga.Controls.Tree.NodeControls
 			_focusPen = new Pen(Color.Black);
 			_focusPen.DashStyle = System.Drawing.Drawing2D.DashStyle.Dot;
 
-			_format = new StringFormat(StringFormatFlags.NoClip | StringFormatFlags.FitBlackBox | StringFormatFlags.MeasureTrailingSpaces);
-			_baseFormatFlags = TextFormatFlags.PreserveGraphicsClipping | TextFormatFlags.NoPrefix |
-                           TextFormatFlags.PreserveGraphicsTranslateTransform;
+			_format = new StringFormat(StringFormatFlags.LineLimit | StringFormatFlags.NoClip | StringFormatFlags.FitBlackBox | StringFormatFlags.MeasureTrailingSpaces);
+			_baseFormatFlags = TextFormatFlags.PreserveGraphicsClipping |
+						   TextFormatFlags.PreserveGraphicsTranslateTransform;
 			SetFormatFlags();
 			LeftMargin = 3;
 		}
@@ -126,7 +133,7 @@ namespace Aga.Controls.Tree.NodeControls
 			else
 			{
 				SizeF sf = context.Graphics.MeasureString(label, font);
-				s = Size.Ceiling(sf); 
+				s = new Size((int)Math.Ceiling(sf.Width), (int)Math.Ceiling(sf.Height));
 			}
 			PerformanceAnalyzer.Finish("GetLabelSize");
 
@@ -234,6 +241,7 @@ namespace Aga.Controls.Tree.NodeControls
 			if (DrawTextMustBeFired(node))
 			{
 				DrawEventArgs args = new DrawEventArgs(node, this, context, text);
+				args.Text = label;
 				args.TextColor = textColor;
 				args.BackgroundBrush = backgroundBrush;
 				args.Font = font;
@@ -260,7 +268,14 @@ namespace Aga.Controls.Tree.NodeControls
 
 		protected virtual string FormatLabel(object obj)
 		{
-			return obj.ToString();
+			var res = obj.ToString();
+			if (TrimMultiLine && res != null)
+			{
+				string[] parts = res.Split('\n');
+				if (parts.Length > 1)
+					return parts[0] + "...";
+			}
+			return res;
 		}
 
 		public void SetLabel(TreeNodeAdv node, string value)

@@ -7,7 +7,7 @@ using System.Security.Permissions;
 namespace Aga.Controls.Tree
 {
 	[Serializable]
-	public class TreeNodeAdv : ISerializable
+	public sealed class TreeNodeAdv : ISerializable
 	{
 		#region NodeCollection
 		private class NodeCollection : Collection<TreeNodeAdv>
@@ -40,8 +40,9 @@ namespace Aga.Controls.Tree
 						this[i]._index++;
 					base.InsertItem(index, item);
 				}
-				
-				if (_owner.Tree != null && _owner.Tree.Model == null) {
+
+				if (_owner.Tree != null && _owner.Tree.Model == null)
+				{
 					_owner.Tree.SmartFullUpdate();
 				}
 			}
@@ -54,8 +55,9 @@ namespace Aga.Controls.Tree
 				for (int i = index + 1; i < Count; i++)
 					this[i]._index--;
 				base.RemoveItem(index);
-				
-				if (_owner.Tree != null && _owner.Tree.Model == null) {
+
+				if (_owner.Tree != null && _owner.Tree.Model == null)
+				{
 					_owner.Tree.UpdateSelection();
 					_owner.Tree.SmartFullUpdate();
 				}
@@ -72,37 +74,37 @@ namespace Aga.Controls.Tree
 		#endregion
 
 		#region Events
-		
+
 		public event EventHandler<TreeViewAdvEventArgs> Collapsing;
-		internal protected virtual void OnCollapsing()
+		internal void OnCollapsing()
 		{
 			if (Collapsing != null)
 				Collapsing(this, new TreeViewAdvEventArgs(this));
 		}
 
 		public event EventHandler<TreeViewAdvEventArgs> Collapsed;
-		internal protected virtual void OnCollapsed()
+		internal void OnCollapsed()
 		{
 			if (Collapsed != null)
 				Collapsed(this, new TreeViewAdvEventArgs(this));
 		}
 
 		public event EventHandler<TreeViewAdvEventArgs> Expanding;
-		internal protected virtual void OnExpanding()
+		internal void OnExpanding()
 		{
 			if (Expanding != null)
 				Expanding(this, new TreeViewAdvEventArgs(this));
 		}
 
 		public event EventHandler<TreeViewAdvEventArgs> Expanded;
-		internal protected virtual void OnExpanded()
+		internal void OnExpanded()
 		{
 			if (Expanded != null)
 				Expanded(this, new TreeViewAdvEventArgs(this));
 		}
-		
+
 		#endregion
-		
+
 		#region Properties
 
 		private TreeViewAdv _tree;
@@ -112,10 +114,10 @@ namespace Aga.Controls.Tree
 		}
 
 		private int _row;
-		internal int Row
+		public int Row
 		{
 			get { return _row; }
-			set { _row = value; }
+			internal set { _row = value; }
 		}
 
 		private int _index = -1;
@@ -131,7 +133,7 @@ namespace Aga.Controls.Tree
 		public bool IsSelected
 		{
 			get { return _isSelected; }
-			set 
+			set
 			{
 				if (_isSelected != value)
 				{
@@ -178,21 +180,21 @@ namespace Aga.Controls.Tree
 		public bool IsLeaf
 		{
 			get { return _isLeaf; }
-			internal protected set { _isLeaf = value; }
+			internal set { _isLeaf = value; }
 		}
 
 		private bool _isExpandedOnce;
 		public bool IsExpandedOnce
 		{
 			get { return _isExpandedOnce; }
-			internal protected set { _isExpandedOnce = value; }
+			internal set { _isExpandedOnce = value; }
 		}
 
 		private bool _isExpanded;
 		public bool IsExpanded
 		{
-            get { return _isExpanded; }
-            set 
+			get { return _isExpanded; }
+			set
 			{
 				if (value)
 					Expand();
@@ -220,6 +222,20 @@ namespace Aga.Controls.Tree
 					return 0;
 				else
 					return _parent.Level + 1;
+			}
+		}
+
+		public TreeNodeAdv PreviousNode
+		{
+			get
+			{
+				if (_parent != null)
+				{
+					int index = Index;
+					if (index > 0)
+						return _parent.Nodes[index - 1];
+				}
+				return null;
 			}
 		}
 
@@ -290,8 +306,8 @@ namespace Aga.Controls.Tree
 			get { return _nodes; }
 		}
 
-		private IList<TreeNodeAdv> _children;
-		public IList<TreeNodeAdv> Children
+		private ReadOnlyCollection<TreeNodeAdv> _children;
+		public ReadOnlyCollection<TreeNodeAdv> Children
 		{
 			get
 			{
@@ -320,48 +336,52 @@ namespace Aga.Controls.Tree
 			set { _isExpandingNow = value; }
 		}
 
+		private bool _autoExpandOnStructureChanged = false;
+		public bool AutoExpandOnStructureChanged
+		{
+			get { return _autoExpandOnStructureChanged; }
+			set { _autoExpandOnStructureChanged = value; }
+		}
+
 		#endregion
 
-		public TreeNodeAdv(object tag): this(null, tag)
+		public TreeNodeAdv(object tag)
+			: this(null, tag)
 		{
 		}
 
-		internal protected TreeNodeAdv(TreeViewAdv tree, object tag)
+		internal TreeNodeAdv(TreeViewAdv tree, object tag)
 		{
 			_row = -1;
 			_tree = tree;
 			_nodes = new NodeCollection(this);
-			if (tree.Model != null) {
-				_children = new ReadOnlyCollection<TreeNodeAdv>(_nodes);
-			} else {
-				_children = _nodes;
-			}
+			_children = new ReadOnlyCollection<TreeNodeAdv>(_nodes);
 			_tag = tag;
-        }
+		}
 
-        public override string ToString()
+		public override string ToString()
 		{
 			if (Tag != null)
 				return Tag.ToString();
 			else
 				return base.ToString();
-        }
+		}
 
-        public void Collapse()
-        {
+		public void Collapse()
+		{
 			if (_isExpanded)
 				Collapse(true);
-        }
+		}
 
-        public void CollapseAll()
-        {
-            Collapse(false);
-        }
+		public void CollapseAll()
+		{
+			Collapse(false);
+		}
 
-        public void Collapse(bool ignoreChildren)
-        {
+		public void Collapse(bool ignoreChildren)
+		{
 			SetIsExpanded(false, ignoreChildren);
-        }
+		}
 
 		public void Expand()
 		{
@@ -375,7 +395,7 @@ namespace Aga.Controls.Tree
 		}
 
 		public void Expand(bool ignoreChildren)
-        {
+		{
 			SetIsExpanded(true, ignoreChildren);
 		}
 
@@ -389,8 +409,9 @@ namespace Aga.Controls.Tree
 
 		#region ISerializable Members
 
-        private TreeNodeAdv(SerializationInfo info, StreamingContext context): this(null, null)
-        {
+		private TreeNodeAdv(SerializationInfo info, StreamingContext context)
+			: this(null, null)
+		{
 			int nodesCount = 0;
 			nodesCount = info.GetInt32("NodesCount");
 			_isExpanded = info.GetBoolean("IsExpanded");
@@ -402,9 +423,9 @@ namespace Aga.Controls.Tree
 				Nodes.Add(child);
 			}
 
-        }
+		}
 
-		[SecurityPermission(SecurityAction.Demand, SerializationFormatter=true)]
+		[SecurityPermission(SecurityAction.Demand, SerializationFormatter = true)]
 		public void GetObjectData(SerializationInfo info, StreamingContext context)
 		{
 			info.AddValue("IsExpanded", IsExpanded);

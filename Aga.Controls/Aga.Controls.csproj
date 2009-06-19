@@ -1,8 +1,8 @@
-﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>8.0.50727</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{E73BB233-D88B-44A7-A98F-D71EE158381D}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -19,6 +19,11 @@
     </SccProvider>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>key.snk</AssemblyOriginatorKeyFile>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>2.0</OldToolsVersion>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -64,6 +69,9 @@
     <Compile Include="Threading\WorkItem.cs" />
     <Compile Include="TimeCounter.cs" />
     <Compile Include="Tree\Input\ReorderColumnState.cs" />
+    <Compile Include="Tree\ListModel.cs" />
+    <Compile Include="Tree\NodeControls\EditEventArgs.cs" />
+    <Compile Include="Tree\NodeControls\LabelEventArgs.cs" />
     <Compile Include="Tree\NodeControls\NodeIntegerTextBox.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -87,6 +95,9 @@
     <Compile Include="Tree\Input\ClickColumnState.cs" />
     <Compile Include="Tree\Input\ColumnState.cs" />
     <Compile Include="Tree\TreeViewAdv.Draw.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Tree\TreeViewAdv.Editor.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Tree\TreeViewAdv.Input.cs">
@@ -188,6 +199,9 @@
       <SubType>Designer</SubType>
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tree\TreeViewAdv.resx">
+      <DependentUpon>TreeViewAdv.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

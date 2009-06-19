@@ -213,6 +213,14 @@ namespace Aga.Controls.Tree
 
 		#region DesignTime
 
+		private bool _shiftFirstNode;
+		[DefaultValue(false), Category("Behavior")]
+		public bool ShiftFirstNode
+		{
+			get { return _shiftFirstNode; }
+			set { _shiftFirstNode = value; }
+		}
+
 		private bool _displayDraggingNodes;
 		[DefaultValue(false), Category("Behavior")]
 		public bool DisplayDraggingNodes

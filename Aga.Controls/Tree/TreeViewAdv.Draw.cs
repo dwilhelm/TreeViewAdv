@@ -1,3 +1,4 @@
+using System;
 using System.Drawing;
 using System.Diagnostics;
 using System.Drawing.Drawing2D;
@@ -8,6 +9,33 @@ namespace Aga.Controls.Tree
 {
 	public partial class TreeViewAdv
 	{
+		public void AutoSizeColumn(TreeColumn column)
+		{
+			if (!Columns.Contains(column))
+				throw new ArgumentException("column");
+
+			DrawContext context = new DrawContext();
+			context.Graphics = Graphics.FromImage(new Bitmap(1, 1));
+			context.Font = this.Font;
+			int res = 0;
+			for (int row = 0; row < RowCount; row++)
+			{
+				if (row < RowMap.Count)
+				{
+					int w = 0;
+					TreeNodeAdv node = RowMap[row];
+					foreach (NodeControl nc in NodeControls)
+					{
+						if (nc.ParentColumn == column)
+							w += nc.GetActualSize(node, _measureContext).Width;
+					}
+					res = Math.Max(res, w);
+				}
+			}
+
+			if (res > 0)
+				column.Width = res;
+		}
 
 		private void CreatePens()
 		{
@@ -90,7 +118,7 @@ namespace Aga.Controls.Tree
 		{
 			TreeNodeAdv node = RowMap[row];
 			context.DrawSelection = DrawSelectionMode.None;
-			context.CurrentEditorOwner = _currentEditorOwner;
+			context.CurrentEditorOwner = CurrentEditorOwner;
 			if (DragMode)
 			{
 				if ((_dropPosition.Node == node) && _dropPosition.Position == NodePosition.Inside && HighlightDropPosition)

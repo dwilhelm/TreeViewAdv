@@ -127,6 +127,12 @@ namespace Aga.Controls.Tree
 
 		protected override void OnMouseDown(MouseEventArgs e)
 		{
+			if (CurrentEditorOwner != null)
+			{
+				CurrentEditorOwner.EndEdit(true);
+				return;
+			}
+
 			if (!Focused)
 				Focus();
 
@@ -182,6 +188,8 @@ namespace Aga.Controls.Tree
 			{
 				if (args.Node != null)
 					OnNodeMouseDoubleClick(args);
+				else
+					Input.MouseDoubleClick(args);
 
 				if (!args.Handled)
 				{

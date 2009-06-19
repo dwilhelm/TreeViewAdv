@@ -24,7 +24,7 @@ namespace Aga.Controls.Tree.NodeControls
 		protected override TextBox CreateTextBox()
 		{
 			NumericTextBox textBox = new NumericTextBox();
-			textBox.AllowDecimalSeperator = false;
+			textBox.AllowDecimalSeparator = false;
 			textBox.AllowNegativeSign = AllowNegativeSign;
 			return textBox;
 		}

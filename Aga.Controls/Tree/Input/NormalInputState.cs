@@ -123,7 +123,7 @@ namespace Aga.Controls.Tree
 		public override void MouseUp(TreeNodeAdvMouseEventArgs args)
 		{
 			Tree.ItemDragMode = false;
-			if (_mouseDownFlag)
+			if (_mouseDownFlag && args.Node != null)
 			{
 				if (args.Button == MouseButtons.Left)
 					DoMouseOperation(args);

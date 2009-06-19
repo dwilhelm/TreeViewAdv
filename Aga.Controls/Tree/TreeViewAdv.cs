@@ -14,19 +14,20 @@ using Aga.Controls.Threading;
 
 namespace Aga.Controls.Tree
 {
-    /// <summary>
-    /// Extensible advanced <see cref="TreeView"/> implemented in 100% managed C# code.
-    /// Features: Model/View architecture. Multiple column per node. Ability to select
-    /// multiple tree nodes. Different types of controls for each node column: 
-    /// <see cref="CheckBox"/>, Icon, Label... Drag and Drop highlighting. Load on
-    /// demand of nodes. Incremental search of nodes.
-    /// </summary>
+	/// <summary>
+	/// Extensible advanced <see cref="TreeView"/> implemented in 100% managed C# code.
+	/// Features: Model/View architecture. Multiple column per node. Ability to select
+	/// multiple tree nodes. Different types of controls for each node column: 
+	/// <see cref="CheckBox"/>, Icon, Label... Drag and Drop highlighting. Load on
+	/// demand of nodes. Incremental search of nodes.
+	/// </summary>
 	public partial class TreeViewAdv : Control
 	{
 		private const int LeftMargin = 7;
 		internal const int ItemDragSensivity = 4;
 		private readonly int _columnHeaderHeight;
 		private const int DividerWidth = 9;
+		private const int DividerCorrectionGap = -2;
 
 		private Pen _linePen;
 		private Pen _markPen;
@@ -34,8 +35,6 @@ namespace Aga.Controls.Tree
 		private bool _needFullUpdate;
 		private bool _fireSelectionEvent;
 		private NodePlusMinus _plusMinus;
-		private Control _currentEditor;
-		private EditableControl _currentEditorOwner;
 		private ToolTip _toolTip;
 		private DrawContext _measureContext;
 		private TreeColumn _hotColumn;
@@ -227,7 +226,7 @@ namespace Aga.Controls.Tree
 			_readonlySelection = new ReadOnlyCollection<TreeNodeAdv>(_selection);
 			_columns = new TreeColumnCollection(this);
 			_toolTip = new ToolTip();
-			
+
 			_measureContext = new DrawContext();
 			_measureContext.Font = Font;
 			_measureContext.Graphics = Graphics.FromImage(new Bitmap(1, 1));
@@ -248,8 +247,8 @@ namespace Aga.Controls.Tree
 
 		void ExpandingIconChanged(object sender, EventArgs e)
 		{
-			if (IsHandleCreated)
-				Invoke(new MethodInvoker(DrawIcons));
+			if (IsHandleCreated && !IsDisposed)
+				BeginInvoke(new MethodInvoker(DrawIcons));
 		}
 
 		private void DrawIcons()
@@ -275,12 +274,12 @@ namespace Aga.Controls.Tree
 				{
 					foreach (NodeControlInfo item in GetNodeControls(_expandingNodes[i]))
 					{
-						if (item.Control is ExpandingIcon )
+						if (item.Control is ExpandingIcon)
 						{
 							Rectangle bounds = item.Bounds;
 							if (item.Node.Parent == null && UseColumns)
 								bounds.Location = Point.Empty; // display root expanding icon at 0,0
-							
+
 							context.Bounds = bounds;
 							item.Control.Draw(item.Node, context);
 						}
@@ -402,7 +401,7 @@ namespace Aga.Controls.Tree
 				CreateRowMap();
 
 			int row = -1;
- 
+
 			if (node.Row < FirstVisibleRow)
 				row = node.Row;
 			else
@@ -433,7 +432,11 @@ namespace Aga.Controls.Tree
 		internal void ClearSelectionInternal()
 		{
 			while (Selection.Count > 0)
-				Selection[0].IsSelected = false;
+			{
+				var t = Selection[0];
+				t.IsSelected = false;
+				Selection.Remove(t); //hack
+			}
 		}
 
 		#endregion
@@ -450,7 +453,7 @@ namespace Aga.Controls.Tree
 			int hBarSize = _hScrollBar.Height;
 			int vBarSize = _vScrollBar.Width;
 			Rectangle clientRect = ClientRectangle;
-			
+
 			_hScrollBar.SetBounds(clientRect.X, clientRect.Bottom - hBarSize,
 				clientRect.Width - vBarSize, hBarSize);
 
@@ -461,7 +464,7 @@ namespace Aga.Controls.Tree
 		private void SafeUpdateScrollBars()
 		{
 			if (InvokeRequired)
-				Invoke(new MethodInvoker(UpdateScrollBars));
+				BeginInvoke(new MethodInvoker(UpdateScrollBars));
 			else
 				UpdateScrollBars();
 		}
@@ -502,10 +505,10 @@ namespace Aga.Controls.Tree
 				switch (BorderStyle)
 				{
 					case BorderStyle.FixedSingle:
-							res.Style |= 0x800000;
-							break;
+						res.Style |= 0x800000;
+						break;
 					case BorderStyle.Fixed3D:
-							res.ExStyle |= 0x200;
+						res.ExStyle |= 0x200;
 						break;
 				}
 				return res;
@@ -514,19 +517,9 @@ namespace Aga.Controls.Tree
 
 		protected override void OnGotFocus(EventArgs e)
 		{
-			HideEditor();
 			UpdateView();
 			ChangeInput();
 			base.OnGotFocus(e);
-		}
-
-		protected override void OnLeave(EventArgs e)
-		{
-			if (_currentEditorOwner != null)
-				_currentEditorOwner.ApplyChanges();
-			HideEditor();
-			UpdateView();
-			base.OnLeave(e);
 		}
 
 		protected override void OnFontChanged(EventArgs e)
@@ -553,6 +546,8 @@ namespace Aga.Controls.Tree
 			int y = rowRect.Y;
 			int x = (node.Level - 1) * _indent + LeftMargin;
 			int width = 0;
+			if (node.Row == 0 && ShiftFirstNode)
+				x -= _indent;
 			Rectangle rect = Rectangle.Empty;
 
 			if (ShowPlusMinus)
@@ -627,8 +622,9 @@ namespace Aga.Controls.Tree
 
 		public void FullUpdate()
 		{
+			HideEditor();
 			if (InvokeRequired)
-				Invoke(new MethodInvoker(UnsafeFullUpdate));
+				BeginInvoke(new MethodInvoker(UnsafeFullUpdate));
 			else
 				UnsafeFullUpdate();
 		}
@@ -650,7 +646,7 @@ namespace Aga.Controls.Tree
 
 		internal void UpdateHeaders()
 		{
-			Invalidate(new Rectangle(0,0, Width, ColumnHeaderHeight));
+			Invalidate(new Rectangle(0, 0, Width, ColumnHeaderHeight));
 		}
 
 		internal void UpdateColumns()
@@ -680,7 +676,6 @@ namespace Aga.Controls.Tree
 			if (!parentNode.IsLeaf)
 			{
 				parentNode.IsExpandedOnce = true;
-				List<TreeNodeAdv> oldNodes = new List<TreeNodeAdv>(parentNode.Nodes);
 				parentNode.Nodes.Clear();
 
 				if (Model != null)
@@ -689,27 +684,14 @@ namespace Aga.Controls.Tree
 					if (items != null)
 						foreach (object obj in items)
 						{
-							bool found = false;
-							if (obj != null)
-							{
-								for (int i = 0; i < oldNodes.Count; i++)
-									if (object.Equals(obj, oldNodes[i].Tag))
-									{
-										oldNodes[i].RightBounds = oldNodes[i].Height = null;
-										AddNode(parentNode, -1, oldNodes[i]);
-										oldNodes.RemoveAt(i);
-										found = true;
-										break;
-									}
-							}
-							if (!found)
-								AddNewNode(parentNode, obj, -1);
-
+							AddNewNode(parentNode, obj, -1);
 							if (performFullUpdate)
 								FullUpdate();
 						}
 				}
 
+				if (parentNode.AutoExpandOnStructureChanged)
+					parentNode.ExpandAll();
 			}
 		}
 
@@ -729,21 +711,8 @@ namespace Aga.Controls.Tree
 			node.IsLeaf = Model.IsLeaf(GetPath(node));
 			if (node.IsLeaf)
 				node.Nodes.Clear();
-
-			if (!LoadOnDemand)
+			if (!LoadOnDemand || node.IsExpandedOnce)
 				ReadChilds(node);
-			else if (node.IsExpandedOnce)
-			{
-				if (!node.IsExpanded && UnloadCollapsedOnReload)
-				{
-					node.IsExpandedOnce = false;
-					node.Nodes.Clear();
-				}
-				else
-					ReadChilds(node);
-			}
-			/*if (!LoadOnDemand || node.IsExpandedOnce)
-				ReadChilds(node);*/
 		}
 
 		private struct ExpandArgs
@@ -803,10 +772,13 @@ namespace Aga.Controls.Tree
 			if (Root == node && !value)
 				return; //Can't collapse root node
 
-			if (value) {
+			if (value)
+			{
 				OnExpanding(node);
 				node.OnExpanding();
-			} else {
+			}
+			else
+			{
 				OnCollapsing(node);
 				node.OnCollapsing();
 			}
@@ -825,10 +797,13 @@ namespace Aga.Controls.Tree
 			node.AssignIsExpanded(value);
 			SmartFullUpdate();
 
-			if (value) {
+			if (value)
+			{
 				OnExpanded(node);
 				node.OnExpanded();
-			} else {
+			}
+			else
+			{
 				OnCollapsed(node);
 				node.OnCollapsed();
 			}
@@ -1034,21 +1009,25 @@ namespace Aga.Controls.Tree
 
 		public void SelectAllNodes()
 		{
-			if (SelectionMode == TreeSelectionMode.MultiSameParent)
+			SuspendSelectionEvent = true;
+			try
 			{
-                //TODO: Implement TreeViewAdvSelectAllNodes() functionality for when SelectionMode == TreeSelectionMode.MultiSameParent
-			}
-			else if (SelectionMode == TreeSelectionMode.Multi)
-			{
-				SuspendSelectionEvent = true;
-				try
+				if (SelectionMode == TreeSelectionMode.MultiSameParent)
+				{
+					if (CurrentNode != null)
+					{
+						foreach (TreeNodeAdv n in CurrentNode.Parent.Nodes)
+							n.IsSelected = true;
+					}
+				}
+				else if (SelectionMode == TreeSelectionMode.Multi)
 				{
 					SelectNodes(Root.Nodes);
 				}
-				finally
-				{
-					SuspendSelectionEvent = false;
-				}
+			}
+			finally
+			{
+				SuspendSelectionEvent = false;
 			}
 		}
 
@@ -1061,93 +1040,6 @@ namespace Aga.Controls.Tree
 					SelectNodes(n.Nodes);
 			}
 		}
-
-		#region Editor
-
-        /// <exception cref="ArgumentNullException">control or owner parameter is null.</exception>
-        public void DisplayEditor(Control control, EditableControl owner)
-		{
-			if (control == null || owner == null)
-				throw new ArgumentNullException();
-
-			if (CurrentNode != null)
-			{
-				HideEditor();
-				_currentEditor = control;
-				_currentEditorOwner = owner;
-				UpdateEditorBounds();
-
-				UpdateView();
-				control.Parent = this;
-				control.Focus();
-				owner.UpdateEditor(control);
-			}
-		}
-
-		public void UpdateEditorBounds()
-		{
-			if (_currentEditor != null)
-			{
-				EditorContext context = new EditorContext();
-				context.Owner = _currentEditorOwner;
-				context.CurrentNode = CurrentNode;
-				context.Editor = _currentEditor;
-				context.DrawContext = _measureContext;
-
-				SetEditorBounds(context);
-			}
-		}
-
-		public void HideEditor()
-		{
-			if (_currentEditorOwner != null)
-			{
-				_currentEditorOwner.HideEditor(_currentEditor);
-				_currentEditor = null;
-				_currentEditorOwner = null;
-			}
-		}
-
-		private void SetEditorBounds(EditorContext context)
-		{
-			foreach (NodeControlInfo info in GetNodeControls(context.CurrentNode))
-			{
-				if (context.Owner == info.Control && info.Control is EditableControl)
-				{
-					Point p = info.Bounds.Location;
-					p.X += info.Control.LeftMargin;
-					p.X -= OffsetX;
-					p.Y -= (_rowLayout.GetRowBounds(FirstVisibleRow).Y - ColumnHeaderHeight);
-					int width = DisplayRectangle.Width - p.X;
-					if (UseColumns && info.Control.ParentColumn != null && Columns.Contains(info.Control.ParentColumn))
-					{
-						Rectangle rect = GetColumnBounds(info.Control.ParentColumn.Index);
-						width = rect.Right - OffsetX - p.X;
-					}
-					context.Bounds = new Rectangle(p.X, p.Y, width, info.Bounds.Height);
-					((EditableControl)info.Control).SetEditorBounds(context);
-					return;
-				}
-			}
-		}
-
-		private Rectangle GetColumnBounds(int column)
-		{
-			int x = 0;
-			for (int i = 0; i < Columns.Count; i++)
-			{
-				if (Columns[i].IsVisible)
-				{
-					if (i < column)
-						x += Columns[i].Width;
-					else
-						return new Rectangle(x, 0, Columns[i].Width, 0);
-				}
-			}
-			return Rectangle.Empty;
-		}
-
-		#endregion
 
 		#region ModelEvents
 		private void BindModelEvents()
@@ -1174,12 +1066,39 @@ namespace Aga.Controls.Tree
 			TreeNodeAdv node = FindNode(e.Path);
 			if (node != null)
 			{
+				if (node != Root)
+					node.IsLeaf = Model.IsLeaf(GetPath(node));
+
+				var list = new Dictionary<object, object>();
+				SaveExpandedNodes(node, list);
 				ReadChilds(node);
+				RestoreExpandedNodes(node, list);
+
 				UpdateSelection();
 				SmartFullUpdate();
 			}
 			//else 
 			//	throw new ArgumentException("Path not found");
+		}
+
+		private void RestoreExpandedNodes(TreeNodeAdv node, Dictionary<object, object> list)
+		{
+			if (node.Tag != null && list.ContainsKey(node.Tag))
+			{
+				node.IsExpanded = true;
+				foreach (var child in node.Children)
+					RestoreExpandedNodes(child, list);
+			}
+		}
+
+		private void SaveExpandedNodes(TreeNodeAdv node, Dictionary<object, object> list)
+		{
+			if (node.IsExpanded && node.Tag != null)
+			{
+				list.Add(node.Tag, null);
+				foreach (var child in node.Children)
+					SaveExpandedNodes(child, list);
+			}
 		}
 
 		private void _model_NodesRemoved(object sender, TreeModelEventArgs e)
@@ -1234,10 +1153,10 @@ namespace Aga.Controls.Tree
 		private void _model_NodesChanged(object sender, TreeModelEventArgs e)
 		{
 			TreeNodeAdv parent = FindNode(e.Path);
-			if (parent != null && parent.IsVisible  && parent.IsExpanded)
+			if (parent != null && parent.IsVisible && parent.IsExpanded)
 			{
 				if (InvokeRequired)
-					Invoke(new UpdateContentWidthDelegate(ClearNodesSize), e, parent);
+					BeginInvoke(new UpdateContentWidthDelegate(ClearNodesSize), e, parent);
 				else
 					ClearNodesSize(e, parent);
 				SmartFullUpdate();

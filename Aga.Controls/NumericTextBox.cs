@@ -51,7 +51,7 @@ namespace Aga.Controls
 			{
 				// Digits are OK
 			}
-			else if (AllowDecimalSeperator && keyString.Equals(decimalSeparator))
+			else if (AllowDecimalSeparator && keyString.Equals(decimalSeparator))
 			{
 				if (Text.IndexOf(decimalSeparator) >= 0)
 				{
@@ -176,12 +176,12 @@ namespace Aga.Controls
 			set { allowNegativeSign = value; }
 		}
 
-		private bool allowDecimalSeperator;
+		private bool allowDecimalSeparator;
 		[DefaultValue(true)]
-		public bool AllowDecimalSeperator
+		public bool AllowDecimalSeparator
 		{
-			get { return allowDecimalSeperator; }
-			set { allowDecimalSeperator = value; }
+			get { return allowDecimalSeparator; }
+			set { allowDecimalSeparator = value; }
 		}
 
 	}

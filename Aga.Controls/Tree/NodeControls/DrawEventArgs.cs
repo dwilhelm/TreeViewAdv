@@ -46,6 +46,7 @@ namespace Aga.Controls.Tree.NodeControls
 		public string Text
 		{
 			get { return _text; }
+			set { _text = value; }
 		}
 
 

@@ -48,5 +48,10 @@ namespace Aga.Controls.Tree
             Tree.UpdateView();
             return true;
         }
+
+		public override void MouseDoubleClick(TreeNodeAdvMouseEventArgs args)
+		{
+			Tree.AutoSizeColumn(Column);
+		}
 	}
 }
