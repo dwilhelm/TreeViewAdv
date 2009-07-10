@@ -32,11 +32,18 @@ namespace Aga.Controls.Tree
 			_editingNode = CurrentNode;
 
 			editor.Validating += EditorValidating;
+			editor.Leave += EditorLeave;
+			editor.LostFocus += EditorLeave;
 			UpdateEditorBounds();
 			UpdateView();
 			editor.Parent = this;
 			editor.Focus();
 			owner.UpdateEditor(editor);
+		}
+
+		void EditorLeave(object sender, EventArgs e)
+		{
+			HideEditor(true);
 		}
 
 		internal bool HideEditor(bool applyChanges)
@@ -53,6 +60,8 @@ namespace Aga.Controls.Tree
 				if (CurrentEditor != null)
 				{
 					CurrentEditor.Validating -= EditorValidating;
+					CurrentEditor.Leave -= EditorLeave;
+					CurrentEditor.LostFocus -= EditorLeave;
 					CurrentEditorOwner.DoDisposeEditor(CurrentEditor);
 
 					CurrentEditor.Parent = null;
