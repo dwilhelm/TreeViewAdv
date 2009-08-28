@@ -441,6 +441,24 @@ namespace Aga.Controls.Tree
 
 		#endregion
 
+		protected override void Dispose(bool disposing)
+		{
+			if (disposing)
+			{
+				AbortBackgroundExpandingThreads();
+				if (_model != null)
+					UnbindModelEvents();
+				ExpandingIcon.IconChanged -= ExpandingIconChanged;
+				if (components != null)
+					components.Dispose();
+				if (_dragBitmap != null) _dragBitmap.Dispose();
+				if (_dragTimer != null) _dragTimer.Dispose();
+				if (_linePen != null) _linePen.Dispose();
+				if (_markPen != null) _markPen.Dispose();
+			}
+			base.Dispose(disposing);
+		}
+
 		protected override void OnSizeChanged(EventArgs e)
 		{
 			ArrangeControls();
