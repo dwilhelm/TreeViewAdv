@@ -126,7 +126,7 @@ namespace Aga.Controls.Tree
 			}
 			else
 			{
-				if (node.IsSelected && Focused)
+				if (node.IsSelected && (Focused || !InactiveSelection))
 					context.DrawSelection = DrawSelectionMode.Active;
 				else if (node.IsSelected && !Focused && !HideSelection)
 					context.DrawSelection = DrawSelectionMode.Inactive;

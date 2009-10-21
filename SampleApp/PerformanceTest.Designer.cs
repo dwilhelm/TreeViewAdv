@@ -74,6 +74,7 @@ namespace SampleApp
 			// 
 			// _treeView2
 			// 
+			this._treeView2.HideSelection = false;
 			this._treeView2.Location = new System.Drawing.Point(273, 32);
 			this._treeView2.Name = "_treeView2";
 			this._treeView2.Size = new System.Drawing.Size(269, 294);
@@ -166,6 +167,7 @@ namespace SampleApp
 			// 
 			this.nodeTextBox1.DataPropertyName = "Text";
 			this.nodeTextBox1.IncrementalSearchEnabled = true;
+			this.nodeTextBox1.LeftMargin = 3;
 			this.nodeTextBox1.ParentColumn = null;
 			// 
 			// PerformanceTest

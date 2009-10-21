@@ -459,6 +459,18 @@ namespace Aga.Controls.Tree
 			}
 		}
 
+		bool _inactiveSelection = true;
+		[DefaultValue(true), Category("Behavior")]
+		public bool InactiveSelection
+		{
+			get { return _inactiveSelection; }
+			set
+			{
+				_inactiveSelection = value;
+				UpdateView();
+			}
+		}
+
 		private float _topEdgeSensivity = 0.3f;
 		[DefaultValue(0.3f), Category("Behavior")]
 		public float TopEdgeSensivity

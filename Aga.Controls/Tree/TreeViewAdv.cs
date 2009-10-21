@@ -540,6 +540,12 @@ namespace Aga.Controls.Tree
 			base.OnGotFocus(e);
 		}
 
+		protected override void OnLostFocus(EventArgs e)
+		{
+			UpdateView();
+			base.OnLostFocus(e);
+		}
+
 		protected override void OnFontChanged(EventArgs e)
 		{
 			base.OnFontChanged(e);
@@ -1076,6 +1082,54 @@ namespace Aga.Controls.Tree
 			_model.StructureChanged -= new EventHandler<TreePathEventArgs>(_model_StructureChanged);
 		}
 
+		private static object[] GetRelativePath(TreeNodeAdv root, TreeNodeAdv node)
+		{
+			int level = 0;
+			TreeNodeAdv current = node;
+			while (current != root && current != null)
+			{
+				current = current.Parent;
+				level++;
+			}
+			if (current != null)
+			{
+				object[] result = new object[level];
+				current = node;
+				while (current != root && current != null)
+				{
+					level--;
+					result[level] = current.Tag;
+					current = current.Parent;
+				}
+				return result;
+			}
+			return null;
+		}
+
+		private TreeNodeAdv FindChildNode(TreeNodeAdv root, object[] relativePath, int level, bool readChilds)
+		{
+			if (relativePath == null)
+				return null;
+			if (level == relativePath.Length)
+				return root;
+
+			if (!root.IsExpandedOnce && readChilds)
+				ReadChilds(root);
+
+			for (int i = 0; i < root.Nodes.Count; i++)
+			{
+				TreeNodeAdv node = root.Nodes[i];
+				if (node.Tag == relativePath[level])
+				{
+					if (level == relativePath.Length - 1)
+						return node;
+					else
+						return FindChildNode(node, relativePath, level + 1, readChilds);
+				}
+			}
+			return null;
+		}
+
 		private void _model_StructureChanged(object sender, TreePathEventArgs e)
 		{
 			if (e.Path == null)
@@ -1087,10 +1141,42 @@ namespace Aga.Controls.Tree
 				if (node != Root)
 					node.IsLeaf = Model.IsLeaf(GetPath(node));
 
+				object[] currentPath = GetRelativePath(node, _currentNode);
+				object[] selectionStartPath = GetRelativePath(node, _selectionStart);
+				List<object[]> selectionPaths = new List<object[]>();
+				foreach (var selectionNode in Selection)
+				{
+					object[] selectionPath = GetRelativePath(node, selectionNode);
+					if (selectionPath != null)
+						selectionPaths.Add(selectionPath);
+				}
+
+				
 				var list = new Dictionary<object, object>();
 				SaveExpandedNodes(node, list);
 				ReadChilds(node);
 				RestoreExpandedNodes(node, list);
+
+				bool suspendSelectionEventBefore = SuspendSelectionEvent;
+				bool suspendUpdateBefore = _suspendUpdate;
+				SuspendSelectionEvent = true;
+				_suspendUpdate = true;
+
+				//Restore Selection:
+				foreach ( var selectionPath in selectionPaths)
+				{
+					TreeNodeAdv selectionNode = FindChildNode(node, selectionPath, 0, false);
+					if (selectionNode != null)
+						selectionNode.IsSelected = true;
+				}
+
+				if (currentPath != null)
+					_currentNode = FindChildNode(node, currentPath, 0, false);
+				if (selectionStartPath != null)
+					_selectionStart = FindChildNode(node, selectionStartPath, 0, false);
+
+				_suspendUpdate = suspendUpdateBefore;
+				SuspendSelectionEvent = suspendSelectionEventBefore;
 
 				UpdateSelection();
 				SmartFullUpdate();
