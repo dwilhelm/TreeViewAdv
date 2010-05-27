@@ -270,18 +270,21 @@ namespace Aga.Controls.Tree
 
 				DrawContext context = new DrawContext();
 				context.Graphics = gr;
-				for (int i = 0; i < _expandingNodes.Count; i++)
+				lock (_expandingNodes)
 				{
-					foreach (NodeControlInfo item in GetNodeControls(_expandingNodes[i]))
+					for (int i = 0; i < _expandingNodes.Count; i++)
 					{
-						if (item.Control is ExpandingIcon)
+						foreach (NodeControlInfo item in GetNodeControls(_expandingNodes[i]))
 						{
-							Rectangle bounds = item.Bounds;
-							if (item.Node.Parent == null && UseColumns)
-								bounds.Location = Point.Empty; // display root expanding icon at 0,0
+							if (item.Control is ExpandingIcon)
+							{
+								Rectangle bounds = item.Bounds;
+								if (item.Node.Parent == null && UseColumns)
+									bounds.Location = Point.Empty; // display root expanding icon at 0,0
 
-							context.Bounds = bounds;
-							item.Control.Draw(item.Node, context);
+								context.Bounds = bounds;
+								item.Control.Draw(item.Node, context);
+							}
 						}
 					}
 				}
@@ -748,10 +751,13 @@ namespace Aga.Controls.Tree
 
 		public void AbortBackgroundExpandingThreads()
 		{
-			_threadPool.CancelAll(true);
-			for (int i = 0; i < _expandingNodes.Count; i++)
-				_expandingNodes[i].IsExpandingNow = false;
-			_expandingNodes.Clear();
+			lock (_expandingNodes)
+			{
+				_threadPool.CancelAll(true);
+				for (int i = 0; i < _expandingNodes.Count; i++)
+					_expandingNodes[i].IsExpandingNow = false;
+				_expandingNodes.Clear();
+			}
 			Invalidate();
 		}
 
@@ -835,17 +841,23 @@ namespace Aga.Controls.Tree
 
 		private void RemoveExpandingNode(TreeNodeAdv node)
 		{
-			node.IsExpandingNow = false;
-			_expandingNodes.Remove(node);
-			if (_expandingNodes.Count <= 0)
-				ExpandingIcon.Stop();
+			lock (_expandingNodes)
+			{
+				node.IsExpandingNow = false;
+				_expandingNodes.Remove(node);
+				if (_expandingNodes.Count <= 0)
+					ExpandingIcon.Stop();
+			}
 		}
 
 		private void AddExpandingNode(TreeNodeAdv node)
 		{
-			node.IsExpandingNow = true;
-			_expandingNodes.Add(node);
-			ExpandingIcon.Start();
+			lock (_expandingNodes)
+			{
+				node.IsExpandingNow = true;
+				_expandingNodes.Add(node);
+				ExpandingIcon.Start();
+			}
 		}
 
 		internal void SetIsExpandedRecursive(TreeNodeAdv root, bool value)
