@@ -1167,12 +1167,13 @@ namespace Aga.Controls.Tree
 				var list = new Dictionary<object, object>();
 				SaveExpandedNodes(node, list);
 				ReadChilds(node);
-				RestoreExpandedNodes(node, list);
 
 				bool suspendSelectionEventBefore = SuspendSelectionEvent;
 				bool suspendUpdateBefore = _suspendUpdate;
 				SuspendSelectionEvent = true;
 				_suspendUpdate = true;
+
+				RestoreExpandedNodes(node, list);
 
 				//Restore Selection:
 				foreach ( var selectionPath in selectionPaths)
