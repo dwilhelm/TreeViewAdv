@@ -1170,6 +1170,8 @@ namespace Aga.Controls.Tree
 
 				bool suspendSelectionEventBefore = SuspendSelectionEvent;
 				bool suspendUpdateBefore = _suspendUpdate;
+				bool fireSelectionBefore = _fireSelectionEvent;
+
 				SuspendSelectionEvent = true;
 				_suspendUpdate = true;
 
@@ -1181,13 +1183,16 @@ namespace Aga.Controls.Tree
 					TreeNodeAdv selectionNode = FindChildNode(node, selectionPath, 0, false);
 					if (selectionNode != null)
 						selectionNode.IsSelected = true;
+					else
+						fireSelectionBefore = true; // selection changed.
 				}
 
 				if (currentPath != null)
 					_currentNode = FindChildNode(node, currentPath, 0, false);
 				if (selectionStartPath != null)
 					_selectionStart = FindChildNode(node, selectionStartPath, 0, false);
-
+				
+				_fireSelectionEvent = fireSelectionBefore;
 				_suspendUpdate = suspendUpdateBefore;
 				SuspendSelectionEvent = suspendSelectionEventBefore;
 
