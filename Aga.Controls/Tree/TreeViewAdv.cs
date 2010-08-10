@@ -1178,6 +1178,7 @@ namespace Aga.Controls.Tree
 				RestoreExpandedNodes(node, list);
 
 				//Restore Selection:
+				_selection.Clear();
 				foreach ( var selectionPath in selectionPaths)
 				{
 					TreeNodeAdv selectionNode = FindChildNode(node, selectionPath, 0, false);
