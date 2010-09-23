@@ -379,13 +379,16 @@ namespace Aga.Controls.Tree
 			if (!IsMyNode(node))
 				throw new ArgumentException();
 
-			TreeNodeAdv parent = node.Parent;
-			while (parent != _root)
+			if (node != _root)
 			{
-				parent.IsExpanded = true;
-				parent = parent.Parent;
+				TreeNodeAdv parent = node.Parent;
+				while (parent != _root)
+				{
+					parent.IsExpanded = true;
+					parent = parent.Parent;
+				}
+				ScrollTo(node);
 			}
-			ScrollTo(node);
 		}
 
 		/// <summary>
