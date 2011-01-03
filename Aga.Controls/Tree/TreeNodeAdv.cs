@@ -158,6 +158,12 @@ namespace Aga.Controls.Tree
 			}
 		}
 
+
+		internal void SetSelectedInternal(bool value)
+		{
+			_isSelected = value;
+		}
+
 		/// <summary>
 		/// Returns true if all parent nodes of this node are expanded.
 		/// </summary>
