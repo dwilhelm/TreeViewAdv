@@ -1159,7 +1159,7 @@ namespace Aga.Controls.Tree
 				object[] currentPath = GetRelativePath(node, _currentNode);
 				object[] selectionStartPath = GetRelativePath(node, _selectionStart);
 				List<object[]> selectionPaths = new List<object[]>();
-				List<TreeNodeAdv> preservedSelection = new List<TreeNodeAdv>(Selection);
+				List<TreeNodeAdv> preservedSelection = new List<TreeNodeAdv>();
 				foreach (var selectionNode in Selection)
 				{
 					object[] selectionPath = GetRelativePath(node, selectionNode);
