@@ -1159,12 +1159,14 @@ namespace Aga.Controls.Tree
 				object[] currentPath = GetRelativePath(node, _currentNode);
 				object[] selectionStartPath = GetRelativePath(node, _selectionStart);
 				List<object[]> selectionPaths = new List<object[]>();
-				List<TreeNodeAdv> oldSelection = new List<TreeNodeAdv>(Selection);
+				List<TreeNodeAdv> preservedSelection = new List<TreeNodeAdv>(Selection);
 				foreach (var selectionNode in Selection)
 				{
 					object[] selectionPath = GetRelativePath(node, selectionNode);
 					if (selectionPath != null)
 						selectionPaths.Add(selectionPath);
+					else //preserve selection because this selectionNode is not a child of node
+						preservedSelection.Add(selectionNode);
 				}
 				
 				var list = new Dictionary<object, object>();
@@ -1182,23 +1184,19 @@ namespace Aga.Controls.Tree
 
 				//Restore Selection:
 				_selection.Clear();
+				//restore preserved selection.
+				_selection.AddRange(preservedSelection); 
+				//restore selection for child nodes.
 				foreach ( var selectionPath in selectionPaths)
 				{
 					TreeNodeAdv selectionNode = FindChildNode(node, selectionPath, 0, false);
 					if (selectionNode != null)
 					{
-						oldSelection.Remove(selectionNode);
 						selectionNode.SetSelectedInternal(true);
 						_selection.Add(selectionNode);
 					}
 					else
 						fireSelectionBefore = true; // selection changed.
-				}
-				if (oldSelection.Count > 0)
-				{
-					foreach (TreeNodeAdv selectionNode in oldSelection)
-						selectionNode.SetSelectedInternal(false);
-					fireSelectionBefore = true;
 				}
 				if (currentPath != null)
 					_currentNode = FindChildNode(node, currentPath, 0, false);
