@@ -703,11 +703,10 @@ namespace Aga.Controls.Tree
 
 		internal void ReadChilds(TreeNodeAdv parentNode, bool performFullUpdate)
 		{
+			parentNode.Nodes.Clear();
 			if (!parentNode.IsLeaf)
 			{
 				parentNode.IsExpandedOnce = true;
-				parentNode.Nodes.Clear();
-
 				if (Model != null)
 				{
 					IEnumerable items = Model.GetChildren(GetPath(parentNode));
