@@ -70,6 +70,9 @@
     <Compile Include="Threading\WorkItemStatus.cs" />
     <Compile Include="Threading\WorkItem.cs" />
     <Compile Include="TimeCounter.cs" />
+    <Compile Include="Tree\AutoHeaderHeightLayout.cs" />
+    <Compile Include="Tree\FixedHeaderHeightLayout.cs" />
+    <Compile Include="Tree\IHeaderLayout.cs" />
     <Compile Include="Tree\Input\ReorderColumnState.cs" />
     <Compile Include="Tree\ListModel.cs" />
     <Compile Include="Tree\NodeControls\EditEventArgs.cs" />

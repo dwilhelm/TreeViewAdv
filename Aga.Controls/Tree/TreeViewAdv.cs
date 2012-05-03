@@ -25,7 +25,6 @@ namespace Aga.Controls.Tree
 	{
 		private const int LeftMargin = 7;
 		internal const int ItemDragSensivity = 4;
-		private readonly int _columnHeaderHeight;
 		private const int DividerWidth = 9;
 		private const int DividerCorrectionGap = -2;
 
@@ -74,6 +73,14 @@ namespace Aga.Controls.Tree
 		{
 			if (ColumnWidthChanged != null)
 				ColumnWidthChanged(this, new TreeColumnEventArgs(column));
+		}
+
+    [Category("Behavior")]
+    public event EventHandler<TreeColumnEventArgs> ColumnHeightChanged;
+		internal void OnColumnHeightChanged(TreeColumn column)
+		{
+      if (ColumnHeightChanged != null)
+        ColumnHeightChanged(this, new TreeColumnEventArgs(column));
 		}
 
 		[Category("Behavior")]
@@ -211,11 +218,7 @@ namespace Aga.Controls.Tree
 				| ControlStyles.Selectable
 				, true);
 
-
-			if (Application.RenderWithVisualStyles)
-				_columnHeaderHeight = 20;
-			else
-				_columnHeaderHeight = 17;
+			_headerLayout = new FixedHeaderHeightLayout(this, Application.RenderWithVisualStyles ? 20: 17);
 
 			//BorderStyle = BorderStyle.Fixed3D;
 			_hScrollBar.Height = SystemInformation.HorizontalScrollBarHeight;
@@ -661,6 +664,7 @@ namespace Aga.Controls.Tree
 
 		private void UnsafeFullUpdate()
 		{
+			_headerLayout.ClearCache();
 			_rowLayout.ClearCache();
 			CreateRowMap();
 			SafeUpdateScrollBars();
@@ -992,6 +996,15 @@ namespace Aga.Controls.Tree
 			{
 				FullUpdate();
 				OnColumnWidthChanged(column);
+			}
+		}
+
+		internal void ChangeColumnHeight(TreeColumn column)
+		{
+			if (!(_input is ResizeColumnState))
+			{
+				FullUpdate();
+				OnColumnHeightChanged(column);
 			}
 		}
 

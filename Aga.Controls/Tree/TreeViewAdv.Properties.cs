@@ -32,6 +32,7 @@ namespace Aga.Controls.Tree
 		#region Internal Properties
 
 		private IRowLayout _rowLayout;
+		private IHeaderLayout _headerLayout;
 
 		private bool _dragMode;
 		private bool DragMode
@@ -52,14 +53,21 @@ namespace Aga.Controls.Tree
 			}
 		}
 
-		internal int ColumnHeaderHeight
+		[DefaultValue(20), Category("Appearance")]
+		public int ColumnHeaderHeight
 		{
 			get
 			{
 				if (UseColumns)
-					return _columnHeaderHeight;
-				else
-					return 0;
+					return _headerLayout.PreferredHeaderHeight;
+				return 0;
+			}
+			set
+			{
+				if (value <= 0)
+					throw new ArgumentOutOfRangeException("value");
+				_headerLayout.PreferredHeaderHeight = value;
+				FullUpdate();
 			}
 		}
 
@@ -397,6 +405,28 @@ namespace Aga.Controls.Tree
 					_rowLayout = new AutoRowHeightLayout(this, RowHeight);
 				else
 					_rowLayout = new FixedRowHeightLayout(this, RowHeight);
+				FullUpdate();
+			}
+		}
+
+		private bool _autoHeaderHeight = false;
+		/// <summary>
+		/// Set to true to expand header height to fit the text of it's largest column.
+		/// </summary>
+		[DefaultValue(false), Category("Appearance"), Description("Expand each header height to fit the text of it's largest column.")]
+		public bool AutoHeaderHeight
+		{
+			get
+			{
+				return _autoHeaderHeight;
+			}
+			set
+			{
+				_autoHeaderHeight = value;
+				if (value)
+					_headerLayout = new AutoHeaderHeightLayout(this, ColumnHeaderHeight);
+				else
+					_headerLayout = new FixedHeaderHeightLayout(this, ColumnHeaderHeight);
 				FullUpdate();
 			}
 		}
