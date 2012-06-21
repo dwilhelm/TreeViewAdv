@@ -740,7 +740,6 @@ namespace Aga.Controls.Tree
 				parent.Nodes.Insert(index, node);
 			else
 				parent.Nodes.Add(node);
-
 			node.IsLeaf = Model.IsLeaf(GetPath(node));
 			if (node.IsLeaf)
 				node.Nodes.Clear();
@@ -1251,31 +1250,38 @@ namespace Aga.Controls.Tree
 			TreeNodeAdv parent = FindNode(e.Path);
 			if (parent != null)
 			{
-				if (e.Indices != null)
+				if (parent.IsExpandedOnce)
 				{
-					List<int> list = new List<int>(e.Indices);
-					list.Sort();
-					for (int n = list.Count - 1; n >= 0; n--)
+					if (e.Indices != null)
 					{
-						int index = list[n];
-						if (index >= 0 && index <= parent.Nodes.Count)
-							parent.Nodes.RemoveAt(index);
-						else
-							throw new ArgumentOutOfRangeException("Index out of range");
+						List<int> list = new List<int>(e.Indices);
+						list.Sort();
+						for (int n = list.Count - 1; n >= 0; n--)
+						{
+							int index = list[n];
+							if (index >= 0 && index <= parent.Nodes.Count)
+								parent.Nodes.RemoveAt(index);
+							else
+								throw new ArgumentOutOfRangeException("Index out of range");
+						}
 					}
+					else
+					{
+						for (int i = parent.Nodes.Count - 1; i >= 0; i--)
+						{
+							for (int n = 0; n < e.Children.Length; n++)
+								if (parent.Nodes[i].Tag == e.Children[n])
+								{
+									parent.Nodes.RemoveAt(i);
+									break;
+								}
+						}
+					}
+					if (parent.Nodes.Count == 0)
+						parent.IsLeaf = Model.IsLeaf(e.Path);
 				}
 				else
-				{
-					for (int i = parent.Nodes.Count - 1; i >= 0; i--)
-					{
-						for (int n = 0; n < e.Children.Length; n++)
-							if (parent.Nodes[i].Tag == e.Children[n])
-							{
-								parent.Nodes.RemoveAt(i);
-								break;
-							}
-					}
-				}
+					parent.IsLeaf = Model.IsLeaf(e.Path);
 			}
 			UpdateSelection();
 			SmartFullUpdate();
@@ -1289,8 +1295,13 @@ namespace Aga.Controls.Tree
 			TreeNodeAdv parent = FindNode(e.Path);
 			if (parent != null)
 			{
-				for (int i = 0; i < e.Children.Length; i++)
-					AddNewNode(parent, e.Children[i], e.Indices[i]);
+				if (parent.IsExpandedOnce)
+				{
+					for (int i = 0; i < e.Children.Length; i++)
+						AddNewNode(parent, e.Children[i], e.Indices[i]);
+				}
+				else if (parent.IsLeaf)
+					parent.IsLeaf = Model.IsLeaf(e.Path);
 			}
 			SmartFullUpdate();
 		}
