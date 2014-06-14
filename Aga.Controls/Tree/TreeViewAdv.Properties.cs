@@ -53,24 +53,10 @@ namespace Aga.Controls.Tree
 			}
 		}
 
-		[DefaultValue(20), Category("Appearance")]
-		public int ColumnHeaderHeight
-		{
-			get
-			{
-				if (UseColumns)
-					return _headerLayout.PreferredHeaderHeight;
-				return 0;
-			}
-			set
-			{
-				if (value <= 0)
-					throw new ArgumentOutOfRangeException("value");
-				_headerLayout.PreferredHeaderHeight = value;
-				FullUpdate();
-			}
-		}
-
+		internal int ActualColumnHeaderHeight
+        {
+            get { return UseColumns ? ColumnHeaderHeight : 0; }
+        }
 		/// <summary>
 		/// returns all nodes, which parent is expanded
 		/// </summary>
@@ -201,8 +187,8 @@ namespace Aga.Controls.Tree
 			get
 			{
 				Rectangle r = ClientRectangle;
-				//r.Y += ColumnHeaderHeight;
-				//r.Height -= ColumnHeaderHeight;
+                //r.Y += ActualColumnHeaderHeight;
+				//r.Height -= ActualColumnHeaderHeight;
 				int w = _vScrollBar.Visible ? _vScrollBar.Width : 0;
 				int h = _hScrollBar.Visible ? _hScrollBar.Height : 0;
 				return new Rectangle(r.X, r.Y, r.Width - w, r.Height - h);
@@ -424,9 +410,9 @@ namespace Aga.Controls.Tree
 			{
 				_autoHeaderHeight = value;
 				if (value)
-					_headerLayout = new AutoHeaderHeightLayout(this, ColumnHeaderHeight);
+					_headerLayout = new AutoHeaderHeightLayout(this, ActualColumnHeaderHeight);
 				else
-					_headerLayout = new FixedHeaderHeightLayout(this, ColumnHeaderHeight);
+					_headerLayout = new FixedHeaderHeightLayout(this, ActualColumnHeaderHeight);
 				FullUpdate();
 			}
 		}
@@ -628,6 +614,23 @@ namespace Aga.Controls.Tree
 			get { return _asyncExpanding; }
 			set { _asyncExpanding = value; }
 		}
+
+        [DefaultValue(20), Category("Appearance")]
+        public int ColumnHeaderHeight
+        {
+            get
+            {
+                return _headerLayout.PreferredHeaderHeight;
+            }
+            set
+            {
+                if (value < 0)
+                    throw new ArgumentOutOfRangeException("value");
+                _headerLayout.PreferredHeaderHeight = value;
+                FullUpdate();
+            }
+        }
+		
 
 		#endregion
 

@@ -262,7 +262,7 @@ namespace Aga.Controls.Tree
 				int y = 0;
 				if (UseColumns)
 				{
-					y += ColumnHeaderHeight;
+					y += ActualColumnHeaderHeight;
 					if (Columns.Count == 0)
 						return;
 				}
@@ -333,7 +333,7 @@ namespace Aga.Controls.Tree
 		private NodeControlInfo GetNodeControlInfoAt(TreeNodeAdv node, Point point)
 		{
 			Rectangle rect = _rowLayout.GetRowBounds(FirstVisibleRow);
-			point.Y += (rect.Y - ColumnHeaderHeight);
+			point.Y += (rect.Y - ActualColumnHeaderHeight);
 			point.X += OffsetX;
 			foreach (NodeControlInfo info in GetNodeControls(node))
 				if (info.Bounds.Contains(point))
@@ -417,7 +417,7 @@ namespace Aga.Controls.Tree
 			{
 				int pageStart = _rowLayout.GetRowBounds(FirstVisibleRow).Top;
 				int rowBottom = _rowLayout.GetRowBounds(node.Row).Bottom;
-				if (rowBottom > pageStart + DisplayRectangle.Height - ColumnHeaderHeight)
+				if (rowBottom > pageStart + DisplayRectangle.Height - ActualColumnHeaderHeight)
 					row = _rowLayout.GetFirstRow(node.Row);
 			}
 
@@ -680,7 +680,7 @@ namespace Aga.Controls.Tree
 
 		internal void UpdateHeaders()
 		{
-			Invalidate(new Rectangle(0, 0, Width, ColumnHeaderHeight));
+			Invalidate(new Rectangle(0, 0, Width, ActualColumnHeaderHeight));
 		}
 
 		internal void UpdateColumns()

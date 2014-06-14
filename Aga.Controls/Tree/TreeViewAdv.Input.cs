@@ -102,7 +102,7 @@ namespace Aga.Controls.Tree
 		{
 			TreeNodeAdvMouseEventArgs args = new TreeNodeAdvMouseEventArgs(e);
 			args.ViewLocation = new Point(e.X + OffsetX,
-				e.Y + _rowLayout.GetRowBounds(FirstVisibleRow).Y - ColumnHeaderHeight);
+				e.Y + _rowLayout.GetRowBounds(FirstVisibleRow).Y - ActualColumnHeaderHeight);
 			args.ModifierKeys = ModifierKeys;
 			args.Node = GetNodeAt(e.Location);
 			NodeControlInfo info = GetNodeControlInfoAt(args.Node, e.Location);
@@ -265,7 +265,7 @@ namespace Aga.Controls.Tree
 
 		internal TreeColumn GetColumnAt(Point p)
 		{
-			if (p.Y > ColumnHeaderHeight)
+			if (p.Y > ActualColumnHeaderHeight)
 				return null;
 
 			int x = -OffsetX;
@@ -273,7 +273,7 @@ namespace Aga.Controls.Tree
 			{
 				if (col.IsVisible)
 				{
-					Rectangle rect = new Rectangle(x, 0, col.Width, ColumnHeaderHeight);
+					Rectangle rect = new Rectangle(x, 0, col.Width, ActualColumnHeaderHeight);
 					x += col.Width;
 					if (rect.Contains(p))
 						return col;
@@ -300,7 +300,7 @@ namespace Aga.Controls.Tree
 
 		internal TreeColumn GetColumnDividerAt(Point p)
 		{
-			if (p.Y > ColumnHeaderHeight)
+			if (p.Y > ActualColumnHeaderHeight)
 				return null;
 
 			int x = -OffsetX;
@@ -312,8 +312,8 @@ namespace Aga.Controls.Tree
 				{
 					if (col.Width > 0)
 					{
-						left = new Rectangle(x, 0, DividerWidth / 2, ColumnHeaderHeight);
-						right = new Rectangle(x + col.Width - (DividerWidth / 2), 0, DividerWidth / 2, ColumnHeaderHeight);
+						left = new Rectangle(x, 0, DividerWidth / 2, ActualColumnHeaderHeight);
+						right = new Rectangle(x + col.Width - (DividerWidth / 2), 0, DividerWidth / 2, ActualColumnHeaderHeight);
 						if (left.Contains(p) && prevCol != null)
 							return prevCol;
 						else if (right.Contains(p))
@@ -324,7 +324,7 @@ namespace Aga.Controls.Tree
 				}
 			}
 
-			left = new Rectangle(x, 0, DividerWidth / 2, ColumnHeaderHeight);
+			left = new Rectangle(x, 0, DividerWidth / 2, ActualColumnHeaderHeight);
 			if (left.Contains(p) && prevCol != null)
 				return prevCol;
 
@@ -430,7 +430,7 @@ namespace Aga.Controls.Tree
 			{
 				Rectangle first = _rowLayout.GetRowBounds(FirstVisibleRow);
 				Rectangle bounds = _rowLayout.GetRowBounds(node.Row);
-				float pos = (pt.Y + first.Y - ColumnHeaderHeight - bounds.Y) / (float)bounds.Height;
+				float pos = (pt.Y + first.Y - ActualColumnHeaderHeight - bounds.Y) / (float)bounds.Height;
 				if (pos < TopEdgeSensivity)
 					_dropPosition.Position = NodePosition.Before;
 				else if (pos > (1 - BottomEdgeSensivity))

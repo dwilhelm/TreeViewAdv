@@ -77,7 +77,7 @@ namespace Aga.Controls.Tree
             if (UseColumns)
             {
 				DrawColumnHeaders(e.Graphics);
-				y += ColumnHeaderHeight;
+				y += ActualColumnHeaderHeight;
                 if (Columns.Count == 0 || e.ClipRectangle.Height <= y)
                     return;
             }
@@ -181,7 +181,7 @@ namespace Aga.Controls.Tree
 			PerformanceAnalyzer.Start("DrawColumnHeaders");
 			ReorderColumnState reorder = Input as ReorderColumnState;
 			int x = 0;
-			TreeColumn.DrawBackground(gr, new Rectangle(0, 0, ClientRectangle.Width + 2, ColumnHeaderHeight - 1), false, false);
+			TreeColumn.DrawBackground(gr, new Rectangle(0, 0, ClientRectangle.Width + 2, ActualColumnHeaderHeight - 1), false, false);
 			gr.TranslateTransform(-OffsetX, 0);
 			foreach (TreeColumn c in Columns)
 			{
@@ -189,7 +189,7 @@ namespace Aga.Controls.Tree
 				{
 					if (x >= OffsetX && x - OffsetX < this.Bounds.Width)// skip invisible columns
 					{
-						Rectangle rect = new Rectangle(x, 0, c.Width, ColumnHeaderHeight - 1);
+						Rectangle rect = new Rectangle(x, 0, c.Width, ActualColumnHeaderHeight - 1);
 						gr.SetClip(rect);
 						bool pressed = ((Input is ClickColumnState || reorder != null) && ((Input as ColumnState).Column == c));
 						c.Draw(gr, rect, Font, pressed, _hotColumn == c);
@@ -205,7 +205,7 @@ namespace Aga.Controls.Tree
 			if (reorder != null)
 			{
 				if (reorder.DropColumn == null)
-					TreeColumn.DrawDropMark(gr, new Rectangle(x, 0, 0, ColumnHeaderHeight));
+					TreeColumn.DrawDropMark(gr, new Rectangle(x, 0, 0, ActualColumnHeaderHeight));
 				gr.DrawImage(reorder.GhostImage, new Point(reorder.Location.X +  + reorder.DragOffset, reorder.Location.Y));
 			}
 			PerformanceAnalyzer.Finish("DrawColumnHeaders");

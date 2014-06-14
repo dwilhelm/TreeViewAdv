@@ -121,7 +121,7 @@ namespace Aga.Controls.Tree
 					Point p = info.Bounds.Location;
 					p.X += info.Control.LeftMargin;
 					p.X -= OffsetX;
-					p.Y -= (_rowLayout.GetRowBounds(FirstVisibleRow).Y - ColumnHeaderHeight);
+					p.Y -= (_rowLayout.GetRowBounds(FirstVisibleRow).Y - ActualColumnHeaderHeight);
 					int width = DisplayRectangle.Width - p.X;
 					if (UseColumns && info.Control.ParentColumn != null && Columns.Contains(info.Control.ParentColumn))
 					{
