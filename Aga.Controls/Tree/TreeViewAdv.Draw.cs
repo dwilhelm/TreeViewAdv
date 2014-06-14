@@ -61,6 +61,20 @@ namespace Aga.Controls.Tree
 			_linePen.DashStyle = DashStyle.Dot;
 		}
 
+        protected override void OnPaintBackground(PaintEventArgs pevent)
+        {
+            if (this.BackgroundPaintMode == Tree.BackgroundPaintMode.Gradiant)
+            {
+                Rectangle rc = new Rectangle(0, 0, this.ClientSize.Width, this.ClientSize.Height);
+                using (LinearGradientBrush brush = new LinearGradientBrush(rc, BackColor, BackColor2, 90.0f))
+                {
+                    pevent.Graphics.FillRectangle(brush, rc);
+                }
+            }
+            else
+                base.OnPaintBackground(pevent);
+
+        }
         protected override void OnPaint(PaintEventArgs e)
         {
             BeginPerformanceCount();

@@ -206,6 +206,35 @@ namespace Aga.Controls.Tree
 		#region Public Properties
 
 		#region DesignTime
+        private BackgroundPaintMode _backgroundPaintMode = BackgroundPaintMode.Default;
+        [Category("Appearance")]
+        public BackgroundPaintMode BackgroundPaintMode
+        {
+            get
+            {
+                return _backgroundPaintMode;
+            }
+            set
+            {
+                _backgroundPaintMode = value;
+            }
+        }
+
+
+
+        private Color _backgroundColor2 = SystemColors.Window;
+        [Category("Appearance")]
+        public Color BackColor2
+        {
+            get
+            {
+                return _backgroundColor2;
+            }
+            set
+            {
+                _backgroundColor2 = value;
+            }
+        }
 
 		private bool _shiftFirstNode;
 		[DefaultValue(false), Category("Behavior")]
