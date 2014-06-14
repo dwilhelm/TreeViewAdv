@@ -82,7 +82,7 @@ namespace Aga.Controls.Tree
 				while (node != null)
 				{
 					node = node.NextVisibleNode;
-					if (node != null)
+                    if (node != null && node.IsVisibleOverride)
 						yield return node;
 				}
 			}
@@ -632,6 +632,19 @@ namespace Aga.Controls.Tree
 		#endregion
 
 		#region RunTime
+
+        public delegate void VisibleOverride(object node, ref bool visible);
+
+        private VisibleOverride _onVisibleOverride;
+        public VisibleOverride OnVisibleOverride
+        {
+            get { return _onVisibleOverride; }
+            set
+            {
+                _onVisibleOverride = value;
+                FullUpdate();
+            }
+        }
 
 		private IToolTipProvider _defaultToolTipProvider = null;
 		[Browsable(false)]

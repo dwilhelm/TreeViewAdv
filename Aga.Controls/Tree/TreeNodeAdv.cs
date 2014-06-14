@@ -275,6 +275,16 @@ namespace Aga.Controls.Tree
 			}
 		}
 
+        internal bool IsVisibleOverride {get 
+        {
+            bool visible = true;
+            if (Tree.OnVisibleOverride != null)
+                Tree.OnVisibleOverride(this.Tag, ref visible);
+           return visible;
+        }}
+
+         
+
 		internal TreeNodeAdv NextVisibleNode
 		{
 			get
