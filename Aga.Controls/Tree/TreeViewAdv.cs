@@ -448,6 +448,33 @@ namespace Aga.Controls.Tree
 			}
 		}
 
+        public void SpanColumns()
+        {
+            int totalColumns = Columns.Count;
+            int workingWidth = DisplayRectangle.Width - totalColumns;
+            if (totalColumns > 0 && workingWidth > 0)
+            {
+                
+                BeginUpdate();
+                int totalColumnsWidth = 0;
+
+                foreach (TreeColumn column in Columns)
+                    totalColumnsWidth += column.Width;
+
+                foreach (TreeColumn column in Columns)
+                {
+                    int newWidth = (int)Math.Ceiling(workingWidth * (double)column.Width / totalColumnsWidth);
+
+                    newWidth = Math.Max(newWidth, column.MinColumnWidth);
+                    if (column.MaxColumnWidth != 0)
+                        newWidth = Math.Min(newWidth, column.MaxColumnWidth);
+
+                    column.Width = newWidth;
+                }
+                EndUpdate();
+            }
+        }
+
 		#endregion
 
 		protected override void Dispose(bool disposing)
@@ -471,6 +498,8 @@ namespace Aga.Controls.Tree
 		protected override void OnSizeChanged(EventArgs e)
 		{
 			ArrangeControls();
+            if (AutoSpanColumns)
+                SpanColumns();
 			SafeUpdateScrollBars();
 			base.OnSizeChanged(e);
 		}
@@ -993,7 +1022,7 @@ namespace Aga.Controls.Tree
 		{
 			if (!(_input is ResizeColumnState))
 			{
-				FullUpdate();
+                SmartFullUpdate();
 				OnColumnWidthChanged(column);
 			}
 		}
@@ -1002,7 +1031,7 @@ namespace Aga.Controls.Tree
 		{
 			if (!(_input is ResizeColumnState))
 			{
-				FullUpdate();
+                SmartFullUpdate();
 				OnColumnHeightChanged(column);
 			}
 		}

@@ -236,6 +236,20 @@ namespace Aga.Controls.Tree
             }
         }
 
+         private bool _AutoSpanColumns = false;
+        [DefaultValue(false), Category("Appearance")]
+        public bool AutoSpanColumns
+        {
+            get
+            {
+                return _AutoSpanColumns;
+            }
+            set
+            {
+                _AutoSpanColumns = value;
+            }
+        }
+
 		private bool _shiftFirstNode;
 		[DefaultValue(false), Category("Behavior")]
 		public bool ShiftFirstNode
