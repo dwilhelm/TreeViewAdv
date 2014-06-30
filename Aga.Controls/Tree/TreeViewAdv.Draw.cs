@@ -92,7 +92,7 @@ namespace Aga.Controls.Tree
             {
 				DrawColumnHeaders(e.Graphics);
 				y += ActualColumnHeaderHeight;
-                if (Columns.Count == 0 || e.ClipRectangle.Height <= y)
+                if (Columns.Count == 0 || e.ClipRectangle.Height + e.ClipRectangle.Top <= y)
                     return;
             }
 
