@@ -259,12 +259,12 @@ namespace Aga.Controls.Tree.NodeControls
 			if (context.DrawSelection == DrawSelectionMode.Active)
 			{
                 args.TextColor = SystemColors.HighlightText;
-                args.BackgroundBrush = SystemBrushes.Highlight;
+                args.BackgroundBrush = Parent._highlightColorActiveBrush;
 			}
 			else if (context.DrawSelection == DrawSelectionMode.Inactive)
 			{
                 args.TextColor = SystemColors.ControlText;
-                args.BackgroundBrush = SystemBrushes.InactiveBorder;
+                args.BackgroundBrush = Parent._highlightColorInactiveBrush;
 			}
 			else if (context.DrawSelection == DrawSelectionMode.FullRowSelect)
                 args.TextColor = SystemColors.HighlightText;

@@ -157,12 +157,12 @@ namespace Aga.Controls.Tree
 					Rectangle focusRect = new Rectangle(OffsetX, rowRect.Y, ClientRectangle.Width, rowRect.Height);
 					if (context.DrawSelection == DrawSelectionMode.Active)
 					{
-						e.Graphics.FillRectangle(SystemBrushes.Highlight, focusRect);
+                        e.Graphics.FillRectangle(_highlightColorActiveBrush, focusRect);
 						context.DrawSelection = DrawSelectionMode.FullRowSelect;
 					}
 					else
 					{
-						e.Graphics.FillRectangle(SystemBrushes.InactiveBorder, focusRect);
+                        e.Graphics.FillRectangle(_highlightColorInactiveBrush, focusRect);
 						context.DrawSelection = DrawSelectionMode.None;
 					}
 				}

@@ -236,6 +236,42 @@ namespace Aga.Controls.Tree
             }
         }
 
+
+        private Color _highlightColorActive = SystemColors.Highlight;
+        internal SolidBrush _highlightColorActiveBrush = (SolidBrush)SystemBrushes.Highlight;
+        [Category("Appearance")]
+        public Color HighlightColorActive
+        {
+            get
+            {
+                return _highlightColorActive;
+            }
+            set
+            {
+                _highlightColorActive = value;
+                _highlightColorActiveBrush = new SolidBrush(_highlightColorActive);
+            }
+        }
+
+        private Color _highlightColorInactive = SystemColors.InactiveBorder;
+        internal SolidBrush _highlightColorInactiveBrush = (SolidBrush)SystemBrushes.InactiveBorder;
+        
+        [Category("Appearance")]
+        public Color HighlightColorInactive
+        {
+            get
+            {
+                return _highlightColorInactive;
+            }
+            set
+            {
+                _highlightColorInactive = value;
+                _highlightColorInactiveBrush = new SolidBrush(_highlightColorInactive);
+
+            }
+        }
+
+
          private bool _AutoSpanColumns = false;
         [DefaultValue(false), Category("Appearance")]
         public bool AutoSpanColumns
