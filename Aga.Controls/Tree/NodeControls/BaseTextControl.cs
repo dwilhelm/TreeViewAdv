@@ -128,7 +128,7 @@ namespace Aga.Controls.Tree.NodeControls
 			CheckThread();
 			Font font = GetDrawingFont(node, context, label);
 			Size s = Size.Empty;
-			if (UseCompatibleTextRendering)
+			if (!UseCompatibleTextRendering)
 				s = TextRenderer.MeasureText(label, font);
 			else
 			{
@@ -192,13 +192,14 @@ namespace Aga.Controls.Tree.NodeControls
 			}
 			
 			PerformanceAnalyzer.Start("BaseTextControl.DrawText");
-            if (UseCompatibleTextRendering)
+            
+            DrawHighLight(context, bounds, args);
+            
+            if (!UseCompatibleTextRendering)
                 TextRenderer.DrawText(context.Graphics, args.Text, args.Font, bounds, args.TextColor, _formatFlags);
             else
-            {
-                DrawHighLight(context, bounds, args);
-                context.Graphics.DrawString(args.Text, args.Font, GetFrush(args.TextColor), bounds, _format);
-            }
+               context.Graphics.DrawString(args.Text, args.Font, GetFrush(args.TextColor), bounds, _format);
+
 
 			PerformanceAnalyzer.Finish("BaseTextControl.DrawText");
 			PerformanceAnalyzer.Finish("BaseTextControl.Draw");

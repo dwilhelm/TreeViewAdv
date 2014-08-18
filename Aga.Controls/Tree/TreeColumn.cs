@@ -243,7 +243,7 @@ namespace Aga.Controls.Tree
 
 			Font font = GetDrawingFont(context, label);
 			Size s = Size.Empty;
-			if (UseCompatibleTextRendering)
+			if (!UseCompatibleTextRendering)
 				s = TextRenderer.MeasureText(label, font);
 			else
 			{
