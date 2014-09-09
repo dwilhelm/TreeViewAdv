@@ -111,19 +111,24 @@ namespace Aga.Controls.Tree
 			return args;
 		}
 
-		protected override void OnMouseWheel(MouseEventArgs e)
-		{
-			_search.EndSearch();
-			if (SystemInformation.MouseWheelScrollLines > 0)
-			{
-				int lines = e.Delta / 120 * SystemInformation.MouseWheelScrollLines;
-				int newValue = _vScrollBar.Value - lines;
-				newValue = Math.Min(_vScrollBar.Maximum - _vScrollBar.LargeChange + 1, newValue);
-				newValue = Math.Min(_vScrollBar.Maximum, newValue);
-				_vScrollBar.Value = Math.Max(_vScrollBar.Minimum, newValue);
-			}
-			base.OnMouseWheel(e);
-		}
+        protected override void OnMouseWheel(MouseEventArgs e)
+        {
+            // e.Delta is no longer fixed to the value 120.
+            const double ScrollBaseFactor = 120;
+            _search.EndSearch();
+            int linesToScroll = SystemInformation.MouseWheelScrollLines;
+            
+            if (linesToScroll == -1)
+                linesToScroll = _vScrollBar.LargeChange;
+
+            int lines = (int)(e.Delta / ScrollBaseFactor) * linesToScroll;
+            int newValue = _vScrollBar.Value - lines;
+            newValue = Math.Min(_vScrollBar.Maximum - _vScrollBar.LargeChange + 1, newValue);
+            newValue = Math.Min(_vScrollBar.Maximum, newValue);
+            _vScrollBar.Value = Math.Max(_vScrollBar.Minimum, newValue);
+
+            base.OnMouseWheel(e);
+        }
 
 		protected override void OnMouseDown(MouseEventArgs e)
 		{
