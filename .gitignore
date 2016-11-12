@@ -1,4 +1,5 @@
 *.user
 *.suo
+Thumbs.db
 Bin/
 Obj/
