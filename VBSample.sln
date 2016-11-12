@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual Studio 2008
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{076844FE-D17E-496D-9319-CB97E06E03B7}"
 	ProjectSection(SolutionItems) = preProject
 		VBSample\Some Notes on using TreeViewAdv version 1_6_0_0.doc = VBSample\Some Notes on using TreeViewAdv version 1_6_0_0.doc
