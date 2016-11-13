@@ -38,8 +38,8 @@
 			// 
 			// treeViewAdv1
 			// 
-			this.treeViewAdv1.AllowColumnReorder = true;
 			this.treeViewAdv1.BackColor = System.Drawing.SystemColors.Window;
+			this.treeViewAdv1.ColumnHeaderHeight = 36;
 			this.treeViewAdv1.Columns.Add(this.treeColumn1);
 			this.treeViewAdv1.Columns.Add(this.treeColumn2);
 			this.treeViewAdv1.Columns.Add(this.treeColumn3);
@@ -49,6 +49,7 @@
 			this.treeViewAdv1.DefaultToolTipProvider = null;
 			this.treeViewAdv1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.treeViewAdv1.DragDropMarkColor = System.Drawing.Color.Black;
+			this.treeViewAdv1.Font = new System.Drawing.Font("Tahoma", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.treeViewAdv1.GridLineStyle = ((Aga.Controls.Tree.GridLineStyle)((Aga.Controls.Tree.GridLineStyle.Horizontal | Aga.Controls.Tree.GridLineStyle.Vertical)));
 			this.treeViewAdv1.LineColor = System.Drawing.SystemColors.ControlDark;
 			this.treeViewAdv1.Location = new System.Drawing.Point(0, 0);
