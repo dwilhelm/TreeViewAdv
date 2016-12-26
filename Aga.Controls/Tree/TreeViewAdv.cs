@@ -218,7 +218,8 @@ namespace Aga.Controls.Tree
 				| ControlStyles.Selectable
 				, true);
 
-			_headerLayout = new FixedHeaderHeightLayout(this, Application.RenderWithVisualStyles ? 20: 17);
+			int _hdrheight = Application.RenderWithVisualStyles ? 20 : 17;
+			_headerLayout = new FixedHeaderHeightLayout(this, _hdrheight);
 
 			//BorderStyle = BorderStyle.Fixed3D;
 			_hScrollBar.Height = SystemInformation.HorizontalScrollBarHeight;
