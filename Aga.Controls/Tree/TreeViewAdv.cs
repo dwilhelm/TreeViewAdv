@@ -219,6 +219,7 @@ namespace Aga.Controls.Tree
 				, true);
 
 			int _hdrheight = Application.RenderWithVisualStyles ? 20 : 17;
+			_hdrheight = GetScaledSize(_hdrheight);
 			_headerLayout = new FixedHeaderHeightLayout(this, _hdrheight);
 
 			//BorderStyle = BorderStyle.Fixed3D;
@@ -247,6 +248,36 @@ namespace Aga.Controls.Tree
 
 			Font = _font;
 			ExpandingIcon.IconChanged += ExpandingIconChanged;
+		}
+
+		public int GetScaledSize(int size, bool useY = true)
+		{
+			// https://msdn.microsoft.com/en-us/library/windows/desktop/dn469266(v=vs.85).aspx
+			const int _default_dpi = 96;
+			float dpi = 0;
+			int scaledsize = size;
+			Graphics g = this.CreateGraphics();
+
+			try
+			{
+				if (useY)
+				{
+					dpi = g.DpiY;
+				} else
+				{
+					dpi = g.DpiX;
+				}
+			}
+			finally
+			{
+				g.Dispose();
+			}
+			if (dpi > 0)
+			{
+				float dpiscale = dpi / _default_dpi;
+				scaledsize = (int)(dpiscale * size);
+			}
+			return scaledsize;
 		}
 
 		void ExpandingIconChanged(object sender, EventArgs e)
