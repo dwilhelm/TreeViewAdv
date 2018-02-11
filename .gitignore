@@ -1,5 +1,6 @@
 *.user
 *.suo
 Thumbs.db
+.vs/
 Bin/
 Obj/
