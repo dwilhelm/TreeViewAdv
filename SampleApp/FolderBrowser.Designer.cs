@@ -78,11 +78,12 @@ namespace SampleApp
 			// _treeView
 			// 
 			this._treeView.AllowColumnReorder = true;
-			this._treeView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-						| System.Windows.Forms.AnchorStyles.Left)
-						| System.Windows.Forms.AnchorStyles.Right)));
+			this._treeView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
 			this._treeView.AutoRowHeight = true;
 			this._treeView.BackColor = System.Drawing.SystemColors.Window;
+			this._treeView.ColumnHeaderHeight = 21;
 			this._treeView.Columns.Add(this.treeColumn1);
 			this._treeView.Columns.Add(this.treeColumn2);
 			this._treeView.Columns.Add(this.treeColumn3);
@@ -144,6 +145,7 @@ namespace SampleApp
 			this._icon.DataPropertyName = "Icon";
 			this._icon.LeftMargin = 1;
 			this._icon.ParentColumn = this.treeColumn1;
+			this._icon.ScaleMode = Aga.Controls.Tree.ImageScaleMode.Clip;
 			// 
 			// _name
 			// 
